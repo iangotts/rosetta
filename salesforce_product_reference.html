@@ -3,761 +3,1566 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salesforce Product Reference — Canonical Names &amp; Groups</title>
+<title>Salesforce Product Reference — Cross-Source Naming Matrix</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
 :root{
   --blue:#0176D3;--dark:#032D60;--mid:#1B4F72;--accent:#00A1E0;
-  --green:#2E844A;--red:#BA0517;--amber:#A07000;--purple:#5B21B6;
-  --border:#D8DDE6;--muted:#5A5A5A;--light:#F6F8FA;
+  --green:#2E844A;--red:#BA0517;--amber:#A07000;--purple:#5B21B6;--teal:#0E7490;
+  --orange:#C2410C;--border:#D8DDE6;--muted:#5A5A5A;--light:#F8FAFC;
   --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
-  /* Group colours */
-  --g1:#1D4ED8;--g1bg:#EFF6FF; /* Agentforce Sales */
-  --g2:#0E7490;--g2bg:#F0FDFA; /* Agentforce Service */
-  --g3:#9333EA;--g3bg:#FAF5FF; /* Agentforce Marketing */
-  --g4:#D97706;--g4bg:#FFFBEB; /* Agentforce Commerce */
-  --g5:#15803D;--g5bg:#F0FDF4; /* Agentforce Platform 360 */
-  --g6:#B45309;--g6bg:#FFFBEB; /* Supply Chain */
-  --g7:#0369A1;--g7bg:#F0F9FF; /* Data 360 */
-  --g8:#0F766E;--g8bg:#F0FDFA; /* Experience Cloud */
-  --g9:#7C2D12;--g9bg:#FFF7ED; /* Field Service */
-  --g10:#334155;--g10bg:#F8FAFC; /* IT Service */
-  --g11:#6B7280;--g11bg:#F9FAFB; /* Standalone */
-  --g12:#2D6A4F;--g12bg:#D8F3DC; /* MuleSoft */
-  --g13:#E9762B;--g13bg:#FFF3E0; /* Tableau/Analytics */
-  --g14:#4B5563;--g14bg:#F3F4F6; /* Industry */
-  --g15:#166534;--g15bg:#F0FDF4; /* Slack */
-  --g16:#1E40AF;--g16bg:#EFF6FF; /* Net Zero */
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--light);color:#181818;min-height:100vh;}
+body{font-family:var(--font);background:var(--light);color:#181818;font-size:13px;}
 
-header{background:linear-gradient(135deg,var(--dark) 0%,var(--mid) 55%,var(--accent) 100%);color:white;padding:20px 32px 16px;}
-header h1{font-size:1.15rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px;}
-header p{font-size:.7rem;opacity:.72;font-weight:300;}
+/* HEADER */
+header{background:linear-gradient(135deg,var(--dark) 0%,var(--mid) 55%,var(--accent) 100%);color:white;padding:14px 20px 10px;}
+header h1{font-size:1rem;font-weight:700;margin-bottom:2px;}
+header p{font-size:.62rem;opacity:.72;font-weight:300;line-height:1.5;}
 
-.controls{background:white;border-bottom:1px solid var(--border);padding:10px 32px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:10;}
-.controls label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
-.fb{padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:.66rem;font-weight:600;cursor:pointer;font-family:var(--font);color:var(--muted);transition:all .15s;}
+/* FINDINGS BANNER */
+.findings{background:#1E1B4B;color:white;padding:8px 20px;font-size:.62rem;line-height:1.6;}
+.findings strong{color:#A5B4FC;}
+.fg{display:flex;gap:16px;flex-wrap:wrap;margin-top:5px;}
+.fi{background:rgba(255,255,255,.08);border-radius:5px;padding:5px 8px;font-size:.6rem;flex:1;min-width:180px;}
+.fi b{display:block;color:#FCA5A5;margin-bottom:2px;font-size:.62rem;}
+.fi.ok b{color:#86EFAC;}
+.fi.amber b{color:#FDE68A;}
+
+/* CONTROLS */
+.controls{background:white;border-bottom:1px solid var(--border);padding:7px 20px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:20;}
+.fb{padding:2px 8px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:.6rem;font-weight:600;cursor:pointer;font-family:var(--font);color:var(--muted);transition:all .15s;}
 .fb:hover,.fb.active{background:var(--blue);border-color:var(--blue);color:white;}
 .sw{margin-left:auto;position:relative;}
-.sw input{border:1.5px solid var(--border);border-radius:8px;padding:4px 10px 4px 26px;font-size:.74rem;font-family:var(--font);width:200px;outline:none;}
+.sw input{border:1.5px solid var(--border);border-radius:7px;padding:3px 9px 3px 22px;font-size:.68rem;font-family:var(--font);width:160px;outline:none;}
 .sw input:focus{border-color:var(--blue);}
-.sw::before{content:'⌕';position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.sw::before{content:'⌕';position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
 
-.wrap{padding:20px 32px 60px;}
-table{width:100%;border-collapse:separate;border-spacing:0;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);}
-thead tr{background:var(--dark);color:white;}
-th{padding:10px 12px;text-align:left;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;border-right:1px solid rgba(255,255,255,.1);}
-th:last-child{border-right:none;}
-tbody tr{border-bottom:1px solid var(--border);}
-tbody tr:last-child{border-bottom:none;}
+/* TABLE WRAPPER */
+.tw{overflow-x:auto;padding:10px 20px 60px;}
+table{border-collapse:separate;border-spacing:0;background:white;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.08);font-size:.68rem;}
+table th,table td{white-space:normal;word-break:break-word;}
+
+/* HEADER ROWS */
+thead tr:first-child th{background:var(--dark);color:white;padding:8px 7px;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-right:1px solid rgba(255,255,255,.15);vertical-align:bottom;}
+thead tr:last-child th{background:#1A3A5C;color:#CBD5E1;padding:5px 7px;font-size:.54rem;font-style:italic;border-right:1px solid rgba(255,255,255,.08);border-bottom:2px solid rgba(0,161,224,.5);}
+th:last-child,td:last-child{border-right:none!important;}
+
+/* STICKY COLUMNS */
+th.s0,td.s0{position:sticky;left:0;z-index:8;min-width:110px;max-width:110px;}
+th.s1,td.s1{position:sticky;left:110px;z-index:8;min-width:160px;max-width:160px;}
+th.s2,td.s2{position:sticky;left:270px;z-index:8;min-width:150px;max-width:150px;}
+thead th.s0{z-index:15;} thead th.s1{z-index:15;} thead th.s2{z-index:15;}
+td.s0{background:white;} td.s1{background:white;} td.s2{background:#FAFAFA;}
+tbody tr:hover td.s0,tbody tr:hover td.s1,tbody tr:hover td.s2{background:#EFF6FF!important;}
+
+/* DATA COLUMNS */
+td.site{min-width:120px;max-width:140px;padding:5px 7px;border-right:1px solid var(--border);vertical-align:top;}
+td.s0,td.s1,td.s2{border-right:1px solid var(--border);}
+
+/* GROUP / CATEGORY ROWS */
+tr.cat td{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:white;padding:4px 8px;border:none;}
+
+/* CELL CONTENT */
+.pname{font-weight:700;font-size:.75rem;color:var(--dark);display:block;line-height:1.3;margin-bottom:1px;}
+.psub{font-size:.6rem;color:var(--muted);font-style:italic;display:block;}
+.note{font-size:.62rem;color:var(--muted);line-height:1.5;}
+
+/* Site cell name display */
+.sn{display:block;font-weight:600;font-size:.68rem;color:var(--dark);line-height:1.3;}
+.sn.match{color:var(--green);}
+.sn.diff{color:var(--amber);}
+.sn.absent{color:#CCC;font-style:italic;font-weight:400;font-size:.62rem;}
+.sn.stale{color:var(--red);}
+.sn.unconf{color:#AAA;font-style:italic;}
+.se{display:block;font-size:.57rem;color:var(--muted);margin-top:1px;font-family:var(--mono);line-height:1.4;}
+.tag{display:inline-block;font-size:.52rem;padding:1px 3px;border-radius:2px;font-weight:700;text-transform:uppercase;vertical-align:middle;margin-left:2px;}
+.tag.m{background:#D1FAE5;color:#065F46;}
+.tag.d{background:#FEF3C7;color:var(--amber);}
+.tag.a{background:#F3F4F6;color:#9CA3AF;}
+.tag.s{background:#FEE2E2;color:var(--red);}
+.tag.n{background:#E0F2FE;color:#0369A1;}
+.tag.dep{background:#FEE2E2;color:var(--red);text-decoration:line-through;}
+
+/* Group badges */
+.gb{display:inline-block;padding:2px 6px;border-radius:12px;font-size:.58rem;font-weight:700;white-space:nowrap;}
+
+/* Group header colours */
+.gh-sales{background:#1D4ED8;} .g-sales{background:#EFF6FF;color:#1D4ED8;}
+.gh-service{background:#0E7490;} .g-service{background:#F0FDFA;color:#0E7490;}
+.gh-mktg{background:#9333EA;} .g-mktg{background:#FAF5FF;color:#9333EA;}
+.gh-comm{background:#D97706;} .g-comm{background:#FFFBEB;color:#D97706;}
+.gh-plat{background:#15803D;} .g-plat{background:#F0FDF4;color:#15803D;}
+.gh-data{background:#0369A1;} .g-data{background:#F0F9FF;color:#0369A1;}
+.gh-exp{background:#0F766E;} .g-exp{background:#F0FDFA;color:#0F766E;}
+.gh-ms{background:#166534;} .g-ms{background:#F0FDF4;color:#166534;}
+.gh-ta{background:#C2410C;} .g-ta{background:#FFF7ED;color:#C2410C;}
+.gh-slack{background:#1E3A5F;} .g-slack{background:#F0F7FF;color:#1E3A5F;}
+.gh-nz{background:#1E40AF;} .g-nz{background:#EFF6FF;color:#1E40AF;}
+.gh-ind{background:#4B5563;} .g-ind{background:#F9FAFB;color:#4B5563;}
+.gh-stand{background:#6B7280;} .g-stand{background:#F9FAFB;color:#6B7280;}
+.gh-supply{background:#92400E;} .g-supply{background:#FFF7ED;color:#92400E;}
+.gh-leg{background:#6D28D9;} .g-leg{background:#F5F3FF;color:#6D28D9;}
+
+/* Row hover */
+tbody tr:hover td{background:#F8FBFF;}
 tbody tr.hidden{display:none;}
-tbody tr:hover{filter:brightness(.97);}
 
-/* group header rows */
-tr.group-row td{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:white;padding:5px 12px;border:none;}
-
-td{padding:8px 12px;font-size:.8rem;vertical-align:middle;}
-td:not(:last-child){border-right:1px solid var(--border);}
-
-/* number */
-.num{font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:right;}
-
-/* group badge */
-.gbadge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.65rem;font-weight:700;white-space:nowrap;}
-
-/* canonical name */
-.cname{font-weight:700;font-size:.88rem;color:var(--dark);}
-.aka{font-size:.68rem;color:var(--muted);font-style:italic;margin-top:2px;display:block;font-family:var(--mono);}
-
-/* change badge */
-.chg{display:inline-block;font-size:.6rem;padding:1px 5px;border-radius:3px;margin-left:5px;font-weight:700;text-transform:uppercase;vertical-align:middle;}
-.chg.renamed{background:#FEE2E2;color:var(--red);}
-.chg.new{background:#D1FAE5;color:#065F46;}
-.chg.deleted{background:#FEE2E2;color:var(--red);text-decoration:line-through;}
-.chg.fixed{background:#EDE9FE;color:var(--purple);}
-.chg.grouped{background:#E0F2FE;color:#0369A1;}
-
-/* Group colour mapping */
-.g-sales{background:var(--g1bg);color:var(--g1);}
-.g-service{background:var(--g2bg);color:var(--g2);}
-.g-marketing{background:var(--g3bg);color:var(--g3);}
-.g-commerce{background:var(--g4bg);color:var(--g4);}
-.g-platform{background:var(--g5bg);color:var(--g5);}
-.g-supply{background:var(--g6bg);color:var(--g6);}
-.g-data{background:var(--g7bg);color:var(--g7);}
-.g-exp{background:var(--g8bg);color:var(--g8);}
-.g-field{background:var(--g9bg);color:var(--g9);}
-.g-it{background:var(--g10bg);color:var(--g10);}
-.g-ms{background:var(--g12bg);color:var(--g12);}
-.g-ta{background:var(--g13bg);color:var(--g13);}
-.g-ind{background:var(--g14bg);color:var(--g14);}
-.g-slack{background:var(--g15bg);color:var(--g15);}
-.g-nzero{background:var(--g16bg);color:var(--g16);}
-.g-standalone{background:var(--g11bg);color:var(--g11);}
-
-/* group header row colours */
-.gh-sales{background:var(--g1);}
-.gh-service{background:var(--g2);}
-.gh-marketing{background:var(--g3);}
-.gh-commerce{background:var(--g4);}
-.gh-platform{background:var(--g5);}
-.gh-supply{background:var(--g6);}
-.gh-data{background:var(--g7);}
-.gh-exp{background:var(--g8);}
-.gh-field{background:var(--g9);}
-.gh-it{background:var(--g10);}
-.gh-ms{background:#1B5E20;}
-.gh-ta{background:#E65100;}
-.gh-ind{background:var(--g14);}
-.gh-slack{background:var(--g15);}
-.gh-nzero{background:var(--g16);}
-.gh-standalone{background:#9CA3AF;}
+/* PLC columns highlight */
+td.plc{background:#FAFBFF;}
+tbody tr:hover td.plc{background:#F0F0FF;}
+th.plc-h{background:rgba(109,40,217,.3)!important;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Salesforce Product Reference — Canonical Names &amp; Groups</h1>
-  <p>Source: Rosetta content inventory PDF · v5 matrix · trailhead.salesforce.com dropdown · All industry clouds use "xxx Cloud" naming</p>
+  <h1>Salesforce Product Reference — Cross-Source Naming Matrix v6</h1>
+  <p>Each site column shows the exact name used on that property · ✓ = matches canonical · ≠ = different name · — = absent · ◌ = JS SPA unconfirmed · <span style="color:#FCA5A5">⚠ stale</span> = deprecated/old name still in use</p>
 </header>
 
+<div class="findings">
+  <strong>🆕 New from Partner Learning Camp dropdowns</strong>
+  <div class="fg">
+    <div class="fi"><b>Stale/deprecated products still in PLC</b>Vaccine Cloud · Work.com · Safety Cloud · Social Studio · Audience Studio · Digital 360 · Einstein 1 · Essentials — these appear in PLC dropdowns suggesting training content still references retired products</div>
+    <div class="fi"><b>New products only in PLC</b>Philanthropy Cloud · Rebate Management · Salesforce CMS · GTM (not a product) · Sales Enablement · Advertising · Salesforce CMS — never seen in any other source</div>
+    <div class="fi ok"><b>PLC List 1 uses OLD cloud names ✓</b>"Sales Cloud", "Service Cloud", "Marketing Cloud" — PLC's primary dropdown hasn't adopted the "Agentforce" rebrand. Data Cloud ✓, Tableau ✓, Slack ✓</div>
+    <div class="fi amber"><b>Industry: 2 dropdown lists, different cuts</b>List 1 = 14 broad categories · List 2 = 40+ granular sub-industries · Neither matches the 17 industries in the salesforce.com nav exactly</div>
+    <div class="fi"><b>PLC List 2 reveals hidden products</b>Quip ✓ (finally visible!) · Partner Cloud · Government Cloud · Tableau Cloud/Tableau Server (deployment options) · Salesforce Scheduler · Safety Cloud · Work.com</div>
+    <div class="fi"><b>Revenue Cloud appears in BOTH PLC lists</b>List 1 AND List 2 both have "Revenue Cloud" at different levels — unclear if same product or different scoping</div>
+  </div>
+</div>
+
 <div class="controls">
-  <label>Filter by group:</label>
+  <span style="font-size:.6rem;font-weight:700;color:var(--muted);text-transform:uppercase">Filter:</span>
   <button class="fb active" onclick="f('all',this)">All</button>
-  <button class="fb" onclick="f('sales',this)" style="border-color:#1D4ED8;color:#1D4ED8">Agentforce Sales</button>
-  <button class="fb" onclick="f('service',this)" style="border-color:#0E7490;color:#0E7490">Agentforce Service</button>
-  <button class="fb" onclick="f('marketing',this)" style="border-color:#9333EA;color:#9333EA">Agentforce Marketing</button>
-  <button class="fb" onclick="f('commerce',this)" style="border-color:#D97706;color:#D97706">Agentforce Commerce</button>
-  <button class="fb" onclick="f('platform',this)" style="border-color:#15803D;color:#15803D">Agentforce Platform 360</button>
-  <button class="fb" onclick="f('ms',this)" style="border-color:#2D6A4F;color:#2D6A4F">MuleSoft</button>
-  <button class="fb" onclick="f('ta',this)" style="border-color:#E65100;color:#E65100">Analytics/Tableau</button>
-  <button class="fb" onclick="f('ind',this)" style="border-color:#4B5563;color:#4B5563">Industry Clouds</button>
+  <button class="fb" onclick="f('sales',this)">Sales</button>
+  <button class="fb" onclick="f('service',this)">Service</button>
+  <button class="fb" onclick="f('mktg',this)">Marketing</button>
+  <button class="fb" onclick="f('comm',this)">Commerce</button>
+  <button class="fb" onclick="f('plat',this)">Platform</button>
+  <button class="fb" onclick="f('ms',this)">MuleSoft</button>
+  <button class="fb" onclick="f('ta',this)">Analytics</button>
+  <button class="fb" onclick="f('ind',this)">Industry</button>
+  <button class="fb" onclick="f('leg',this)">⚠ Stale/Legacy</button>
+  <button class="fb" onclick="f('naming',this)">⚠ Naming conflicts</button>
   <div class="sw"><input type="text" placeholder="Search…" oninput="sr(this.value)"></div>
 </div>
 
-<div class="wrap">
+<div class="tw">
 <table>
 <thead>
-  <tr>
-    <th style="width:36px">#</th>
-    <th style="width:180px">Group</th>
-    <th>Canonical Product Name</th>
-    <th>Previously called / Also known as</th>
-    <th style="width:140px">Change from v5</th>
-  </tr>
+<tr>
+  <th class="s0" rowspan="2">Group</th>
+  <th class="s1" rowspan="2">Canonical Name</th>
+  <th class="s2" rowspan="2">Notes / Comments</th>
+  <!-- Salesforce properties -->
+  <th>salesforce.com<br>nav</th>
+  <th>salesforce.com<br>/pricing</th>
+  <th>mulesoft.com</th>
+  <th>help.sf.com</th>
+  <th>developer.sf.com</th>
+  <th>admin.sf.com</th>
+  <th>architect.sf.com</th>
+  <th>trailhead<br>dropdown</th>
+  <th>Homepage<br>image</th>
+  <!-- PLC -->
+  <th class="plc-h">PLC<br>Product List 1</th>
+  <th class="plc-h">PLC<br>Product List 2</th>
+  <th class="plc-h">PLC<br>Industry List 1</th>
+  <th class="plc-h">PLC<br>Industry List 2</th>
+</tr>
+<tr>
+  <th>Primary product navigation on salesforce.com</th>
+  <th>salesforce.com/pricing page body</th>
+  <th>mulesoft.com primary nav</th>
+  <th>help.salesforce.com (JS SPA)</th>
+  <th>developer.salesforce.com Dev Centers</th>
+  <th>admin.salesforce.com Products &amp; Tools</th>
+  <th>architect.salesforce.com Well-Architected</th>
+  <th>trailhead.salesforce.com product dropdown</th>
+  <th>Agentforce 360 diagram on homepage</th>
+  <th class="plc-h">High-level product filter in PLC courses</th>
+  <th class="plc-h">Granular product filter in PLC courses</th>
+  <th class="plc-h">Broad industry categories in PLC</th>
+  <th class="plc-h">Granular sub-industry filter in PLC</th>
+</tr>
 </thead>
 <tbody>
 
-<!-- ══ AGENTFORCE SALES ══ -->
-<tr class="group-row gh-sales" data-g="sales"><td colspan="5">Agentforce Sales</td></tr>
+<!-- ═══════════════════════════ AGENTFORCE SALES ═══════════════════════════ -->
+<tr class="cat gh-sales" data-g="sales"><td colspan="16">Agentforce Sales</td></tr>
 
-<tr data-g="sales">
-  <td class="num">1</td>
-  <td><span class="gbadge g-sales">Agentforce Sales</span></td>
-  <td><span class="cname">Agentforce Sales</span></td>
-  <td><span class="aka">Formerly: "Sales Cloud" · salesforce.com nav: "Sales" · Pricing page: "Agentforce Sales" ✅ · Architect/Dev: "Sales Cloud"</span></td>
-  <td><span class="chg renamed">Renamed</span> Sales Cloud → Agentforce Sales</td>
+<tr data-g="sales naming">
+  <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
+  <td class="s1"><span class="pname">Agentforce Sales</span><span class="psub">Core sales pipeline CRM</span></td>
+  <td class="s2 note">5 active names across sources. Pricing page reflects intended rebrand direction but nav and many properties still use old names.</td>
+  <td class="site"><span class="sn diff">"Sales"<span class="tag d">≠</span></span><span class="se">Drops both "Cloud" and "Agentforce"</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Sales"<span class="tag m">≈</span></span><span class="se">Matches canonical. From $25/user/mo</span></td>
+  <td class="site"><span class="sn absent">— Not listed</span></td>
+  <td class="site"><span class="sn unconf">◌ Unconfirmed</span><span class="se">JS SPA</span></td>
+  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Uses old name in Dev Centers</span></td>
+  <td class="site"><span class="sn absent">— Not listed</span><span class="se">Admin uses functional categories not product names</span></td>
+  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Uses old name in Well-Architected docs</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Sales"<span class="tag m">≈</span></span><span class="se">Under "Agentforce Revenue Management" parent category</span></td>
+  <td class="site"><span class="sn diff">"Sales" or "Agentforce Sales"<span class="tag d">≠</span></span><span class="se">Two names used in image</span></td>
+  <td class="site plc"><span class="sn diff">"Sales Cloud"<span class="tag s">⚠OLD</span></span><span class="se">PLC List 1 hasn't adopted Agentforce rebrand</span></td>
+  <td class="site plc"><span class="sn diff">"Agentforce for Sales" + "Core Sales" + "Sales"<span class="tag d">≠</span></span><span class="se">3 different entries in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">— N/A</span></td>
+  <td class="site plc"><span class="sn absent">— N/A</span></td>
+</tr>
+
+<tr data-g="sales naming">
+  <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
+  <td class="s1"><span class="pname">Agentforce Revenue Operations</span><span class="psub">CPQ, billing, quote-to-cash</span></td>
+  <td class="s2 note">4+ names across sources. "CPQ" still in nav despite entering end-of-sale. Revenue Cloud is the industry-standard name.</td>
+  <td class="site"><span class="sn diff">"Revenue Lifecycle Management" + "CPQ" (separate)<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">Add-on under Sales; no standalone line<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Revenue Management"<span class="tag d">≠</span></span><span class="se">Trailhead uses yet another name</span></td>
+  <td class="site"><span class="sn diff">"Revenue Mgmt"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Revenue Cloud"<span class="tag d">≠</span></span><span class="se">Industry-standard name used in PLC</span></td>
+  <td class="site plc"><span class="sn diff">"Revenue Cloud"<span class="tag d">≠</span></span><span class="se">Also in List 2 — unclear scope</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="sales">
-  <td class="num">2</td>
-  <td><span class="gbadge g-sales">Agentforce Sales</span></td>
-  <td><span class="cname">Agentforce Revenue Operations</span></td>
-  <td><span class="aka">Formerly: "Agentforce Revenue Management" (Trailhead) · "Revenue Lifecycle Management" (nav) · "CPQ" (nav, entering end-of-sale) · "Revenue Mgmt" (image) · Industry: "Revenue Cloud"</span></td>
-  <td><span class="chg renamed">Renamed</span> Revenue Mgmt → Revenue Operations</td>
+  <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
+  <td class="s1"><span class="pname">Sales Performance Management</span><span class="psub">Territory, quota, incentive comp</span></td>
+  <td class="s2 note">Sub-product of Agentforce Sales.</td>
+  <td class="site"><span class="sn diff">"Sales Performance Management"<span class="tag m">≈</span></span><span class="se">Under Sales nav</span></td>
+  <td class="site"><span class="sn diff">Add-on pricing listed<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Sales Performance Management"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="sales">
-  <td class="num">3</td>
-  <td><span class="gbadge g-sales">Agentforce Sales</span></td>
-  <td><span class="cname">Agentforce CPQ</span></td>
-  <td><span class="aka">Formerly: "Revenue Cloud / CPQ / RLM" · "CPQ" still in nav as separate item (entering end-of-sale) · Pricing page: add-on under Sales Cloud</span></td>
-  <td><span class="chg renamed">Renamed</span> CPQ/RLM → Agentforce CPQ</td>
+<!-- ═══════════════════════════ AGENTFORCE SERVICE ═══════════════════════════ -->
+<tr class="cat gh-service" data-g="service"><td colspan="16">Agentforce Service</td></tr>
+
+<tr data-g="service naming">
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Agentforce Service</span><span class="psub">Customer service management</span></td>
+  <td class="s2 note">4 names + internal nav split: main products page and Agentforce 360 page show DIFFERENT Service sub-menus on the same domain.</td>
+  <td class="site"><span class="sn diff">"Service"<span class="tag d">≠</span></span><span class="se">Also: sub-menu differs across 2 page variants on same domain</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Service"<span class="tag m">≈</span></span><span class="se">From $25/user/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Service Cloud"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Service Cloud"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Agentforce Service"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"Customer Service"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Service Cloud"<span class="tag s">⚠OLD</span></span></td>
+  <td class="site plc"><span class="sn diff">"Core Service" + "Einstein/Agentforce for Service"<span class="tag d">≠</span></span><span class="se">2 entries in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ AGENTFORCE SERVICE ══ -->
-<tr class="group-row gh-service" data-g="service"><td colspan="5">Agentforce Service</td></tr>
+<tr data-g="service naming">
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Contact Center</span><span class="psub">Cloud contact center platform</span></td>
+  <td class="s2 note">4 different names across sources. "CCaaS" (image), "Contact Center" (nav), "Agentforce Contact Center Digital" (pricing), "Service Contact Center" (Partner Learning Camp).</td>
+  <td class="site"><span class="sn diff">"Contact Center"<span class="tag d">≠</span></span><span class="se">Sub-item under Service</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Contact Center Digital"<span class="tag d">≠</span></span><span class="se">$75/user/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"CCaaS"<span class="tag d">≠</span></span><span class="se">Industry acronym used</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Contact Center"<span class="tag d">≠</span></span><span class="se">PLC Learning Camp uses "Service Contact Center" in course names</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="service naming">
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Agentforce Field Service</span><span class="psub">On-site mobile workforce</span></td>
+  <td class="s2 note">4 names on 4 different pages. Main nav and Agentforce 360 page use different names within the same domain.</td>
+  <td class="site"><span class="sn diff">"Field Service" (main nav)<br>"Field Service and Operations" (Agentforce 360 page)<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">Standalone line<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Field Service"<span class="tag m">≈</span></span><span class="se">Trailhead aligns with canonical</span></td>
+  <td class="site"><span class="sn diff">Standalone tile<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Field Service"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
 
 <tr data-g="service">
-  <td class="num">4</td>
-  <td><span class="gbadge g-service">Agentforce Service</span></td>
-  <td><span class="cname">Agentforce Service</span></td>
-  <td><span class="aka">Formerly: "Service Cloud" · nav: "Service" · Pricing: "Agentforce Service" ✅ · Dev/Architect: "Service Cloud" · Image: "Customer Service"</span></td>
-  <td><span class="chg renamed">Renamed</span> Service Cloud → Agentforce Service</td>
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Agentforce IT Service</span><span class="psub">Internal IT service desk</span></td>
+  <td class="s2 note">HR Service was previously listed alongside IT Service but is absent from Trailhead and PLC. Image combined both as "IT &amp; HR Service".</td>
+  <td class="site"><span class="sn diff">"IT Service" + "HR Service" separate<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce IT Service"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"IT &amp; HR Service" combined<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="service">
-  <td class="num">5</td>
-  <td><span class="gbadge g-service">Agentforce Service</span></td>
-  <td><span class="cname">Agentforce Field Service</span></td>
-  <td><span class="aka">Formerly: "Field Service" (main nav) · "Field Service and Operations" (Agentforce 360 page) · Standalone tile in image · Trailhead: "Agentforce Field Service" ✅</span></td>
-  <td><span class="chg renamed">Renamed</span> Field Service → Agentforce Field Service</td>
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Service Einstein</span><span class="psub">AI features for Service — PLC only</span></td>
+  <td class="s2 note">Only appears in Partner Learning Camp. Not in any other nav or pricing source. Suggests Service Cloud Einstein add-on has been rebranded here.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Service Einstein"<span class="tag n">PLC only</span></span><span class="se">In PLC Learning Camp course names</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="service">
-  <td class="num">6</td>
-  <td><span class="gbadge g-service">Agentforce Service</span></td>
-  <td><span class="cname">Scheduler</span></td>
-  <td><span class="aka">Sub-product of Agentforce Field Service · Only visible in Trailhead dropdown · Formerly "Salesforce Scheduler"</span></td>
-  <td><span class="chg grouped">Grouped</span> under Agentforce Field Service</td>
+  <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
+  <td class="s1"><span class="pname">Scheduler</span><span class="psub">Appointment scheduling</span></td>
+  <td class="s2 note">Sub-product of Agentforce Field Service. Trailhead and PLC List 2 both name it. Previously called "Salesforce Scheduler".</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Scheduler"<span class="tag m">≈</span></span><span class="se">Under Agentforce Field Service</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Salesforce Scheduler"<span class="tag d">≠</span></span><span class="se">PLC uses full "Salesforce Scheduler" name</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="service">
-  <td class="num">7</td>
-  <td><span class="gbadge g-service">Agentforce Service</span></td>
-  <td><span class="cname">Agentforce IT Service</span></td>
-  <td><span class="aka">Formerly: "IT Service" (nav) · "IT &amp; HR Service" (image — combined) · Trailhead: "Agentforce IT Service" ✅ · Note: HR Service no longer listed separately</span></td>
-  <td><span class="chg renamed">Renamed</span> IT Service → Agentforce IT Service</td>
+<!-- ═══════════════════════════ AGENTFORCE MARKETING ═══════════════════════════ -->
+<tr class="cat gh-mktg" data-g="mktg"><td colspan="16">Agentforce Marketing</td></tr>
+
+<tr data-g="mktg naming">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Agentforce Marketing</span><span class="psub">Marketing platform umbrella</span></td>
+  <td class="s2 note">Nav drops both "Agentforce" and "Cloud". Pricing/Trailhead use "Agentforce Marketing". PLC List 1 still says "Marketing Cloud". Image says "Mktg".</td>
+  <td class="site"><span class="sn diff">"Marketing"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Agentforce Marketing"<span class="tag m">≈</span></span><span class="se">Growth $1,500/org/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Marketing"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"Mktg"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Marketing Cloud"<span class="tag s">⚠OLD</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Granular sub-products used instead</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="service">
-  <td class="num">8</td>
-  <td><span class="gbadge g-service">Agentforce Service</span></td>
-  <td><span class="cname">Contact Center</span></td>
-  <td><span class="aka">Nav: "Contact Center" · Image: "CCaaS" · Pricing: "Agentforce Contact Center Digital" ($75/user/mo) · Not in Trailhead dropdown separately</span></td>
-  <td>—</td>
+<tr data-g="mktg naming">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Marketing Cloud Next</span><span class="psub">New Agentforce-native marketing product</span></td>
+  <td class="s2 note">4 names for same product: "Marketing Cloud Next" (Trailhead), "Marketing Cloud Growth Edition" (pricing), "Marketing Cloud Advanced" (Partner Learning Camp), not named at all in main nav.</td>
+  <td class="site"><span class="sn absent">— Not named in nav</span><span class="se">Subsumed under "B2B Marketing Automation"</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud Growth Edition"<span class="tag d">≠</span></span><span class="se">$1,500/org/mo Growth · $3,250/org/mo Advanced</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud Next"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Not in PLC List 1 as standalone</span></td>
+  <td class="site plc"><span class="sn diff">"Marketing Cloud Advanced"<span class="tag d">≠</span></span><span class="se">4th name for same product — PLC Learning Camp course name</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ AGENTFORCE MARKETING ══ -->
-<tr class="group-row gh-marketing" data-g="marketing"><td colspan="5">Agentforce Marketing</td></tr>
-
-<tr data-g="marketing">
-  <td class="num">9</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Agentforce Marketing</span></td>
-  <td><span class="aka">Formerly: "Marketing Cloud" · nav: "Marketing" · Pricing: "Agentforce Marketing" ✅ · Dev: "Marketing Cloud" · Image: "Mktg"</span></td>
-  <td><span class="chg renamed">Renamed</span> Marketing Cloud → Agentforce Marketing</td>
+<tr data-g="mktg naming">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Marketing Cloud Account Engagement</span><span class="psub">Formerly Pardot — B2B nurture</span></td>
+  <td class="s2 note">4 active names: "B2B Marketing Automation" (nav), "Account Engagement+" (pricing, $1,250/org/mo), "Marketing Cloud Account Engagement" (official docs/Trailhead), "Pardot" (ecosystem-wide). Most confusing product name in the portfolio.</td>
+  <td class="site"><span class="sn diff">"B2B Marketing Automation"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Account Engagement+"<span class="tag d">≠</span></span><span class="se">$1,250/org/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud Account Engagement"<span class="tag m">≈</span></span><span class="se">API docs use official name</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud Account Engagement"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Account Engagement"<span class="tag d">≠</span></span><span class="se">Shortened in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">10</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Marketing Cloud Next</span></td>
-  <td><span class="aka">Trailhead: "Marketing Cloud Next" · Pricing page: "Marketing Cloud Growth Edition" ($1,500/org/mo) — 2 different names for same product</span></td>
-  <td><span class="chg fixed">Clarified</span> Trailhead name preferred over pricing name</td>
+<tr data-g="mktg">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Marketing Cloud Engagement</span><span class="psub">Formerly ExactTarget — legacy email</span></td>
+  <td class="s2 note">Only explicitly named in Trailhead and PLC. salesforce.com nav subsumes it under "Email Marketing, Mobile &amp; Advertising" without naming it.</td>
+  <td class="site"><span class="sn diff">"Email Marketing, Mobile &amp; Advertising"<span class="tag d">≠</span></span><span class="se">Sub-item that doesn't name the product</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud APIs"<span class="tag d">≠</span></span><span class="se">Dev site doesn't distinguish MCE from MCAE</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Marketing Cloud Engagement"<span class="tag m">≈</span></span><span class="se">Trailhead correctly names it</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Marketing Cloud"<span class="tag d">≠</span></span><span class="se">PLC List 1 conflates with umbrella</span></td>
+  <td class="site plc"><span class="sn diff">"Engagement"<span class="tag d">≠</span></span><span class="se">Shortened to single word in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">11</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Marketing Cloud Engagement</span></td>
-  <td><span class="aka">Formerly ExactTarget · Legacy email platform · Distinct from Marketing Cloud Account Engagement (Pardot) · Only named explicitly in Trailhead</span></td>
-  <td>—</td>
+<tr data-g="mktg">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Marketing Intelligence</span><span class="psub">Cross-channel marketing analytics</span></td>
+  <td class="s2 note">$10,000/org/mo but only a sub-link called "Marketing Analytics" in the nav. Trailhead and PLC List 2 name it correctly.</td>
+  <td class="site"><span class="sn diff">"Marketing Analytics" link only<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Marketing Intelligence"<span class="tag m">≈</span></span><span class="se">$10,000/org/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Marketing Intelligence"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Intelligence"<span class="tag d">≠</span></span><span class="se">PLC List 2 shortens to single word</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">12</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Marketing Cloud Account Engagement</span></td>
-  <td><span class="aka">Formerly Pardot · nav: "B2B Marketing Automation" · Pricing: "Account Engagement+" ($1,250/org/mo) · Ecosystem still uses "Pardot"</span></td>
-  <td>—</td>
+<tr data-g="mktg">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Salesforce Personalization</span><span class="psub">Real-time 1:1 personalization</span></td>
+  <td class="s2 note">Nav uses abbreviated "Personalization". Pricing ($8,000/org/mo), Trailhead, and PLC List 2 use full name.</td>
+  <td class="site"><span class="sn diff">"Personalization"<span class="tag d">≠</span></span><span class="se">Abbreviated in nav</span></td>
+  <td class="site"><span class="sn diff">"Salesforce Personalization"<span class="tag m">≈</span></span><span class="se">$8,000/org/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Salesforce Personalization"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Personalization"<span class="tag d">≠</span></span><span class="se">PLC also abbreviates</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">13</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Journey Builder</span></td>
-  <td><span class="aka">Marketing journey orchestration · Only named explicitly in Trailhead dropdown · Subsumed under "Email Marketing, Mobile &amp; Advertising" on salesforce.com nav</span></td>
-  <td>—</td>
+<tr data-g="mktg">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Journey Builder</span><span class="psub">Marketing journey orchestration</span></td>
+  <td class="s2 note">Only explicitly named in Trailhead. Subsumed in nav. PLC List 2 doesn't list it separately.</td>
+  <td class="site"><span class="sn absent">— Subsumed in nav</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Journey Builder"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">14</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Marketing Intelligence</span></td>
-  <td><span class="aka">nav: "Marketing Analytics" (link only) · Pricing: "Marketing Intelligence" ($10,000/org/mo) · Trailhead: under Agentforce Marketing ✅</span></td>
-  <td>—</td>
+<tr data-g="mktg">
+  <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
+  <td class="s1"><span class="pname">Loyalty Management</span><span class="psub">Customer loyalty programs</span></td>
+  <td class="s2 note">$20,000/org/mo — highest-priced item on pricing page. Categorised as Marketing on salesforce.com but as an Industry in PLC. Category inconsistency.</td>
+  <td class="site"><span class="sn diff">"Loyalty Management"<span class="tag m">≈</span></span><span class="se">Under Marketing nav</span></td>
+  <td class="site"><span class="sn diff">"Loyalty Management"<span class="tag m">≈</span></span><span class="se">$20,000/org/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Loyalty Management"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Loyalty Management"<span class="tag m">≈</span></span><span class="se">Listed under PLC Products, not Industries</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">15</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Salesforce Personalization</span></td>
-  <td><span class="aka">nav: "Personalization" (abbreviated) · Pricing: "Salesforce Personalization" ($8,000/org/mo) · Trailhead: correct full name ✅</span></td>
-  <td>—</td>
+<!-- ═══════════════════════════ AGENTFORCE COMMERCE ═══════════════════════════ -->
+<tr class="cat gh-comm" data-g="comm"><td colspan="16">Agentforce Commerce</td></tr>
+
+<tr data-g="comm naming">
+  <td class="s0"><span class="gb g-comm">Agentforce Commerce</span></td>
+  <td class="s1"><span class="pname">Agentforce Commerce</span><span class="psub">B2C &amp; B2B ecommerce</span></td>
+  <td class="s2 note">Nav uses "Commerce" (drops both "Agentforce" and "Cloud"). Pricing/dev use "Commerce Cloud". Trailhead uses "Agentforce Commerce". PLC uses "Commerce Cloud".</td>
+  <td class="site"><span class="sn diff">"Commerce"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Commerce Cloud"<span class="tag d">≠</span></span><span class="se">From $25/user or 1% GMV</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Commerce Cloud"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Commerce"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"Commerce"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Commerce Cloud"<span class="tag s">⚠OLD</span></span></td>
+  <td class="site plc"><span class="sn diff">"Salesforce Commerce" + "B2C Commerce" + "Einstein for Commerce"<span class="tag d">≠</span></span><span class="se">3 entries in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="marketing">
-  <td class="num">16</td>
-  <td><span class="gbadge g-marketing">Agentforce Marketing</span></td>
-  <td><span class="cname">Loyalty Management</span></td>
-  <td><span class="aka">Pricing: $20,000/org/mo · nav: under Marketing · Trailhead: under Agentforce Marketing ✅</span></td>
-  <td>—</td>
+<tr data-g="comm">
+  <td class="s0"><span class="gb g-comm">Agentforce Commerce</span></td>
+  <td class="s1"><span class="pname">B2B Commerce</span><span class="psub">B2B ecommerce sub-product</span></td>
+  <td class="s2 note">Sub-product consistent where named.</td>
+  <td class="site"><span class="sn diff">"B2B Commerce"<span class="tag m">≈</span></span><span class="se">Nav sub-item</span></td>
+  <td class="site"><span class="sn diff">Part of Commerce Cloud<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"B2B Commerce"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"B2C Commerce"<span class="tag d">≠</span></span><span class="se">PLC List 2 only has B2C, not B2B</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ AGENTFORCE COMMERCE ══ -->
-<tr class="group-row gh-commerce" data-g="commerce"><td colspan="5">Agentforce Commerce</td></tr>
-
-<tr data-g="commerce">
-  <td class="num">17</td>
-  <td><span class="gbadge g-commerce">Agentforce Commerce</span></td>
-  <td><span class="cname">Agentforce Commerce</span></td>
-  <td><span class="aka">Formerly: "Commerce Cloud" · nav: "Commerce" · Pricing: "Commerce Cloud" · Dev: "Commerce Cloud" · Trailhead: "Agentforce Commerce"</span></td>
-  <td><span class="chg renamed">Renamed</span> Commerce Cloud → Agentforce Commerce</td>
-</tr>
-
-<tr data-g="commerce">
-  <td class="num">18</td>
-  <td><span class="gbadge g-commerce">Agentforce Commerce</span></td>
-  <td><span class="cname">B2B Commerce</span></td>
-  <td><span class="aka">Sub-product under Agentforce Commerce · Trailhead: listed separately ✅</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="commerce">
-  <td class="num">19</td>
-  <td><span class="gbadge g-commerce">Agentforce Commerce</span></td>
-  <td><span class="cname">B2C Commerce</span></td>
-  <td><span class="aka">Sub-product under Agentforce Commerce · Trailhead: listed separately ✅</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="commerce">
-  <td class="num">20</td>
-  <td><span class="gbadge g-commerce">Agentforce Commerce</span></td>
-  <td><span class="cname">Order Management</span></td>
-  <td><span class="aka">Sub-product under Agentforce Commerce · Trailhead: listed separately ✅</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="commerce">
-  <td class="num">21</td>
-  <td><span class="gbadge g-commerce">Agentforce Commerce</span></td>
-  <td><span class="cname">Payments</span></td>
-  <td><span class="aka">Sub-product under Agentforce Commerce · Trailhead: listed separately ✅</span></td>
-  <td>—</td>
-</tr>
-
-<!-- ══ AGENTFORCE SUPPLY CHAIN ══ -->
-<tr class="group-row gh-supply" data-g="supply"><td colspan="5">Agentforce Supply Chain</td></tr>
+<!-- ═══════════════════════════ AGENTFORCE SUPPLY CHAIN ═══════════════════════════ -->
+<tr class="cat gh-supply" data-g="supply"><td colspan="16">Agentforce Supply Chain</td></tr>
 
 <tr data-g="supply">
-  <td class="num">22</td>
-  <td><span class="gbadge g-supply">Agentforce Supply Chain</span></td>
-  <td><span class="cname">Agentforce Supply Chain</span></td>
-  <td><span class="aka">Formerly: Regrello (acquired Oct 2025) · Has own product page: salesforce.com/agentforce/agentforce-supply-chain/ · Absent from main nav and pricing page · Only in Agentforce 360 page sub-nav and homepage image</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-supply">Supply Chain</span></td>
+  <td class="s1"><span class="pname">Agentforce Supply Chain</span><span class="psub">Formerly Regrello (acq. Oct 2025)</span></td>
+  <td class="s2 note">Real product with its own page (salesforce.com/agentforce/agentforce-supply-chain/) but absent from main nav, pricing, and most properties. Was the mysterious "Supply Chain" tile in the homepage image.</td>
+  <td class="site"><span class="sn diff">Sub-item on Agentforce 360 page ONLY<span class="tag d">≠</span></span><span class="se">Absent from main products nav</span></td>
+  <td class="site"><span class="sn absent">— Not on pricing page</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">— Not in Trailhead dropdown</span></td>
+  <td class="site"><span class="sn diff">"Supply Chain" tile<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ AGENTFORCE PLATFORM 360 ══ -->
-<tr class="group-row gh-platform" data-g="platform"><td colspan="5">Agentforce Platform 360</td></tr>
+<!-- ═══════════════════════════ AGENTFORCE PLATFORM 360 ═══════════════════════════ -->
+<tr class="cat gh-plat" data-g="plat"><td colspan="16">Agentforce Platform 360</td></tr>
 
-<tr data-g="platform">
-  <td class="num">23</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Agentforce</span></td>
-  <td><span class="aka">The AI agents platform itself · nav: top-level "Agentforce" section · Pricing: $2/conversation · Dev/Admin/Trailhead: ✅</span></td>
-  <td>—</td>
+<tr data-g="plat">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Agentforce</span><span class="psub">The AI agents platform itself</span></td>
+  <td class="s2 note">Consistent across most properties. Only absent from architect.salesforce.com which is a notable gap since architects design Agentforce solutions.</td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span><span class="se">$2/conversation</span></td>
+  <td class="site"><span class="sn diff">"Agentforce MuleSoft"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn unconf">◌</span><span class="se">1 doc only in help</span></td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">— Absent from architect</span></td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span><span class="se">Sub-products: Builder, Voice, Prompt Builder</span></td>
+  <td class="site"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn diff">"Agentforce"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">24</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Agentforce Builder</span></td>
-  <td><span class="aka">Trailhead: under Agentforce · nav sub-item: "Agentforce Builder" ✅</span></td>
-  <td><span class="chg new">New</span> Added from PDF / Trailhead</td>
+<tr data-g="plat naming">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Agentforce 360 Platform</span><span class="psub">The underlying PaaS / app dev platform</span></td>
+  <td class="s2 note">5 different names across sources. Architect site still uses stale pre-Agentforce name "Customer 360 Platform". PLC List 1 uses "Salesforce Platform" which is the pricing page name.</td>
+  <td class="site"><span class="sn diff">"Agentforce 360 Platform"<span class="tag m">≈</span></span><span class="se">Top-level nav label</span></td>
+  <td class="site"><span class="sn diff">"Salesforce Platform"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Platform"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"App Building"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Customer 360 Platform"<span class="tag s">⚠STALE</span></span><span class="se">Pre-Agentforce branding</span></td>
+  <td class="site"><span class="sn diff">"Agentforce 360 Platform"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"Platform"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Salesforce Platform"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">25</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Agentforce Voice</span></td>
-  <td><span class="aka">Trailhead: under Agentforce · nav sub-item: "Agentforce Voice" ✅</span></td>
-  <td><span class="chg new">New</span> Added from PDF / Trailhead</td>
+<tr data-g="plat naming">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Flow Automation</span><span class="psub">No-code workflow automation</span></td>
+  <td class="s2 note">4 names: "Flow Automation" (nav), "Flow Builder" (Trailhead), "MuleSoft for Flow: Integration" (mulesoft.com), "Salesforce Flow" (image). Also categorised under Platform on Trailhead but under MuleSoft on mulesoft.com — different parent for same product.</td>
+  <td class="site"><span class="sn diff">"Flow Automation"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">— Bundled in editions</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft for Flow: Integration"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">Under "Automation"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Flow Builder"<span class="tag d">≠</span></span><span class="se">Under Platform, not MuleSoft</span></td>
+  <td class="site"><span class="sn diff">"Salesforce Flow"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Automation"<span class="tag d">≠</span></span><span class="se">PLC List 2 uses single word</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">26</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Agentforce Dev Tools</span></td>
-  <td><span class="aka">Trailhead: implied from PDF · nav sub-item: "Agentforce Dev Tools" ✅</span></td>
-  <td><span class="chg new">New</span> Added from PDF</td>
+<tr data-g="plat">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Heroku</span><span class="psub">Cloud application platform</span></td>
+  <td class="s2 note">Operates entirely separate dev ecosystem at devcenter.heroku.com rather than being integrated into developer.salesforce.com. Trailhead groups it under Agentforce 360 Platform correctly.</td>
+  <td class="site"><span class="sn diff">"Heroku"<span class="tag m">✓</span></span><span class="se">Under Platform nav</span></td>
+  <td class="site"><span class="sn diff">"Heroku"<span class="tag m">✓</span></span><span class="se">From $7/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">— Has own devcenter.heroku.com instead</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Heroku"<span class="tag m">✓</span></span><span class="se">Under Agentforce 360 Platform</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Heroku"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">27</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Prompt Builder</span></td>
-  <td><span class="aka">Trailhead: under Agentforce · Dev docs reference · Not in salesforce.com nav as standalone item</span></td>
-  <td>—</td>
+<tr data-g="plat">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Agentforce Builder / Voice / Dev Tools</span><span class="psub">Agentforce sub-products</span></td>
+  <td class="s2 note">All three appear in the salesforce.com Agentforce nav sub-menu and Trailhead. Not in pricing as standalone items.</td>
+  <td class="site"><span class="sn diff">"Agentforce Builder" "Agentforce Voice" "Agentforce Dev Tools"<span class="tag m">✓</span></span><span class="se">Sub-items in Agentforce nav</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Builder" "Agentforce Voice" "Prompt Builder"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">28</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Agentforce 360 Platform</span><span class="aka">The underlying platform itself (PaaS + low-code)</span></td>
-  <td><span class="aka">Formerly: "Salesforce Platform" (pricing) · nav: "Agentforce 360 Platform" · Dev: "Platform" · Admin: "App Building" · Architect: "Customer 360 Platform" (stale)</span></td>
-  <td><span class="chg renamed">Renamed</span> Salesforce Platform → Agentforce 360 Platform</td>
+<tr data-g="plat">
+  <td class="s0"><span class="gb g-plat">Platform 360</span></td>
+  <td class="s1"><span class="pname">Informatica</span><span class="psub">Data management — partner product, acquisition pending</span></td>
+  <td class="s2 note">Partner product presented alongside native Salesforce products in the Platform nav. No pricing entry (not Salesforce-licensed). Acquisition announced May 2025, not closed as of Q1 2026. Has own site informatica.com.</td>
+  <td class="site"><span class="sn diff">"Informatica"<span class="tag d">≠</span></span><span class="se">In Platform nav alongside native products — misleading</span></td>
+  <td class="site"><span class="sn absent">— No pricing entry</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Informatica"<span class="tag m">✓</span></span><span class="se">In Data 360 layer of image</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">29</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Flow Automation</span></td>
-  <td><span class="aka">Formerly: "Flow Builder" (Trailhead) · nav: "Flow Automation" · mulesoft.com: "MuleSoft for Flow: Integration" · Image: "Salesforce Flow" · Admin: under "Automation" · 4 names across properties</span></td>
-  <td><span class="chg renamed">Renamed</span> Flow Builder → Flow Automation</td>
+<!-- ═══════════════════════════ DATA 360 ═══════════════════════════ -->
+<tr class="cat gh-data" data-g="data"><td colspan="16">Data 360</td></tr>
+
+<tr data-g="data naming">
+  <td class="s0"><span class="gb g-data">Data 360</span></td>
+  <td class="s1"><span class="pname">Data 360</span><span class="psub">Purchasable product: Data Cloud</span></td>
+  <td class="s2 note">Critical confusion: Agentforce 360 page presents Data 360 as containing Informatica, Tableau, and MuleSoft — but clicking through goes only to Data Cloud. The homepage image uses "Data 360" as a label; most technical properties use "Data Cloud". PLC aligns with technical sources using "Data Cloud".</td>
+  <td class="site"><span class="sn diff">"Data" (nav label)<span class="tag d">≠</span></span><span class="se">/data/ page header says "Data 360"</span></td>
+  <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span><span class="se">Credits-based pricing</span></td>
+  <td class="site"><span class="sn diff">"Data Cloud" referenced<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn unconf">◌</span><span class="se">2 docs only in help</span></td>
+  <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Data 360"<span class="tag d">≠</span></span><span class="se">Trailhead uses brand name not product name</span></td>
+  <td class="site"><span class="sn diff">"Data 360"<span class="tag d">≠</span></span><span class="se">Section label in image</span></td>
+  <td class="site plc"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span><span class="se">PLC correctly uses product name</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="platform">
-  <td class="num">30</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Heroku</span></td>
-  <td><span class="aka">Own developer centre: devcenter.heroku.com · Pricing: from $7/mo · nav: under Platform · Not on developer.salesforce.com (siloed)</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="platform">
-  <td class="num">31</td>
-  <td><span class="gbadge g-platform">Agentforce Platform 360</span></td>
-  <td><span class="cname">Informatica</span></td>
-  <td><span class="aka">Partner product, not native · Own site: informatica.com · Acquisition announced May 2025, not closed · No pricing page entry · nav: under Platform alongside native products (misleading)</span></td>
-  <td>—</td>
-</tr>
-
-<!-- ══ DATA 360 ══ -->
-<tr class="group-row gh-data" data-g="data"><td colspan="5">Data 360</td></tr>
-
-<tr data-g="data">
-  <td class="num">32</td>
-  <td><span class="gbadge g-data">Data 360</span></td>
-  <td><span class="cname">Data 360</span></td>
-  <td><span class="aka">Product name: "Data Cloud" (pricing/dev/admin — canonical) · nav label: "Data" · Trailhead: "Data 360" · Image: "Data 360" · ⚠ Agentforce 360 page implies Data 360 contains Informatica, Tableau, MuleSoft — clicking link goes only to Data Cloud</span></td>
-  <td><span class="chg fixed">Clarified</span> "Data 360" preferred for group/brand; "Data Cloud" is the purchasable product</td>
-</tr>
-
-<!-- ══ EXPERIENCE CLOUD ══ -->
-<tr class="group-row gh-exp" data-g="exp"><td colspan="5">Experience Cloud</td></tr>
+<!-- ═══════════════════════════ EXPERIENCE CLOUD ═══════════════════════════ -->
+<tr class="cat gh-exp" data-g="exp"><td colspan="16">Experience Cloud</td></tr>
 
 <tr data-g="exp">
-  <td class="num">33</td>
-  <td><span class="gbadge g-exp">Experience Cloud</span></td>
-  <td><span class="cname">Experience Cloud</span></td>
-  <td><span class="aka">Formerly: "Community Cloud" · Absent from salesforce.com nav, pricing page, developer site, homepage image · Present in: architect docs, Trailhead dropdown ✅ · help.salesforce.com: only 2 docs</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-exp">Experience Cloud</span></td>
+  <td class="s1"><span class="pname">Experience Cloud</span><span class="psub">Portals, communities, sites</span></td>
+  <td class="s2 note">Absent from salesforce.com main nav, pricing page, developer site, and homepage image. Only appears in architect docs, Trailhead dropdown, and PLC List 2. help.salesforce.com has only 2 docs.</td>
+  <td class="site"><span class="sn absent">— Not in product nav</span></td>
+  <td class="site"><span class="sn absent">— Not on pricing page</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span><span class="se">2 docs only</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Experience Cloud"<span class="tag m">✓</span></span><span class="se">Architect docs reference</span></td>
+  <td class="site"><span class="sn diff">"Experience Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Not in PLC List 1</span></td>
+  <td class="site plc"><span class="sn diff">"Experience Cloud"<span class="tag m">✓</span></span><span class="se">PLC List 2 names it correctly</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ MULESOFT ══ -->
-<tr class="group-row gh-ms" data-g="ms"><td colspan="5">MuleSoft</td></tr>
+<!-- ═══════════════════════════ MULESOFT ═══════════════════════════ -->
+<tr class="cat gh-ms" data-g="ms"><td colspan="16">MuleSoft</td></tr>
 
 <tr data-g="ms">
-  <td class="num">34</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">Agentforce MuleSoft</span></td>
-  <td><span class="aka">mulesoft.com: "Agentforce MuleSoft" (For AI) · Trailhead: top-level category "Agentforce MuleSoft" · Not in salesforce.com main nav or pricing page</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="ms">
-  <td class="num">35</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft Anypoint Platform</span></td>
-  <td><span class="aka">Flagship integration + API platform · For IT Teams · nav: "MuleSoft" under Platform · Trailhead: under Agentforce MuleSoft ✅ · Pricing: custom</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="ms">
-  <td class="num">36</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft Composer</span></td>
-  <td><span class="aka">Low-code integration for business teams · mulesoft.com + Trailhead · Not in salesforce.com nav or pricing page</span></td>
-  <td><span class="chg new">New</span> Added from Trailhead</td>
-</tr>
-
-<tr data-g="ms">
-  <td class="num">37</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft Agent Fabric</span></td>
-  <td><span class="aka">AI agent governance &amp; orchestration · mulesoft.com only ("For AI") · Sub-products: Registry, Governance, Scanners, Visualizer, Broker · Not in salesforce.com nav, pricing, Trailhead</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ms">MuleSoft</span></td>
+  <td class="s1"><span class="pname">MuleSoft Anypoint Platform</span><span class="psub">Flagship integration + API platform</span></td>
+  <td class="s2 note">Well-represented across properties. Admin groups it under "Integration" rather than by product name. Architect omits entirely.</td>
+  <td class="site"><span class="sn diff">"MuleSoft"<span class="tag d">≠</span></span><span class="se">Under Platform nav (shortened)</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Anypoint Platform"<span class="tag m">✓</span></span><span class="se">Custom pricing</span></td>
+  <td class="site"><span class="sn diff">"Anypoint Platform"<span class="tag m">≈</span></span><span class="se">"For IT Teams" on mulesoft.com</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft"<span class="tag d">≠</span></span><span class="se">Dev Center</span></td>
+  <td class="site"><span class="sn diff">Under "Integration"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Anypoint Platform"<span class="tag m">✓</span></span><span class="se">Under Agentforce MuleSoft</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft"<span class="tag d">≠</span></span><span class="se">Data 360 layer</span></td>
+  <td class="site plc"><span class="sn diff">"MuleSoft"<span class="tag d">≠</span></span><span class="se">PLC List 1 uses umbrella brand name</span></td>
+  <td class="site plc"><span class="sn diff">"MuleSoft Anypoint Platform"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="ms">
-  <td class="num">38</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft Vibes</span></td>
-  <td><span class="aka">AI for the integration lifecycle · mulesoft.com only · Not in salesforce.com nav, pricing, Trailhead</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ms">MuleSoft</span></td>
+  <td class="s1"><span class="pname">MuleSoft Automation</span><span class="psub">Automation umbrella — PLC only</span></td>
+  <td class="s2 note">Only appears in PLC as a Learning Camp category. Not on salesforce.com, mulesoft.com, or Trailhead. May be an umbrella covering RPA + IDP + Flow for training purposes.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"MuleSoft Automation"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="ms">
-  <td class="num">39</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft RPA</span></td>
-  <td><span class="aka">Robotic process automation · For Business Teams · In salesforce.com MuleSoft sub-nav + mulesoft.com · Not in Trailhead dropdown</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ms">MuleSoft</span></td>
+  <td class="s1"><span class="pname">MuleSoft Composer</span><span class="psub">Low-code integration for business teams</span></td>
+  <td class="s2 note">Available on mulesoft.com, Trailhead, developer docs, and PLC. Not in salesforce.com main nav.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Composer"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Composer"<span class="tag m">✓</span></span><span class="se">Dev docs</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Composer"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"MuleSoft Composer"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="ms">
-  <td class="num">40</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">MuleSoft IDP</span></td>
-  <td><span class="aka">Intelligent Document Processing · Extract data from documents with AI · mulesoft.com only · Not in salesforce.com nav or Trailhead</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ms">MuleSoft</span></td>
+  <td class="s1"><span class="pname">MuleSoft RPA</span><span class="psub">Robotic process automation</span></td>
+  <td class="s2 note">Consistent name across salesforce.com, mulesoft.com, and PLC. Not in Trailhead dropdown.</td>
+  <td class="site"><span class="sn diff">"MuleSoft RPA"<span class="tag m">✓</span></span><span class="se">In MuleSoft sub-nav on salesforce.com</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft RPA"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"MuleSoft RPA"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="ms">
-  <td class="num">41</td>
-  <td><span class="gbadge g-ms">MuleSoft</span></td>
-  <td><span class="cname">Dataloader.io</span></td>
-  <td><span class="aka">Salesforce data import/export utility · Classified under MuleSoft on salesforce.com and mulesoft.com · Not a MuleSoft product per se — classification issue</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ms">MuleSoft</span></td>
+  <td class="s1"><span class="pname">MuleSoft Agent Fabric</span><span class="psub">AI agent governance (Registry, Governance, Scanners, Visualizer, Broker)</span></td>
+  <td class="s2 note">MuleSoft's flagship AI product. Only on mulesoft.com. Not in salesforce.com nav, pricing, Trailhead, or PLC. The most advanced new MuleSoft product has the lowest ecosystem visibility.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"MuleSoft Agent Fabric"<span class="tag m">✓</span></span><span class="se">Flagship "For AI" product on mulesoft.com</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ ANALYTICS / TABLEAU ══ -->
-<tr class="group-row gh-ta" data-g="ta"><td colspan="5">Analytics (Tableau)</td></tr>
+<!-- ═══════════════════════════ ANALYTICS / TABLEAU ═══════════════════════════ -->
+<tr class="cat gh-ta" data-g="ta"><td colspan="16">Analytics (Tableau)</td></tr>
 
 <tr data-g="ta">
-  <td class="num">42</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">Tableau</span></td>
-  <td><span class="aka">Own site: tableau.com · nav: sub-item under "Analytics" · Pricing: from $75/user/mo · Naming stack: Tableau → Tableau Next → Tableau Einstein → Tableau+ · Trailhead: canonical name ✅</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ta">Analytics</span></td>
+  <td class="s1"><span class="pname">Tableau</span><span class="psub">Core BI &amp; data visualization — own site: tableau.com</span></td>
+  <td class="s2 note">Buried as sub-item in nav despite being a major acquisition. Has 4-level naming stack: Tableau → Tableau Next → Tableau Einstein → Tableau+. PLC uses just "Tableau" correctly.</td>
+  <td class="site"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span><span class="se">Sub-item under "Analytics"</span></td>
+  <td class="site"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span><span class="se">From $75/user/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span><span class="se">Dev Center</span></td>
+  <td class="site"><span class="sn diff">Under "Analytics"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn diff">"Tableau"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn diff">"Tableau Cloud" + "Tableau Server"<span class="tag d">≠</span></span><span class="se">PLC List 2 splits by deployment type</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 <tr data-g="ta">
-  <td class="num">43</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">Tableau Next</span></td>
-  <td><span class="aka">In salesforce.com nav + Trailhead · In top-tier pricing bundles only · Relationship to "Tableau Einstein" umbrella brand unclear</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ta">Analytics</span></td>
+  <td class="s1"><span class="pname">Tableau Next</span><span class="psub">Next-gen AI-native analytics</span></td>
+  <td class="s2 note">In salesforce.com nav, Trailhead, and PLC. Relationship to "Tableau Einstein" announcement unclear. PLC shows "Tableau Next" as a course topic, suggesting it's being actively trained on.</td>
+  <td class="site"><span class="sn diff">"Tableau Next"<span class="tag m">✓</span></span><span class="se">Under Analytics nav</span></td>
+  <td class="site"><span class="sn diff">In top-tier bundles only<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Tableau Next"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Not in PLC List 1 separately</span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Not in PLC List 2</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="ta">
-  <td class="num">44</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">Tableau Semantics</span></td>
-  <td><span class="aka">In salesforce.com nav only · Not in Trailhead dropdown · May be a feature of Tableau Next rather than standalone product</span></td>
-  <td>—</td>
+<tr data-g="ta naming">
+  <td class="s0"><span class="gb g-ta">Analytics</span></td>
+  <td class="s1"><span class="pname">CRM Analytics</span><span class="psub">Formerly Wave → Einstein Analytics → Tableau CRM</span></td>
+  <td class="s2 note">4 renames since launch. Admin site still shows stale "Einstein Analytics". PLC correctly uses "CRM Analytics". Pricing: $140/user/mo.</td>
+  <td class="site"><span class="sn diff">"CRM Analytics"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"CRM Analytics"<span class="tag m">✓</span></span><span class="se">$140/user/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Einstein Analytics"<span class="tag s">⚠STALE</span></span><span class="se">Admin site not updated</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"CRM Analytics"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"CRM Analytics"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="ta">
-  <td class="num">45</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">CRM Analytics</span></td>
-  <td><span class="aka">Renamed ×4: Wave → Einstein Analytics → Tableau CRM → CRM Analytics · Admin site still says "Einstein Analytics" (stale) · Pricing: $140/user/mo · Trailhead: correct name ✅</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="ta">
-  <td class="num">46</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">Tableau Pulse</span></td>
-  <td><span class="aka">Automated metric monitoring — pushes insights to Slack · Part of Tableau+ bundle · Not in main nav or pricing as standalone · Dev docs + Trailhead content</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="ta">
-  <td class="num">47</td>
-  <td><span class="gbadge g-ta">Analytics</span></td>
-  <td><span class="cname">Tableau Agent</span></td>
-  <td><span class="aka">Formerly: "Einstein Copilot for Tableau" · Renamed Oct 2024 · Conversational analytics AI assistant · Only in Trailhead learning content — not in any nav dropdown</span></td>
-  <td>—</td>
-</tr>
-
-<!-- ══ SLACK ══ -->
-<tr class="group-row gh-slack" data-g="slack"><td colspan="5">Slack</td></tr>
+<!-- ═══════════════════════════ SLACK ═══════════════════════════ -->
+<tr class="cat gh-slack" data-g="slack"><td colspan="16">Slack</td></tr>
 
 <tr data-g="slack">
-  <td class="num">48</td>
-  <td><span class="gbadge g-slack">Slack</span></td>
-  <td><span class="cname">Slack</span></td>
-  <td><span class="aka">Own site: slack.com · Pricing: Pro $6.75/user/mo · nav: top-level item · Missing from Trailhead product dropdown</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-slack">Slack</span></td>
+  <td class="s1"><span class="pname">Slack</span><span class="psub">Team messaging — own site: slack.com</span></td>
+  <td class="s2 note">Consistent name across all properties where present. Notable absence from Trailhead product dropdown. PLC lists it.</td>
+  <td class="site"><span class="sn diff">"Slack"<span class="tag m">✓</span></span><span class="se">Top-level nav item</span></td>
+  <td class="site"><span class="sn diff">"Slack"<span class="tag m">✓</span></span><span class="se">Pro $6.75/user/mo</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn diff">"Slack"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Slack"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">— Not in Trailhead product dropdown</span></td>
+  <td class="site"><span class="sn diff">"Slack"<span class="tag m">✓</span></span><span class="se">System of Engagement</span></td>
+  <td class="site plc"><span class="sn diff">"Slack"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ NET ZERO CLOUD ══ -->
-<tr class="group-row gh-nzero" data-g="nzero"><td colspan="5">Net Zero Cloud</td></tr>
+<!-- ═══════════════════════════ NET ZERO CLOUD ═══════════════════════════ -->
+<tr class="cat gh-nz" data-g="nz"><td colspan="16">Net Zero Cloud</td></tr>
 
-<tr data-g="nzero">
-  <td class="num">49</td>
-  <td><span class="gbadge g-nzero">Net Zero Cloud</span></td>
-  <td><span class="cname">Net Zero Cloud</span></td>
-  <td><span class="aka">Pricing: from $48,000/org/year · nav: own top-level section · Trailhead: grouped under Industry Solutions as "Agentforce Net Zero" — inconsistent · Not in homepage diagram</span></td>
-  <td>—</td>
+<tr data-g="nz">
+  <td class="s0"><span class="gb g-nz">Net Zero Cloud</span></td>
+  <td class="s1"><span class="pname">Net Zero Cloud</span><span class="psub">Sustainability &amp; ESG management</span></td>
+  <td class="s2 note">Pricing $48k/org/yr. Has own top-level nav section on salesforce.com but grouped as an industry solution in Trailhead. PLC drops "Cloud". Not in homepage diagram.</td>
+  <td class="site"><span class="sn diff">"Net Zero Cloud"<span class="tag m">✓</span></span><span class="se">Own top-level nav section</span></td>
+  <td class="site"><span class="sn diff">"Net Zero Cloud"<span class="tag m">✓</span></span><span class="se">$48,000/org/year</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Net Zero"<span class="tag d">≠</span></span><span class="se">Trailhead renames under Industry Solutions</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Net Zero Cloud"<span class="tag m">✓</span></span><span class="se">PLC List 2 uses correct name</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ══ STANDALONE ══ -->
-<tr class="group-row gh-standalone" data-g="standalone"><td colspan="5">Standalone / No Group Assigned</td></tr>
+<!-- ═══════════════════════════ STANDALONE ═══════════════════════════ -->
+<tr class="cat gh-stand" data-g="stand"><td colspan="16">Standalone / Uncategorised</td></tr>
 
-<tr data-g="standalone">
-  <td class="num">50</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">AppExchange</span></td>
-  <td><span class="aka">Partner marketplace · nav: under "Partner Apps &amp; Experts" · Trailhead: under "Agentforce 360 Platform" — category mismatch</span></td>
-  <td>—</td>
+<tr data-g="stand">
+  <td class="s0"><span class="gb g-stand">Standalone</span></td>
+  <td class="s1"><span class="pname">Quip</span><span class="psub">Collaborative docs, spreadsheets, chat embedded in CRM</span></td>
+  <td class="s2 note">$750M acquisition (2016). Has own site quip.com with own pricing and dev portal. INVISIBLE on all Salesforce property navs. Only PLC List 2 names it. Most overlooked major product in the portfolio.</td>
+  <td class="site"><span class="sn absent">— Not in nav</span></td>
+  <td class="site"><span class="sn absent">— Not on pricing</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">— Not in Trailhead dropdown</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Quip"<span class="tag m">✓</span></span><span class="se">Only source that names it!</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="standalone">
-  <td class="num">51</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">Quip</span></td>
-  <td><span class="aka">Collaborative docs, spreadsheets, chat · Own site: quip.com with own pricing + dev portal · $750M acquisition (2016) · INVISIBLE on all Salesforce properties including Trailhead dropdown · Most overlooked major product</span></td>
-  <td>—</td>
+<tr data-g="stand">
+  <td class="s0"><span class="gb g-stand">Standalone</span></td>
+  <td class="s1"><span class="pname">Own &amp; Trusted Services Org</span><span class="psub">Internal Salesforce org management — PLC only</span></td>
+  <td class="s2 note">Only appears in PLC Learning Camp. Not in any other source. Purpose unclear — possibly refers to Salesforce's own demo/internal org that partners use for training.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Own &amp; Trusted Services Org"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="standalone">
-  <td class="num">52</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">Security</span></td>
-  <td><span class="aka">Own site: security.salesforce.com · Trailhead: under Agentforce 360 Platform · Admin: under "Security" · Not in salesforce.com product nav</span></td>
-  <td>—</td>
+<tr data-g="stand">
+  <td class="s0"><span class="gb g-stand">Standalone</span></td>
+  <td class="s1"><span class="pname">Salesforce Mobile App</span><span class="psub">Mobile CRM app</span></td>
+  <td class="s2 note">Listed as a sub-product under Agentforce 360 Platform on Trailhead and PLC List 2. Not in any nav or pricing. A product every Salesforce customer uses but not discoverable from any property nav.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Salesforce Mobile App"<span class="tag m">✓</span></span><span class="se">Under Agentforce 360 Platform</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Salesforce Mobile App"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<tr data-g="standalone">
-  <td class="num">53</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">Einstein</span></td>
-  <td><span class="aka">AI capabilities embedded across Salesforce · Trailhead: top-level product category with Code Builder sub-product · Not a separately purchasable product · Brand tension with "Agentforce"</span></td>
-  <td>—</td>
-</tr>
+<!-- ═══════════════════════════ INDUSTRY CLOUDS ═══════════════════════════ -->
+<tr class="cat gh-ind" data-g="ind"><td colspan="16">Industry Clouds — canonical names use "xxx Cloud". PLC List 1 mostly correct. PLC drops "Cloud" in List 1 for most industries. Trailhead uses "Agentforce xxx" (not canonical).</td></tr>
 
-<tr data-g="standalone">
-  <td class="num">54</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">Starter Suite</span></td>
-  <td><span class="aka">Pricing: $25/user/mo · SMB bundle · nav: under Small Business · Not in Trailhead product dropdown</span></td>
-  <td>—</td>
-</tr>
-
-<tr data-g="standalone">
-  <td class="num">55</td>
-  <td><span class="gbadge g-standalone">Standalone</span></td>
-  <td><span class="cname">Pro Suite</span></td>
-  <td><span class="aka">Pricing: $100/user/mo · SMB bundle · nav: under Small Business · Not in Trailhead product dropdown</span></td>
-  <td>—</td>
-</tr>
-
-<!-- ══ INDUSTRY CLOUDS ══ -->
-<tr class="group-row gh-ind" data-g="ind"><td colspan="5">Industry Clouds — all use "xxx Cloud" naming (NOT "Agentforce xxx")</td></tr>
-
-<tr data-g="ind">
-  <td class="num">56</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Health Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Health" ⚠ · Image: merged with Life Sciences · salesforce.com nav: "Health Cloud" ✅ · Separate product from Life Sciences Cloud</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Health Cloud" — not "Agentforce Health"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">57</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Life Sciences Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Life Sciences" ⚠ · Image: merged with Health Cloud · Separate licensed product</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Life Sciences Cloud"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">58</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Financial Services Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Financial Services" ⚠ · Image: "Fin Serv" ⚠ · Covers banking, wealth, insurance</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Financial Services Cloud"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">59</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Manufacturing Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Manufacturing" ⚠ · salesforce.com nav: "Manufacturing Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Manufacturing Cloud"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">60</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Consumer Goods Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Consumer Goods" ⚠ · salesforce.com nav: "Consumer Goods Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Consumer Goods Cloud"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">61</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Communications Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Communications" ⚠ · Image: "Comms" ⚠ · salesforce.com nav: "Communications Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Communications Cloud"</td>
-</tr>
-
-<tr data-g="ind">
-  <td class="num">62</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Education Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Education" ⚠ · salesforce.com nav: "Education Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Education Cloud"</td>
+<tr data-g="ind naming">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Health Cloud</span><span class="psub">Healthcare providers, payers</span></td>
+  <td class="s2 note">Separate licensed product from Life Sciences Cloud. Image merges both. 17 industries in nav, 16 in pricing (Healthcare + Life Sciences combined), 13 in Trailhead, 14 categories in PLC List 1.</td>
+  <td class="site"><span class="sn diff">"Health Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Health Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Health"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">Merged with Life Sciences<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Health Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Healthcare and Life Sciences"<span class="tag d">≠</span></span><span class="se">PLC List 1 merges both into 1 category</span></td>
+  <td class="site plc"><span class="sn diff">"Health Plans" + "Providers"<span class="tag d">≠</span></span><span class="se">PLC List 2 uses sub-industry types</span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">63</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Energy &amp; Utilities Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Energy &amp; Utilities" ⚠ · salesforce.com nav: "Energy &amp; Utilities Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Energy &amp; Utilities Cloud"</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Life Sciences Cloud</span><span class="psub">Pharma, MedTech</span></td>
+  <td class="s2 note">Separate licensed product from Health Cloud despite being merged in image and PLC List 1.</td>
+  <td class="site"><span class="sn diff">"Life Sciences Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Life Sciences Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Life Sciences"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">Merged with Health Cloud<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Life Sciences Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">Merged in "Healthcare and Life Sciences"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Pharma" + "Medical Devices and Diagnostics"<span class="tag d">≠</span></span></td>
+</tr>
+
+<tr data-g="ind naming">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Financial Services Cloud</span><span class="psub">Banking, wealth, insurance</span></td>
+  <td class="s2 note">PLC splits Insurance out as a separate category in List 1, suggesting they treat it as separate from FSC for training purposes.</td>
+  <td class="site"><span class="sn diff">"Financial Services Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Financial Services Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Financial Services"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Fin Serv"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Financial Services Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Financial Services"<span class="tag d">≠</span></span><span class="se">PLC List 1 drops "Cloud"</span></td>
+  <td class="site plc"><span class="sn diff">"Banking" + "Capital Markets" + "Wealth and Asset Management"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">64</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Nonprofit Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Nonprofit" ⚠ · salesforce.com nav: "Nonprofit Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Nonprofit Cloud"</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Insurance Cloud</span><span class="psub">Insurance — PLC lists as standalone industry</span></td>
+  <td class="s2 note">Not in the salesforce.com Industries nav (covered under Financial Services Cloud). PLC List 1 lists "Insurance" as its own industry category. PLC List 2 has "Insurance" as a sub-industry. Could indicate a distinct Insurance Cloud product or just an FSC configuration.</td>
+  <td class="site"><span class="sn absent">— Subsumed under Financial Services nav</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Financial Services" bucket includes Insurance<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Insurance"<span class="tag n">PLC standalone industry</span></span></td>
+</tr>
+
+<tr data-g="ind naming">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Communications Cloud</span><span class="psub">Telecom &amp; comms providers</span></td>
+  <td class="s2 note">PLC adds "on Core" qualifier ("Communications Cloud on Core") — architecturally significant. Implies a version NOT on Core exists. This distinction is invisible on salesforce.com.</td>
+  <td class="site"><span class="sn diff">"Communications Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Communications Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Communications"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Comms"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Communications Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Communications and Media"<span class="tag d">≠</span></span><span class="se">PLC List 1 combines with Media</span></td>
+  <td class="site plc"><span class="sn diff">"Communications Cloud on Core"<span class="tag d">≠</span></span><span class="se">PLC Learning Camp adds "on Core" qualifier</span></td>
+</tr>
+
+<tr data-g="ind naming">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Consumer Goods Cloud</span><span class="psub">CPG, retail execution</span></td>
+  <td class="s2 note">PLC adds "- Retail Execution" sub-product qualifier. PLC List 1 combines with Retail into "Retail and Consumer Goods".</td>
+  <td class="site"><span class="sn diff">"Consumer Goods Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Consumer Goods Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Consumer Goods"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Consumer Goods"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Consumer Goods Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Retail and Consumer Goods"<span class="tag d">≠</span></span><span class="se">PLC List 1 merges with Retail</span></td>
+  <td class="site plc"><span class="sn diff">"Consumer Goods Cloud - Retail Execution"<span class="tag d">≠</span></span><span class="se">PLC Learning Camp adds sub-product qualifier</span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">65</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Public Sector Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Public Sector" ⚠ · Image: "PubSec" ⚠ · Pricing: "Government Cloud" + "Public Sector Solutions" (two products!) · nav: "Public Sector" ⚠</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Public Sector Cloud"</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Education Cloud</span></td>
+  <td class="s2 note">PLC List 1 uses "Education". PLC List 2 splits into "Educational Institutes" and "Education Services".</td>
+  <td class="site"><span class="sn diff">"Education Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Education Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Education"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Education"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Education Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Education"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Educational Institutes" + "Education Services"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">66</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Automotive Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Automotive" ⚠ · salesforce.com nav: "Automotive Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Automotive Cloud"</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Energy &amp; Utilities Cloud</span></td>
+  <td class="s2 note">PLC List 2 splits into "Power and Utilities" + "Oil and Gas".</td>
+  <td class="site"><span class="sn diff">"Energy &amp; Utilities Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Energy &amp; Utilities Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Energy &amp; Utilities"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Energy &amp; Utilities"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Energy and Utilities Cloud"<span class="tag m">✓</span></span><span class="se">Minor punctuation diff</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Energy and Utilities"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Power and Utilities" + "Oil and Gas"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">67</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Media Cloud</span></td>
-  <td><span class="aka">Trailhead: "Agentforce Media" ⚠ · Image: "Media" · salesforce.com nav: "Media Cloud" ✅</span></td>
-  <td><span class="chg fixed">Confirmed</span> "Media Cloud"</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Manufacturing Cloud</span></td>
+  <td class="s2 note">PLC combines Manufacturing and Automotive into one List 1 category but they are separate clouds with separate pricing.</td>
+  <td class="site"><span class="sn diff">"Manufacturing Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Manufacturing Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Manufacturing"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Manufacturing"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Manufacturing Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Manufacturing and Automotive"<span class="tag d">≠</span></span><span class="se">PLC combines 2 separate clouds into 1 category</span></td>
+  <td class="site plc"><span class="sn diff">"Discrete Manufacturing" + "Process Manufacturing"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">68</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Retail Cloud</span></td>
-  <td><span class="aka">Includes "Retail Cloud POS" as sub-product · In Industries nav + pricing · Not in Trailhead's 13 industries</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Automotive Cloud</span></td>
+  <td class="s2 note">Not in the homepage Agentforce 360 diagram. PLC combines with Manufacturing in List 1. PLC List 2 has "Automotive" and "Automotive Rental and Leasing" as separate sub-industries.</td>
+  <td class="site"><span class="sn diff">"Automotive Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Automotive Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Automotive"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span><span class="se">Not listed separately in PLC List 1</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">Merged in "Manufacturing and Automotive"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Automotive" + "Automotive Rental and Leasing"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">69</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Professional Services Solutions</span></td>
-  <td><span class="aka">No dedicated cloud name · In nav (Accounting, Consulting, Staffing, Legal sub-items) + pricing · Not in Trailhead's 13 industries</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Nonprofit Cloud</span></td>
+  <td class="s2 note">Consistent across most properties. PLC correctly names it. Trailhead uses Agentforce rename.</td>
+  <td class="site"><span class="sn diff">"Nonprofit Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Nonprofit Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Nonprofit"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Nonprofit"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Nonprofit Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Political Organizations"<span class="tag d">≠</span></span><span class="se">PLC sub-industry includes Political Organizations separately</span></td>
+</tr>
+
+<tr data-g="ind naming">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Public Sector Cloud</span><span class="psub">Most names of any product: 5</span></td>
+  <td class="s2 note">5 names across all sources. Pricing page reveals TWO separately purchasable products: "Government Cloud" and "Public Sector Solutions". PLC List 2 has "Government Cloud" as a named product. PLC also has a "Government" sub-industry.</td>
+  <td class="site"><span class="sn diff">"Public Sector"<span class="tag d">≠</span></span><span class="se">Drops "Cloud"</span></td>
+  <td class="site"><span class="sn diff">"Government Cloud" + "Public Sector Solutions"<span class="tag d">≠</span></span><span class="se">TWO separate pricing lines!</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Public Sector"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"PubSec"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Public Sector Solutions"<span class="tag d">≠</span></span><span class="se">PLC List 1 uses one of the pricing-page names</span></td>
+  <td class="site plc"><span class="sn diff">"Government Cloud"<span class="tag d">≠</span></span><span class="se">PLC List 2 uses the other pricing-page name</span></td>
+  <td class="site plc"><span class="sn diff">"Public Sector"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Government" + "Public Sector Health"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">70</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Travel, Transportation &amp; Hospitality</span></td>
-  <td><span class="aka">No dedicated cloud name · In nav + pricing · Not in Trailhead's 13 industries</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Media Cloud</span></td>
+  <td class="s2 note">PLC combines with Communications in List 1. Media has own sub-industry entries in PLC List 2.</td>
+  <td class="site"><span class="sn diff">"Media Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Media Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Media"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">"Media"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Media Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">Part of "Communications and Media"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Media and Entertainment"<span class="tag d">≠</span></span></td>
 </tr>
 
 <tr data-g="ind">
-  <td class="num">71</td>
-  <td><span class="gbadge g-ind">Industry Clouds</span></td>
-  <td><span class="cname">Technology Solutions</span></td>
-  <td><span class="aka">No dedicated cloud name · In nav + pricing · Not in Trailhead's 13 industries</span></td>
-  <td>—</td>
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Retail Cloud</span><span class="psub">Includes Retail Cloud POS sub-product</span></td>
+  <td class="s2 note">PLC List 1 merges with Consumer Goods into "Retail and Consumer Goods". PLC List 2 has "Retail" as a standalone sub-industry.</td>
+  <td class="site"><span class="sn diff">"Retail Cloud" / "Retail Cloud POS"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Retail Cloud"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">— Not in Trailhead's 13</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">— Not listed separately</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">In "Retail and Consumer Goods"<span class="tag d">≠</span></span></td>
+  <td class="site plc"><span class="sn diff">"Retail"<span class="tag d">≠</span></span></td>
+</tr>
+
+<tr data-g="ind">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Travel, Transportation &amp; Hospitality</span></td>
+  <td class="s2 note">No dedicated cloud name. Consistent name where it appears. PLC List 2 splits into "Travel", "Transportation", "Hospitality" separately.</td>
+  <td class="site"><span class="sn diff">"Travel, Transportation &amp; Hospitality"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn diff">"Travel, Transportation &amp; Hospitality"<span class="tag m">✓</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">— Not in Trailhead's 13</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Travel, Transportation, &amp; Hospitality"<span class="tag m">✓</span></span><span class="se">Minor punctuation diff</span></td>
+  <td class="site plc"><span class="sn diff">"Travel" + "Transportation" + "Hospitality"<span class="tag d">≠</span></span></td>
+</tr>
+
+<tr data-g="ind">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Professional Services Solutions</span></td>
+  <td class="s2 note">In salesforce.com nav and pricing. Not in Trailhead's 13 industries. PLC List 1 maps to "Professional Services".</td>
+  <td class="site"><span class="sn diff">"Professional Services"<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn diff">With pricing<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Professional Services"<span class="tag m">≈</span></span></td>
+  <td class="site plc"><span class="sn diff">"Legal Services" + "Business Services" + "Engineering, Accounting…"<span class="tag d">≠</span></span></td>
+</tr>
+
+<tr data-g="ind">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">Agriculture &amp; Mining</span><span class="psub">PLC-only industry category</span></td>
+  <td class="s2 note">PLC List 1 has "Agriculture and Mining" as an industry category. Not in salesforce.com Industries nav. PLC List 2 has "Agriculture" and "Mining" as separate sub-industries.</td>
+  <td class="site"><span class="sn absent">— Not in salesforce.com nav</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Agriculture and Mining"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn diff">"Agriculture" + "Mining"<span class="tag n">PLC only</span></span></td>
+</tr>
+
+<tr data-g="ind">
+  <td class="s0"><span class="gb g-ind">Industry Clouds</span></td>
+  <td class="s1"><span class="pname">High Tech / Technology</span></td>
+  <td class="s2 note">salesforce.com nav has "Technology" industry. PLC List 1 has "High Tech". Different names for same customer segment.</td>
+  <td class="site"><span class="sn diff">"Technology"<span class="tag d">≠</span></span></td>
+  <td class="site"><span class="sn diff">With pricing<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"High Tech"<span class="tag d">≠</span></span><span class="se">PLC uses different name than salesforce.com nav</span></td>
+  <td class="site plc"><span class="sn diff">"Software and Services" + "Semiconductor and Components" + "Hardware Manufacturing"<span class="tag d">≠</span></span></td>
+</tr>
+
+<!-- ═══════════════════════════ LEGACY / DEPRECATED ═══════════════════════════ -->
+<tr class="cat gh-leg" data-g="leg"><td colspan="16">Legacy / Deprecated / Stale Products — still appearing in PLC dropdowns</td></tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Essentials</span><span class="psub">Retired product tier — replaced by Starter Suite</span></td>
+  <td class="s2 note">Old product name, replaced by Starter Suite. Still in PLC List 1 dropdown, indicating courses or content haven't been updated. Not in any current salesforce.com nav or pricing.</td>
+  <td class="site"><span class="sn absent">— Retired</span></td>
+  <td class="site"><span class="sn absent">— Replaced by Starter Suite</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Essentials"<span class="tag dep">DEPRECATED</span></span><span class="se">Still in PLC List 1</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Digital 360</span><span class="psub">Retired umbrella brand (Commerce + Marketing + Experience)</span></td>
+  <td class="s2 note">Old brand name that grouped Commerce Cloud, Marketing Cloud, and Experience Cloud. Replaced by Customer 360 then Agentforce 360. Still in PLC List 1 dropdown.</td>
+  <td class="site"><span class="sn absent">— Retired brand</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Digital 360"<span class="tag dep">RETIRED</span></span><span class="se">Still in PLC List 1</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Einstein 1</span><span class="psub">Transitional brand name — replaced by Agentforce 1</span></td>
+  <td class="s2 note">Transitional brand used during 2024 before the Agentforce rebrand. Now superseded by "Agentforce 1" but still in PLC List 1 dropdown.</td>
+  <td class="site"><span class="sn absent">— Superseded</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Einstein 1"<span class="tag dep">STALE</span></span><span class="se">Still in PLC List 1</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Vaccine Cloud</span><span class="psub">COVID-era product — likely deprecated</span></td>
+  <td class="s2 note">Launched during COVID for vaccine management. Still appears in PLC List 1 dropdown despite likely being deprecated or superseded by Health Cloud functionality.</td>
+  <td class="site"><span class="sn absent">— Not in nav</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Vaccine Cloud"<span class="tag dep">LEGACY</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Work.com</span><span class="psub">COVID-era workplace management — deprecated</span></td>
+  <td class="s2 note">Launched during COVID for return-to-work management. Now deprecated. Still in PLC List 2 dropdown.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Work.com"<span class="tag dep">DEPRECATED</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Social Studio</span><span class="psub">Marketing Cloud social — retired 2024</span></td>
+  <td class="s2 note">Social listening/publishing tool, officially retired in November 2024. Still in PLC List 2 dropdown — significant outdated content risk for partner training.</td>
+  <td class="site"><span class="sn absent">— Retired Nov 2024</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Social Studio"<span class="tag dep">RETIRED</span></span><span class="se">Retired Nov 2024 — urgent to remove from PLC</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Audience Studio</span><span class="psub">Marketing Cloud DMP — retired</span></td>
+  <td class="s2 note">Data Management Platform (DMP) product, retired as the market moved away from third-party cookie-based DMPs. Still in PLC List 2.</td>
+  <td class="site"><span class="sn absent">— Retired</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Audience Studio"<span class="tag dep">RETIRED</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Safety Cloud</span><span class="psub">COVID-era workplace safety — status unclear</span></td>
+  <td class="s2 note">Launched during COVID for workplace safety management. Status unclear — may be part of Work.com or deprecated separately. Still in PLC List 2.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Safety Cloud"<span class="tag dep">LEGACY</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Philanthropy Cloud</span><span class="psub">Corporate giving platform — PLC only</span></td>
+  <td class="s2 note">Only in PLC List 1. Not in salesforce.com nav, pricing, or any other source. Could be deprecated or a very niche product. Related to Salesforce.org and nonprofit giving.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Philanthropy Cloud"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Salesforce CMS</span><span class="psub">Content management system — PLC only</span></td>
+  <td class="s2 note">Only in PLC List 2. Not in any nav or pricing source. Salesforce CMS is a content management capability within Experience Cloud — listing it separately implies it was sold/trained separately.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Salesforce CMS"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
+<tr data-g="leg">
+  <td class="s0"><span class="gb g-leg">⚠ Stale/Legacy</span></td>
+  <td class="s1"><span class="pname">Rebate Management</span><span class="psub">Trade promotion / channel rebates — PLC only</span></td>
+  <td class="s2 note">Only in PLC List 2. A sub-product of either Sales Cloud or Consumer Goods Cloud for managing trade promotion rebates. Not in any other nav.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn diff">"Rebate Management"<span class="tag n">PLC only</span></span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
 </tbody>
@@ -768,13 +1573,13 @@ td:not(:last-child){border-right:1px solid var(--border);}
 function f(g,btn){
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('tbody tr:not(.group-row)').forEach(row=>{
+  document.querySelectorAll('tbody tr:not(.cat)').forEach(row=>{
     if(g==='all'){row.classList.remove('hidden');return;}
-    row.classList.toggle('hidden',row.dataset.g!==g);
+    row.classList.toggle('hidden',!row.dataset.g||!row.dataset.g.split(' ').includes(g));
   });
-  document.querySelectorAll('tr.group-row').forEach(gr=>{
+  document.querySelectorAll('tr.cat').forEach(gr=>{
     let next=gr.nextElementSibling,ok=false;
-    while(next&&!next.classList.contains('group-row')){if(!next.classList.contains('hidden'))ok=true;next=next.nextElementSibling;}
+    while(next&&!next.classList.contains('cat')){if(!next.classList.contains('hidden'))ok=true;next=next.nextElementSibling;}
     gr.style.display=ok?'':'none';
   });
 }
@@ -782,12 +1587,12 @@ function sr(v){
   const q=v.toLowerCase();
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
   document.querySelector('.fb').classList.add('active');
-  document.querySelectorAll('tbody tr:not(.group-row)').forEach(row=>{
+  document.querySelectorAll('tbody tr:not(.cat)').forEach(row=>{
     row.classList.toggle('hidden',!!q&&!row.textContent.toLowerCase().includes(q));
   });
-  document.querySelectorAll('tr.group-row').forEach(gr=>{
+  document.querySelectorAll('tr.cat').forEach(gr=>{
     let next=gr.nextElementSibling,ok=false;
-    while(next&&!next.classList.contains('group-row')){if(!next.classList.contains('hidden'))ok=true;next=next.nextElementSibling;}
+    while(next&&!next.classList.contains('cat')){if(!next.classList.contains('hidden'))ok=true;next=next.nextElementSibling;}
     gr.style.display=ok?'':'none';
   });
 }
