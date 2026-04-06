@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementation Methodology Comparison</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f5f4f0;
+    color: #1a1a18;
+    padding: 48px 32px;
+    min-height: 100vh;
+  }
+
+  header {
+    max-width: 1200px;
+    margin: 0 auto 36px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888780;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1a1a18;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #666660;
+    font-weight: 300;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto 28px;
+  }
+  .leg { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #555550; }
+  .leg-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* Table wrapper */
+  .table-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e0d8;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  /* Group header rows */
+  tr.group-header td {
+    background: #1a1a18;
+    color: #c8c6bc;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    font-weight: 400;
+  }
+
+  /* Column headers */
+  thead th {
+    background: #f5f4f0;
+    border-bottom: 1px solid #e2e0d8;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888780;
+    white-space: nowrap;
+  }
+
+  thead th:first-child { width: 160px; }
+  thead th:nth-child(2) { width: 90px; }
+
+  /* Data rows */
+  tbody tr.data-row {
+    border-bottom: 1px solid #eeece6;
+    transition: background 0.12s;
+  }
+  tbody tr.data-row:last-child { border-bottom: none; }
+  tbody tr.data-row:hover { background: #faf9f6; }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: middle;
+  }
+
+  .provider-name {
+    font-weight: 500;
+    font-size: 13px;
+    color: #1a1a18;
+    white-space: nowrap;
+  }
+
+  .provider-sub {
+    font-size: 11px;
+    color: #999993;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  /* Phase pills */
+  .phase-cell { vertical-align: middle; }
+
+  .phases-wrap {
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    line-height: 1.3;
+  }
+
+  /* Phase colors */
+  .p-discover { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+  .p-analyze  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+  .p-design   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+  .p-build    { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+  .p-test     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+  .p-deploy   { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
+  .p-run      { background: #F1EFE8; border-color: #B4B2A9; color: #444441; }
+
+  /* Note column */
+  .note-cell {
+    font-size: 11.5px;
+    color: #777770;
+    line-height: 1.5;
+    min-width: 180px;
+    max-width: 240px;
+  }
+
+  /* Phase count badge */
+  .count-badge {
+    display: inline-block;
+    background: #f0efe9;
+    color: #777770;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    font-size: 11.5px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .table-wrap { border: 1px solid #ccc; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">SI &amp; SaaS Vendor Analysis</div>
+  <h1>Implementation Methodology Comparison</h1>
+  <p class="subtitle">Top-level phase mapping across Salesforce approaches, tier-1 System Integrators, and major SaaS/ERP vendors</p>
+</header>
+
+<div class="legend">
+  <div class="leg"><div class="leg-swatch" style="background:#AFA9EC;"></div> Discovery / Strategy</div>
+  <div class="leg"><div class="leg-swatch" style="background:#85B7EB;"></div> Analysis / Define</div>
+  <div class="leg"><div class="leg-swatch" style="background:#5DCAA5;"></div> Design / Architect</div>
+  <div class="leg"><div class="leg-swatch" style="background:#EF9F27;"></div> Build / Construct</div>
+  <div class="leg"><div class="leg-swatch" style="background:#F0997B;"></div> Test / Validate</div>
+  <div class="leg"><div class="leg-swatch" style="background:#ED93B1;"></div> Deploy / Go-live</div>
+  <div class="leg"><div class="leg-swatch" style="background:#B4B2A9;"></div> Run / Operate</div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Provider</th>
+      <th>Source / Method</th>
+      <th>Phases</th>
+      <th style="text-align:center;">Count</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- SALESFORCE -->
+    <tr class="group-header"><td colspan="5">Salesforce Approaches</td></tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">D360 Partner</div><div class="provider-sub">Salesforce</div></td>
+      <td><span style="font-size:12px;color:#888;">D360</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Prepare</span>
+        <span class="pill p-build">Implement</span>
+        <span class="pill p-run">Run &amp; Operate</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">3</span></td>
+      <td class="note-cell">Most compressed. Implement collapses analysis, design, and build into one broad phase.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Professional Services</div><div class="provider-sub">Salesforce</div></td>
+      <td><span style="font-size:12px;color:#888;">PS</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Discover</span>
+        <span class="pill p-analyze">Define</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-deploy">Deploy</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">4</span></td>
+      <td class="note-cell">Discover and Define overlap in practice. No formal build/test separation — merged into Deploy.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">FDE</div><div class="provider-sub">Salesforce</div></td>
+      <td><span style="font-size:12px;color:#888;">FDE</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Prepare</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-build">Deliver</span>
+        <span class="pill p-deploy">Deploy</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">4</span></td>
+      <td class="note-cell">Prepare uniquely bundles analysis AND architecture. Clearest build/deploy split of the SFDC models.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Traditional</div><div class="provider-sub">Salesforce</div></td>
+      <td><span style="font-size:12px;color:#888;">Classic SDLC</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Plan</span>
+        <span class="pill p-analyze">Analyze</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-build">Deliver</span>
+        <span class="pill p-deploy">Deploy</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">5</span></td>
+      <td class="note-cell">Most explicit phase separation. Closest alignment to IBM SDLC and PwC.</td>
+    </tr>
+
+    <!-- SIs -->
+    <tr class="group-header"><td colspan="5">Top-Tier System Integrators</td></tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Accenture</div><div class="provider-sub">MyConcerto</div></td>
+      <td><span style="font-size:12px;color:#888;">MyConcerto</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Discover</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-build">Scale</span>
+        <span class="pill p-run">Sustain</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">4</span></td>
+      <td class="note-cell">Skips a formal analysis phase — moves directly from Discover to Design using industry templates.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">IBM</div><div class="provider-sub">Standard SDLC</div></td>
+      <td><span style="font-size:12px;color:#888;">SDLC</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Planning</span>
+        <span class="pill p-analyze">Analysis</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-build">Coding</span>
+        <span class="pill p-test">Testing</span>
+        <span class="pill p-deploy">Deployment</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">6</span></td>
+      <td class="note-cell">Most granular. Only model with a dedicated Testing phase. Baseline reference for traditional SDLC.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">PwC</div><div class="provider-sub">Accelerate</div></td>
+      <td><span style="font-size:12px;color:#888;">Accelerate</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Assess</span>
+        <span class="pill p-design">Design</span>
+        <span class="pill p-build">Build</span>
+        <span class="pill p-test">Test</span>
+        <span class="pill p-deploy">Deploy</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">5</span></td>
+      <td class="note-cell">Merges discovery and analysis into a single Assess phase. Strong explicit Test phase before Deploy.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Deloitte</div><div class="provider-sub">CloudSuite / Hybrid</div></td>
+      <td><span style="font-size:12px;color:#888;">Hybrid Agile</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Strategy</span>
+        <span class="pill p-design">Assess &amp; Design</span>
+        <span class="pill p-build">Build &amp; Test</span>
+        <span class="pill p-deploy">Deploy</span>
+        <span class="pill p-run">Operate</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">5</span></td>
+      <td class="note-cell">Agile-influenced — merges build and test into iterative sprints. Explicit Operate phase.</td>
+    </tr>
+
+    <!-- SaaS / ERP -->
+    <tr class="group-header"><td colspan="5">SaaS &amp; ERP Vendors</td></tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">SAP Activate</div><div class="provider-sub">S/4HANA Cloud</div></td>
+      <td><span style="font-size:12px;color:#888;">Activate</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Discover</span>
+        <span class="pill p-analyze">Prepare</span>
+        <span class="pill p-design">Explore</span>
+        <span class="pill p-build">Realize</span>
+        <span class="pill p-deploy">Deploy</span>
+        <span class="pill p-run">Run</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">6</span></td>
+      <td class="note-cell">Industry standard for SaaS ERP. Explore = fit-to-standard workshops. Realize bundles build, migrate, and test.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Oracle OUM</div><div class="provider-sub">Unified Method</div></td>
+      <td><span style="font-size:12px;color:#888;">OUM</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Inception</span>
+        <span class="pill p-analyze">Elaboration</span>
+        <span class="pill p-build">Construction</span>
+        <span class="pill p-deploy">Transition</span>
+        <span class="pill p-run">Production</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">5</span></td>
+      <td class="note-cell">Discipline-based. Construction merges design + build + test. Closest to Salesforce FDE's structure.</td>
+    </tr>
+
+    <tr class="data-row">
+      <td><div class="provider-name">Microsoft</div><div class="provider-sub">Dynamics 365</div></td>
+      <td><span style="font-size:12px;color:#888;">D365</span></td>
+      <td class="phase-cell"><div class="phases-wrap">
+        <span class="pill p-discover">Discover</span>
+        <span class="pill p-analyze">Initiate</span>
+        <span class="pill p-build">Implement</span>
+        <span class="pill p-test">Prepare</span>
+        <span class="pill p-run">Operate</span>
+      </div></td>
+      <td style="text-align:center;"><span class="count-badge">5</span></td>
+      <td class="note-cell">Implement = iterative sprints (design + build merged). Prepare = UAT, data migration, training.</td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<footer>
+  <span>Source: Salesforce internal documents &amp; published SI/vendor methodologies</span>
+  <span style="font-family:'DM Mono',monospace;font-size:10px;">methodology_comparison.html</span>
+</footer>
+
+</body>
+</html>
