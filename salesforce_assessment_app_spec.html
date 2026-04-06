@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Assessment Builder — Application Specification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf9f7;
+  --bg2: #f3f1ee;
+  --bg3: #eceae6;
+  --ink: #1a1814;
+  --ink2: #5a5650;
+  --ink3: #9a948e;
+  --rule: #e0ddd8;
+  --accent: #c2410c;
+  --accent2: #1d4ed8;
+  --accent3: #0f766e;
+  --accent4: #7c3aed;
+  --mark: #fef3c7;
+  --code-bg: #1e1b16;
+  --code-text: #d4c9b5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Layout */
+.page { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+/* Sidebar */
+nav {
+  background: var(--bg2);
+  border-right: 1px solid var(--rule);
+  padding: 2rem 0;
+  position: sticky;
+  top: 0; height: 100vh;
+  overflow-y: auto;
+}
+.nav-logo {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.5rem;
+}
+.nav-logo-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); display: block; margin-bottom: .25rem;
+}
+.nav-logo-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem; font-weight: 400;
+  color: var(--ink); line-height: 1.3;
+}
+
+.nav-section {
+  padding: 0 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.nav-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: .5rem; display: block;
+}
+.nav-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 8px; border-radius: 4px;
+  font-size: 12px; color: var(--ink2);
+  text-decoration: none; cursor: pointer;
+  transition: all .12s;
+  margin-bottom: 1px;
+}
+.nav-link:hover { background: var(--bg3); color: var(--ink); }
+.nav-link.active { background: var(--ink); color: var(--bg); }
+.nav-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--ink3);
+  background: var(--bg3); border-radius: 3px;
+  padding: 1px 5px; margin-left: auto;
+}
+.nav-link.active .nav-num { background: rgba(255,255,255,.15); color: rgba(255,255,255,.7); }
+
+/* Main content */
+main { padding: 3rem 4rem; max-width: 900px; }
+
+/* Cover */
+.cover {
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 3rem;
+}
+.cover-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.cover-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--accent); }
+h1.cover-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400; line-height: 1.15;
+  letter-spacing: -.02em; color: var(--ink);
+  margin-bottom: 1rem;
+}
+h1.cover-title em { font-style: italic; color: var(--accent); }
+.cover-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.cover-meta-item { font-size: 12px; color: var(--ink3); }
+.cover-meta-item strong { display: block; color: var(--ink); font-size: 13px; font-weight: 500; }
+
+/* Section headings */
+.section {
+  margin-bottom: 3rem;
+  scroll-margin-top: 2rem;
+}
+h2.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem; font-weight: 400;
+  letter-spacing: -.015em; color: var(--ink);
+  margin-bottom: .25rem;
+  display: flex; align-items: baseline; gap: .75rem;
+}
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--accent);
+  background: #fce7dd; padding: 2px 7px; border-radius: 3px;
+}
+h3.subsection {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .03em; text-transform: uppercase;
+  color: var(--ink2); margin: 1.75rem 0 .75rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+p { color: var(--ink2); margin-bottom: .875rem; font-size: 14px; }
+p strong { color: var(--ink); font-weight: 500; }
+
+/* Divider */
+hr.rule { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+/* Spec blocks */
+.spec-block {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+.spec-block.blue { border-left-color: var(--accent2); }
+.spec-block.green { border-left-color: var(--accent3); }
+.spec-block.purple { border-left-color: var(--accent4); }
+.spec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: .5rem;
+}
+.spec-block p { margin: 0; font-size: 13px; }
+
+/* Code blocks */
+pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; line-height: 1.7;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+code { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+p code, li code {
+  background: var(--bg3);
+  color: var(--accent);
+  padding: 1px 5px; border-radius: 3px; font-size: 11px;
+}
+
+/* Tables */
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; margin: 1rem 0;
+}
+th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink3); text-align: left;
+  padding: .5rem .75rem; border-bottom: 1px solid var(--rule);
+}
+td {
+  padding: .6rem .75rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink2); vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg2); }
+td strong { color: var(--ink); font-weight: 500; }
+
+/* Pills */
+.pill {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; padding: 2px 7px; border-radius: 3px;
+  border: 1px solid transparent;
+}
+.pill-red { background: #fff0eb; border-color: #f4cdc0; color: var(--accent); }
+.pill-blue { background: #eff3ff; border-color: #bfcffa; color: var(--accent2); }
+.pill-green { background: #f0fdf4; border-color: #a7f3d0; color: var(--accent3); }
+.pill-purple { background: #f5f3ff; border-color: #ddd6fe; color: var(--accent4); }
+.pill-gray { background: var(--bg3); border-color: var(--rule); color: var(--ink3); }
+
+/* Flow steps */
+.flow {
+  display: flex; flex-direction: column; gap: 0;
+  margin: 1.5rem 0;
+  border: 1px solid var(--rule); border-radius: 8px;
+  overflow: hidden;
+}
+.flow-step {
+  display: grid; grid-template-columns: 56px 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.flow-step:last-child { border-bottom: none; }
+.flow-step-num {
+  background: var(--bg2);
+  border-right: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem; color: var(--ink3); font-weight: 300;
+  padding: 1rem;
+}
+.flow-step-body { padding: 1rem 1.25rem; }
+.flow-step-title { font-weight: 500; font-size: 14px; color: var(--ink); margin-bottom: .25rem; }
+.flow-step-desc { font-size: 12px; color: var(--ink2); margin: 0; }
+
+/* Module cards */
+.module-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 1rem 0;
+}
+.module-card {
+  background: var(--bg);
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1rem;
+}
+.module-card-head {
+  display: flex; align-items: center; gap: 8px; margin-bottom: .5rem;
+}
+.module-icon {
+  width: 28px; height: 28px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+}
+.module-title { font-size: 13px; font-weight: 500; color: var(--ink); }
+.module-desc { font-size: 11px; color: var(--ink3); line-height: 1.5; }
+
+/* Prompt template */
+.prompt-template {
+  background: var(--code-bg);
+  border-radius: 6px; padding: 1.25rem 1.5rem;
+  margin: 1rem 0; position: relative;
+}
+.prompt-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  color: #6b7280; margin-bottom: .75rem;
+}
+.prompt-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; line-height: 1.8;
+  color: #d4c9b5; white-space: pre-wrap;
+}
+.prompt-var { color: #93c5fd; }
+.prompt-instruction { color: #86efac; }
+.prompt-output { color: #fde68a; }
+
+/* Priority matrix */
+.priority-row {
+  display: grid; grid-template-columns: 1fr auto auto;
+  gap: 12px; align-items: center;
+  padding: .625rem 0; border-bottom: 1px solid var(--rule);
+}
+.priority-row:last-child { border-bottom: none; }
+.priority-name { font-size: 13px; color: var(--ink); }
+.priority-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--ink3);
+}
+
+/* Tech stack */
+.stack-row {
+  display: grid; grid-template-columns: 120px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: .625rem 0; border-bottom: 1px solid var(--rule);
+}
+.stack-row:last-child { border-bottom: none; }
+.stack-layer { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink3); text-transform: uppercase; letter-spacing: .06em; }
+.stack-choice { font-size: 13px; color: var(--ink); font-weight: 500; }
+.stack-reason { font-size: 11px; color: var(--ink3); text-align: right; }
+
+/* Callout */
+.callout {
+  background: var(--mark);
+  border: 1px solid #fcd34d;
+  border-radius: 6px; padding: .875rem 1.125rem;
+  margin: 1rem 0; font-size: 13px; color: #78350f;
+}
+.callout strong { color: #92400e; }
+
+/* Print */
+@media print {
+  nav { display: none; }
+  .page { grid-template-columns: 1fr; }
+  main { padding: 2rem; max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .page { grid-template-columns: 1fr; }
+  nav { display: none; }
+  main { padding: 1.5rem; }
+  .module-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Sidebar Navigation -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-tag">App Spec v1.0</span>
+    <div class="nav-logo-title">Salesforce Assessment Builder</div>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Overview</span>
+    <a class="nav-link active" href="#overview">Purpose &amp; Scope</a>
+    <a class="nav-link" href="#architecture">System Architecture</a>
+    <a class="nav-link" href="#tech-stack">Technology Stack</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Module 1</span>
+    <a class="nav-link" href="#mod-auth">Org Connection &amp; Auth <span class="nav-num">M1</span></a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Module 2</span>
+    <a class="nav-link" href="#mod-extract">Metadata Extraction <span class="nav-num">M2</span></a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Module 3</span>
+    <a class="nav-link" href="#mod-prompts">Prompt Engine <span class="nav-num">M3</span></a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Module 4</span>
+    <a class="nav-link" href="#mod-format">Output Formatting <span class="nav-num">M4</span></a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Reference</span>
+    <a class="nav-link" href="#deliverables">Deliverable Matrix</a>
+    <a class="nav-link" href="#data-model">Data Model</a>
+    <a class="nav-link" href="#error-handling">Error Handling</a>
+    <a class="nav-link" href="#security">Security &amp; Auth</a>
+    <a class="nav-link" href="#build-phases">Build Phases</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main>
+
+<!-- Cover -->
+<div class="cover" id="overview">
+  <div class="cover-eyebrow">Application Specification</div>
+  <h1 class="cover-title">Salesforce<br><em>Assessment Builder</em></h1>
+  <p>A four-module pipeline that connects to a Salesforce org, extracts metadata across all API surfaces, generates structured assessment content via LLM prompts, and formats the results into 18 shareable deliverables.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Version</strong>1.0 — Draft</div>
+    <div class="cover-meta-item"><strong>Deliverables</strong>18 report types</div>
+    <div class="cover-meta-item"><strong>API Surfaces</strong>Metadata, Tooling, SOQL, REST</div>
+    <div class="cover-meta-item"><strong>LLM</strong>Anthropic Claude (claude-sonnet-4-5)</div>
+  </div>
+</div>
+
+<!-- System Architecture -->
+<div class="section" id="architecture">
+  <h2 class="section-title"><span class="section-num">§1</span> System Architecture</h2>
+  <p>The application is structured as a four-stage sequential pipeline. Each stage is an independent module with a well-defined input contract, output schema, and failure boundary. Stages persist their outputs to a local job store so any stage can be re-run in isolation without re-extracting from Salesforce.</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-num">1</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Org Connection &amp; Authentication</div>
+        <p class="flow-step-desc">OAuth 2.0 connected app flow or username/password + security token. Returns a session token, instance URL, and org metadata (edition, API version, org ID). Writes <code>session.json</code> to the job store.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">2</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Metadata Extraction</div>
+        <p class="flow-step-desc">Parallel extraction across Metadata API, Tooling API, and SOQL/REST. Each extractor produces a typed JSON payload. Outputs are merged into a single <code>org_snapshot.json</code> file keyed by metadata category.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">3</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Prompt Engine</div>
+        <p class="flow-step-desc">A registry of 18 prompt templates — one per deliverable. Each template receives a subset of the org snapshot as context. Claude processes templates sequentially or in parallel (configurable). Outputs are raw LLM responses stored as <code>responses/{deliverable_id}.json</code>.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">4</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Output Formatting</div>
+        <p class="flow-step-desc">Formatters transform raw LLM responses into final deliverable formats: HTML report, PDF, DOCX, or JSON. A template renderer applies branding, table of contents, and section structure. Final files are written to <code>outputs/{deliverable_id}/</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection">Job Store Structure</h3>
+  <p>All intermediate and final artefacts are persisted under a single job directory, identified by a UUID generated at connection time.</p>
+  <pre>jobs/
+  {job_id}/
+    session.json          ← M1 output
+    org_snapshot.json     ← M2 output (full merged payload)
+    raw/
+      metadata_api/       ← per-type XML/JSON from Metadata API
+      tooling_api/        ← per-object JSON from Tooling API
+      soql/               ← per-query JSON from SOQL/REST
+    responses/
+      {deliverable_id}.json  ← M3 raw LLM output per deliverable
+    outputs/
+      {deliverable_id}/      ← M4 formatted files
+        report.html
+        report.pdf
+        report.docx</pre>
+</div>
+
+<hr class="rule">
+
+<!-- Tech Stack -->
+<div class="section" id="tech-stack">
+  <h2 class="section-title"><span class="section-num">§2</span> Technology Stack</h2>
+
+  <div class="stack-row">
+    <span class="stack-layer">Runtime</span>
+    <span class="stack-choice">Node.js 20 LTS</span>
+    <span class="stack-reason">Strong Salesforce SDK ecosystem</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Framework</span>
+    <span class="stack-choice">Express.js + TypeScript</span>
+    <span class="stack-reason">Thin REST API layer over pipeline modules</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">SF Auth</span>
+    <span class="stack-choice">@salesforce/core (jsforce v2)</span>
+    <span class="stack-reason">Official OAuth + session management</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Metadata API</span>
+    <span class="stack-choice">jsforce MetadataAPI + SFDX CLI (retrieve)</span>
+    <span class="stack-reason">Handles zip retrieval + manifest generation</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Tooling API</span>
+    <span class="stack-choice">jsforce Tooling REST calls</span>
+    <span class="stack-reason">Direct HTTP via authenticated session</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">LLM</span>
+    <span class="stack-choice">Anthropic SDK (@anthropic-ai/sdk)</span>
+    <span class="stack-reason">claude-sonnet-4-5, streaming support</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">PDF/DOCX</span>
+    <span class="stack-choice">Puppeteer (PDF) + docx (DOCX)</span>
+    <span class="stack-reason">Headless Chrome for pixel-perfect PDF</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Job Store</span>
+    <span class="stack-choice">Local filesystem (SQLite for index)</span>
+    <span class="stack-reason">Zero infrastructure for MVP; swap for S3 later</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Queue</span>
+    <span class="stack-choice">BullMQ (Redis)</span>
+    <span class="stack-reason">Async job processing with retry</span>
+  </div>
+  <div class="stack-row">
+    <span class="stack-layer">Frontend</span>
+    <span class="stack-choice">React + Vite + TailwindCSS</span>
+    <span class="stack-reason">Progress dashboard + report viewer</span>
+  </div>
+
+  <div class="callout">
+    <strong>MVP simplification:</strong> For an MVP, BullMQ/Redis can be replaced with in-process async queues. The job store can be a plain filesystem with no SQLite index. All modules should be designed so this swap is trivial.
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- MODULE 1: AUTH -->
+<div class="section" id="mod-auth">
+  <h2 class="section-title"><span class="section-num">M1</span> Org Connection &amp; Authentication</h2>
+  <p>Module 1 establishes a trusted, scoped session with the target Salesforce org and validates that the connected user has sufficient permissions to run the assessment.</p>
+
+  <h3 class="subsection">Connection Methods</h3>
+  <table>
+    <tr><th>Method</th><th>Use case</th><th>Required inputs</th><th>Notes</th></tr>
+    <tr>
+      <td><strong>OAuth 2.0 Web Flow</strong></td>
+      <td>Interactive / browser-based</td>
+      <td>Connected App Client ID + Secret</td>
+      <td>Preferred. Opens Salesforce login page, returns access + refresh token.</td>
+    </tr>
+    <tr>
+      <td><strong>OAuth 2.0 JWT Bearer</strong></td>
+      <td>Server-to-server / CI</td>
+      <td>Client ID, private key (.pem), username</td>
+      <td>No user interaction. Requires pre-approved Connected App with JWT flow enabled.</td>
+    </tr>
+    <tr>
+      <td><strong>Username + Password + Token</strong></td>
+      <td>Legacy / sandbox</td>
+      <td>Username, password, security token</td>
+      <td>Simplest for sandboxes. Not recommended for production.</td>
+    </tr>
+    <tr>
+      <td><strong>SFDX Auth URL</strong></td>
+      <td>Developer / CLI</td>
+      <td>force://... auth URL</td>
+      <td>Paste from <code>sf org display --verbose</code>. Easiest for Salesforce developers.</td>
+    </tr>
+  </table>
+
+  <h3 class="subsection">Session Object (session.json)</h3>
+  <pre>{
+  "jobId": "uuid-v4",
+  "orgId": "00D...",
+  "instanceUrl": "https://myorg.my.salesforce.com",
+  "accessToken": "...",
+  "refreshToken": "...",
+  "apiVersion": "60.0",
+  "orgEdition": "Enterprise",
+  "orgName": "Acme Corp Production",
+  "connectedAt": "2025-04-06T10:00:00Z",
+  "userInfo": {
+    "userId": "005...",
+    "username": "admin@acme.com",
+    "displayName": "Sarah Admin",
+    "profileName": "System Administrator"
+  },
+  "permissionChecks": {
+    "viewSetup": true,
+    "modifyAllData": true,
+    "apiEnabled": true,
+    "authorApex": true,
+    "manageUsers": true
+  }
+}</pre>
+
+  <h3 class="subsection">Permission Pre-flight Checks</h3>
+  <p>Before extraction begins, M1 queries the current user's effective permissions and warns if any are missing. Missing permissions suppress the relevant deliverables rather than failing the whole job.</p>
+  <table>
+    <tr><th>Permission</th><th>Required for</th><th>If missing</th></tr>
+    <tr><td><code>ViewSetup</code></td><td>All deliverables</td><td>Block — cannot proceed</td></tr>
+    <tr><td><code>ApiEnabled</code></td><td>All deliverables</td><td>Block — cannot proceed</td></tr>
+    <tr><td><code>ModifyAllData</code> / <code>ViewAllData</code></td><td>Data Quality, Change History</td><td>Skip those deliverables; warn</td></tr>
+    <tr><td><code>AuthorApex</code></td><td>Code Quality, Test Coverage</td><td>Skip; warn</td></tr>
+    <tr><td><code>ManageUsers</code></td><td>Team Evaluation, Licensing</td><td>Skip; warn</td></tr>
+    <tr><td><code>ManageConnectedApps</code></td><td>Integration Analysis</td><td>Partial data; warn</td></tr>
+  </table>
+
+  <h3 class="subsection">API Endpoint Configuration</h3>
+  <div class="spec-block blue">
+    <div class="spec-label">Base URLs (derived from instanceUrl)</div>
+    <p><code>/services/data/v{apiVersion}/</code> — REST API (SOQL, limits)<br>
+    <code>/services/Soap/m/{apiVersion}</code> — Metadata API (SOAP)<br>
+    <code>/services/data/v{apiVersion}/tooling/</code> — Tooling API<br>
+    <code>/services/data/v{apiVersion}/async/</code> — Bulk API 2.0</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- MODULE 2: EXTRACTION -->
+<div class="section" id="mod-extract">
+  <h2 class="section-title"><span class="section-num">M2</span> Metadata Extraction</h2>
+  <p>Module 2 runs parallel extraction across three API surfaces. Each extractor is isolated — a failure in Tooling API extraction does not block Metadata API extraction. All raw responses are persisted before any processing occurs.</p>
+
+  <h3 class="subsection">Extractor A — Metadata API</h3>
+  <p>Uses <code>listMetadata()</code> to enumerate components, then <code>retrieve()</code> to fetch full definitions. The retrieve call returns a ZIP which is unpacked into <code>raw/metadata_api/</code>.</p>
+
+  <div class="spec-block">
+    <div class="spec-label">Retrieve Manifest (package.xml — key types)</div>
+    <p>The manifest is generated dynamically from the org's component inventory. Core types always included:</p>
+  </div>
+  <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Package xmlns="http://soap.sforce.com/2006/04/metadata"&gt;
+  &lt;types&gt;
+    &lt;!-- Schema --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;CustomObject&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;CustomField&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;ValidationRule&lt;/name&gt;
+    &lt;!-- Automation --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;Flow&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;WorkflowRule&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;AssignmentRule&lt;/name&gt;
+    &lt;!-- Code --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;ApexClass&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;ApexTrigger&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;LightningComponentBundle&lt;/name&gt;
+    &lt;!-- Security --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;Profile&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;PermissionSet&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;SharingRules&lt;/name&gt;
+    &lt;!-- Analytics --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;Report&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;Dashboard&lt;/name&gt;
+    &lt;!-- Integration --&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;ConnectedApp&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;NamedCredential&lt;/name&gt;
+    &lt;members&gt;*&lt;/members&gt;&lt;name&gt;RemoteSiteSetting&lt;/name&gt;
+  &lt;/types&gt;
+  &lt;version&gt;60.0&lt;/version&gt;
+&lt;/Package&gt;</pre>
+
+  <h3 class="subsection">Extractor B — Tooling API</h3>
+  <p>Tooling API is queried via REST. Key objects require separate calls as they cannot be bulk-retrieved.</p>
+  <table>
+    <tr><th>Object</th><th>Used for</th><th>Query</th></tr>
+    <tr><td><code>ApexCodeCoverageAggregate</code></td><td>Test Coverage Report</td><td>SELECT ApexClassOrTriggerId, NumLinesCovered, NumLinesUncovered FROM ApexCodeCoverageAggregate</td></tr>
+    <tr><td><code>ApexTestResult</code></td><td>Test Coverage Report</td><td>SELECT ApexClassId, Outcome, RunTime FROM ApexTestResult ORDER BY RunTime DESC LIMIT 500</td></tr>
+    <tr><td><code>MetadataComponentDependency</code></td><td>Impact Assessment</td><td>SELECT MetadataComponentId, MetadataComponentName, RefMetadataComponentName, RefMetadataComponentType FROM MetadataComponentDependency</td></tr>
+    <tr><td><code>FlowVersionView</code></td><td>Automation Review</td><td>SELECT DurableId, Label, Status, VersionNumber, LastModifiedDate FROM FlowVersionView</td></tr>
+    <tr><td><code>ApexOrgWideCoverage</code></td><td>Test Coverage Report</td><td>SELECT PercentCovered FROM ApexOrgWideCoverage</td></tr>
+  </table>
+
+  <h3 class="subsection">Extractor C — SOQL / REST</h3>
+  <table>
+    <tr><th>Query target</th><th>Used for</th><th>Notes</th></tr>
+    <tr><td><code>SetupAuditTrail</code></td><td>Change History</td><td>Last 180 days. Max 2000 rows — paginate.</td></tr>
+    <tr><td><code>User</code></td><td>Team Eval, Licensing</td><td>WHERE IsActive = true. Include Profile, UserType, LastLoginDate.</td></tr>
+    <tr><td><code>UserLicense</code></td><td>Licensing</td><td>Full table — includes UsedLicenses, TotalLicenses.</td></tr>
+    <tr><td><code>Organization</code></td><td>Architecture</td><td>Single row — edition, createdDate, address.</td></tr>
+    <tr><td><code>EventLogFile</code></td><td>Integration Analysis</td><td>WHERE EventType = 'API' AND LogDate = LAST_N_DAYS:30</td></tr>
+    <tr><td><code>/services/data/vXX/limits/</code></td><td>Architecture</td><td>REST endpoint — returns JSON of all governor limits.</td></tr>
+    <tr><td><code>EntityDefinition</code></td><td>Data Model</td><td>All standard + custom objects with counts.</td></tr>
+  </table>
+
+  <h3 class="subsection">Org Snapshot Schema (org_snapshot.json)</h3>
+  <pre>{
+  "extractedAt": "2025-04-06T10:05:00Z",
+  "orgId": "00D...",
+  "schema": {
+    "objects": [...],       // CustomObject definitions
+    "fields": [...],        // CustomField definitions
+    "validationRules": [...],
+    "recordTypes": [...]
+  },
+  "automation": {
+    "flows": [...],
+    "workflowRules": [...],
+    "apexTriggers": [...]
+  },
+  "security": {
+    "profiles": [...],
+    "permissionSets": [...],
+    "sharingRules": [...],
+    "setupAuditTrail": [...]
+  },
+  "code": {
+    "apexClasses": [...],   // includes Body for quality analysis
+    "apexTriggers": [...],
+    "lwcComponents": [...],
+    "coverageAggregate": [...],
+    "testResults": [...]
+  },
+  "analytics": {
+    "reports": [...],
+    "dashboards": [...]
+  },
+  "integration": {
+    "connectedApps": [...],
+    "namedCredentials": [...],
+    "remoteSites": [...],
+    "eventLogSample": [...]
+  },
+  "org": {
+    "info": {...},          // Organization object
+    "limits": {...},        // /limits/ REST response
+    "users": [...],
+    "licenses": [...]
+  },
+  "dependencies": [...]     // MetadataComponentDependency
+}</pre>
+
+  <h3 class="subsection">Extraction Configuration</h3>
+  <div class="spec-block green">
+    <div class="spec-label">Rate limiting &amp; chunking</div>
+    <p>Metadata API retrieve calls are limited to 10,000 components per request. Chunk large orgs automatically. Tooling API: max 2,000 rows per SOQL call — paginate using <code>nextRecordsUrl</code>. SOQL: use Bulk API 2.0 for queries expected to return &gt;10,000 rows (EventLogFile, large custom objects).</p>
+  </div>
+  <div class="spec-block green">
+    <div class="spec-label">Apex class body retrieval</div>
+    <p>Apex class source is NOT included in standard Metadata API retrieve for code quality analysis. Use Tooling API: <code>SELECT Body FROM ApexClass WHERE Id = '{id}'</code> per class. Cache locally — do not re-fetch if already in job store.</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- MODULE 3: PROMPT ENGINE -->
+<div class="section" id="mod-prompts">
+  <h2 class="section-title"><span class="section-num">M3</span> Prompt Engine</h2>
+  <p>Module 3 maintains a registry of 18 prompt templates. Each template specifies which subset of the org snapshot it consumes, the system prompt context, the expected output schema, and the Claude model parameters.</p>
+
+  <h3 class="subsection">Prompt Template Interface</h3>
+  <pre>interface PromptTemplate {
+  id: string;                    // e.g. "data_model_analysis"
+  deliverable: string;           // Human label
+  category: string;              // Foundation | Logic | etc.
+  contextSlices: string[];       // Keys from org_snapshot.json
+  maxContextTokens: number;      // Truncation limit for context
+  systemPrompt: string;          // Role + output format instructions
+  userPromptTemplate: string;    // Handlebars template with {{variables}}
+  outputSchema: JSONSchema;      // Expected structure of LLM response
+  model: string;                 // "claude-sonnet-4-5"
+  maxTokens: number;             // Response limit
+  temperature: number;           // 0.2–0.4 for analytical, 0.6 for exec
+  streaming: boolean;            // Stream to UI in real-time
+}</pre>
+
+  <h3 class="subsection">Context Injection Strategy</h3>
+  <p>The org snapshot can be large. Each prompt template declares which context slices it needs — only those slices are serialised and injected. Slices are further summarised if they exceed <code>maxContextTokens</code>.</p>
+
+  <div class="spec-block purple">
+    <div class="spec-label">Context summarisation rules</div>
+    <p>Apex class bodies: truncate to first 200 lines + last 50 lines per class. SOQL results: include first 500 rows, append count of total rows. Dependency graph: include only components with &gt;3 dependents. Profile/PermSet: include only non-default permissions.</p>
+  </div>
+
+  <h3 class="subsection">Sample Prompt Templates</h3>
+
+  <p><strong>Data Model Analysis</strong></p>
+  <div class="prompt-template">
+    <div class="prompt-label">System prompt</div>
+    <div class="prompt-text"><span class="prompt-instruction">You are a senior Salesforce architect producing a professional data model analysis report. Output strictly valid JSON matching the provided schema. Be specific, quantitative, and actionable. Do not invent data — only analyse what is provided.</span></div>
+  </div>
+  <div class="prompt-template">
+    <div class="prompt-label">User prompt template</div>
+    <div class="prompt-text"><span class="prompt-instruction">Analyse the following Salesforce org schema data and produce a comprehensive Data Model Analysis.</span>
+
+<span class="prompt-var">Org: {{orgName}} | Edition: {{orgEdition}} | Extracted: {{extractedAt}}</span>
+
+<span class="prompt-var">## Objects ({{schema.objects.length}} total)
+{{JSON.stringify(schema.objects, null, 2)}}
+
+## Fields sample ({{schema.fields.length}} total)
+{{JSON.stringify(schema.fields.slice(0, 200), null, 2)}}
+
+## Validation Rules ({{schema.validationRules.length}} total)
+{{JSON.stringify(schema.validationRules, null, 2)}}</span>
+
+<span class="prompt-instruction">Produce a JSON report with these sections:
+- summary: { totalObjects, customObjects, standardObjects, totalFields, customFieldRatio, healthScore (0-100) }
+- objectAnalysis: array of { objectName, fieldCount, customFields, relationshipCount, validationRuleCount, concerns[] }
+- relationships: { lookups, masterDetail, externalLookups, hierarchical }
+- dataModelRisks: array of { risk, severity, affectedObjects[], recommendation }
+- recommendations: array of { priority, title, rationale, effort }</span>
+
+<span class="prompt-output">Respond ONLY with valid JSON. No preamble, no markdown fences.</span></div>
+  </div>
+
+  <p><strong>Security &amp; Governance Audit</strong></p>
+  <div class="prompt-template">
+    <div class="prompt-label">User prompt template (abbreviated)</div>
+    <div class="prompt-text"><span class="prompt-instruction">Conduct a Security and Governance Audit of this Salesforce org.</span>
+
+<span class="prompt-var">## Profiles ({{security.profiles.length}})
+{{JSON.stringify(security.profiles, null, 2)}}
+
+## Permission Sets ({{security.permissionSets.length}})
+{{JSON.stringify(security.permissionSets, null, 2)}}
+
+## Sharing Rules
+{{JSON.stringify(security.sharingRules, null, 2)}}
+
+## Setup Audit Trail (last 180 days, {{security.setupAuditTrail.length}} entries)
+{{JSON.stringify(security.setupAuditTrail.slice(0, 100), null, 2)}}</span>
+
+<span class="prompt-instruction">Return JSON with:
+- owdMatrix: { objectName, internalAccess, externalAccess }[]
+- privilegedUsers: users with ModifyAll or ViewAll
+- mfaStatus, ssoConfigured, ipRestrictions
+- auditAnomalies: suspicious setup changes
+- complianceFlags: any Salesforce security baseline violations
+- riskScore: 0-100 (100 = most secure)</span>
+
+<span class="prompt-output">Respond ONLY with valid JSON.</span></div>
+  </div>
+
+  <p><strong>Executive Assessment</strong></p>
+  <div class="prompt-template">
+    <div class="prompt-label">User prompt template</div>
+    <div class="prompt-text"><span class="prompt-instruction">You are producing an Executive Assessment for a Salesforce org. Your audience is a C-suite executive with no Salesforce technical knowledge. Write clearly, avoid jargon, and lead with business impact.</span>
+
+<span class="prompt-var">## Previous analysis outputs (all 17 deliverables):
+{{JSON.stringify(allPreviousOutputs, null, 2)}}</span>
+
+<span class="prompt-instruction">Synthesise all findings into:
+- orgHealthScore: 0-100 with breakdown by dimension
+- executiveSummary: 3-paragraph plain-English narrative
+- topRisks: top 5 risks with businessImpact and severity
+- topOpportunities: top 3 quick-win improvements
+- investmentPriorities: phased roadmap summary
+- licenceCostOptimisation: estimated annual saving</span>
+
+<span class="prompt-output">Respond ONLY with valid JSON. Temperature 0.6 — executive tone, not dry.</span></div>
+  </div>
+
+  <h3 class="subsection">Prompt Registry — All 18 Templates</h3>
+  <table>
+    <tr><th>ID</th><th>Context slices</th><th>Max tokens</th><th>Temp</th><th>Depends on</th></tr>
+    <tr><td><code>metadata_inventory</code></td><td>schema, automation, security, code</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>data_model_analysis</code></td><td>schema</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>data_quality_report</code></td><td>schema, org.soqlSamples</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>security_governance</code></td><td>security</td><td>6144</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>automation_review</code></td><td>automation</td><td>6144</td><td>0.3</td><td>—</td></tr>
+    <tr><td><code>reports_dashboards</code></td><td>analytics</td><td>3000</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>integration_analysis</code></td><td>integration</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>code_quality</code></td><td>code.apexClasses, code.apexTriggers</td><td>8192</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>test_coverage</code></td><td>code.coverageAggregate, code.testResults</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>change_history</code></td><td>security.setupAuditTrail</td><td>4096</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>team_evaluation</code></td><td>org.users, org.licenses</td><td>3000</td><td>0.2</td><td>—</td></tr>
+    <tr><td><code>tech_impact</code></td><td>dependencies, schema, automation, code</td><td>6144</td><td>0.3</td><td>—</td></tr>
+    <tr><td><code>architectural</code></td><td>org, integration, schema</td><td>4096</td><td>0.3</td><td>—</td></tr>
+    <tr><td><code>executive</code></td><td>ALL previous outputs</td><td>8192</td><td>0.6</td><td>All above</td></tr>
+    <tr><td><code>customer_report</code></td><td>Previous outputs (subset)</td><td>6144</td><td>0.5</td><td>executive + key 6</td></tr>
+    <tr><td><code>engagement_plan</code></td><td>ALL previous outputs</td><td>6144</td><td>0.5</td><td>executive</td></tr>
+    <tr><td><code>tech_briefing</code></td><td>code_quality, test_coverage, automation</td><td>6144</td><td>0.3</td><td>code_quality, test_coverage, automation</td></tr>
+    <tr><td><code>licensing_analysis</code></td><td>org.users, org.licenses</td><td>4096</td><td>0.2</td><td>team_evaluation</td></tr>
+  </table>
+
+  <h3 class="subsection">Execution Order &amp; Dependency DAG</h3>
+  <p>Prompts with no dependencies run in parallel (Wave 1). Synthesis prompts that depend on previous outputs run sequentially (Wave 2 and 3).</p>
+  <pre>Wave 1 (parallel):
+  metadata_inventory, data_model_analysis, data_quality_report,
+  security_governance, automation_review, reports_dashboards,
+  integration_analysis, code_quality, test_coverage,
+  change_history, team_evaluation, tech_impact, architectural,
+  licensing_analysis
+
+Wave 2 (after Wave 1):
+  tech_briefing (needs: code_quality, test_coverage, automation_review)
+
+Wave 3 (after Wave 2):
+  executive (needs: all Wave 1 + Wave 2)
+  customer_report (needs: executive + 6 core outputs)
+  engagement_plan (needs: executive)</pre>
+
+  <h3 class="subsection">Error Handling &amp; Retry</h3>
+  <div class="spec-block purple">
+    <div class="spec-label">LLM failure strategy</div>
+    <p>On API error or invalid JSON response: retry up to 3 times with exponential backoff (2s, 8s, 32s). On third failure: store error state in <code>responses/{id}.json</code> with <code>"status": "failed"</code>. Downstream dependent prompts skip gracefully. Partial reports are generated with a failure notice in the relevant section.</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- MODULE 4: FORMATTING -->
+<div class="section" id="mod-format">
+  <h2 class="section-title"><span class="section-num">M4</span> Output Formatting</h2>
+  <p>Module 4 transforms raw LLM JSON responses into polished, client-ready deliverables. Each deliverable has a dedicated formatter that knows the expected response schema and applies the appropriate template.</p>
+
+  <h3 class="subsection">Output Formats</h3>
+  <table>
+    <tr><th>Format</th><th>Generated via</th><th>Use case</th></tr>
+    <tr><td><strong>HTML</strong></td><td>Handlebars templates</td><td>Preview, internal review, web delivery</td></tr>
+    <tr><td><strong>PDF</strong></td><td>Puppeteer → HTML → PDF</td><td>Client delivery, email attachments</td></tr>
+    <tr><td><strong>DOCX</strong></td><td>docx library</td><td>Client editing, branded templates</td></tr>
+    <tr><td><strong>JSON</strong></td><td>Raw LLM output</td><td>API consumers, custom pipelines</td></tr>
+    <tr><td><strong>CSV</strong></td><td>Flat data extracts</td><td>Field inventories, user lists, license data</td></tr>
+  </table>
+
+  <h3 class="subsection">HTML Report Template Structure</h3>
+  <pre>templates/
+  base.html                 ← Shared shell: header, nav, footer, CSS vars
+  deliverables/
+    metadata_inventory.html
+    data_model_analysis.html
+    security_governance.html
+    ... (one per deliverable)
+  components/
+    risk_matrix.html        ← Reusable: severity table
+    health_score.html       ← Reusable: gauge + score
+    code_table.html         ← Reusable: sortable component table
+    recommendation.html     ← Reusable: priority card
+    chart_bar.html          ← Reusable: inline SVG bar chart</pre>
+
+  <h3 class="subsection">Formatter Interface</h3>
+  <pre>interface Formatter {
+  deliverableId: string;
+  format: 'html' | 'pdf' | 'docx' | 'json' | 'csv';
+
+  // Validate LLM output matches expected schema
+  validate(rawResponse: object): ValidationResult;
+
+  // Transform LLM JSON → template-ready data
+  transform(rawResponse: object, session: Session): TemplateData;
+
+  // Render to final file
+  render(templateData: TemplateData, outputPath: string): Promise&lt;void&gt;;
+}</pre>
+
+  <h3 class="subsection">PDF Generation Pipeline</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-step-num">1</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Render HTML in memory</div>
+        <p class="flow-step-desc">Apply Handlebars template with LLM data. Embed all CSS inline. Base64-encode any images (org logo, charts).</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">2</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Launch Puppeteer</div>
+        <p class="flow-step-desc"><code>puppeteer.launch({ headless: 'new' })</code>. Navigate to <code>data:text/html</code> URI or temp file. Wait for fonts to load.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">3</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Generate PDF</div>
+        <p class="flow-step-desc"><code>page.pdf({ format: 'A4', margin: { top: '20mm', bottom: '20mm', left: '20mm', right: '20mm' }, printBackground: true })</code></p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">4</div>
+      <div class="flow-step-body">
+        <div class="flow-step-title">Write to job store</div>
+        <p class="flow-step-desc">Save to <code>outputs/{deliverable_id}/report.pdf</code>. Emit completion event to job queue. Update job status in SQLite.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="subsection">Branding &amp; Customisation</h3>
+  <div class="spec-block blue">
+    <div class="spec-label">Configurable via branding.json</div>
+    <p><code>primaryColor</code>, <code>logoUrl</code>, <code>companyName</code>, <code>reportFooter</code>, <code>coverPageTemplate</code>. Applied at render time. Defaults to a clean dark-on-white professional theme. Customer logo and vendor logo can both appear on cover.</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- DELIVERABLE MATRIX -->
+<div class="section" id="deliverables">
+  <h2 class="section-title"><span class="section-num">§3</span> Deliverable Matrix</h2>
+  <table>
+    <tr><th>Deliverable</th><th>Category</th><th>Wave</th><th>Formats</th><th>Priority</th></tr>
+    <tr><td><strong>Metadata Inventory</strong></td><td><span class="pill pill-blue">Foundation</span></td><td>1</td><td>HTML, PDF, CSV</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Data Model Analysis</strong></td><td><span class="pill pill-blue">Foundation</span></td><td>1</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Data Quality Report</strong></td><td><span class="pill pill-blue">Foundation</span></td><td>1</td><td>HTML, PDF</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Security &amp; Governance</strong></td><td><span class="pill pill-purple">Governance</span></td><td>1</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Automation Review</strong></td><td><span class="pill pill-gray">Logic</span></td><td>1</td><td>HTML, PDF</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Reports &amp; Dashboards</strong></td><td><span class="pill pill-green">Analytics</span></td><td>1</td><td>HTML, CSV</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Integration Analysis</strong></td><td><span class="pill pill-gray">Architecture</span></td><td>1</td><td>HTML, PDF</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Code Quality</strong></td><td><span class="pill pill-gray">Logic</span></td><td>1</td><td>HTML, PDF, JSON</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Test Coverage</strong></td><td><span class="pill pill-gray">Logic</span></td><td>1</td><td>HTML, PDF</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Change History</strong></td><td><span class="pill pill-purple">Governance</span></td><td>1</td><td>HTML, CSV</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Team Evaluation</strong></td><td><span class="pill pill-gray">People</span></td><td>1</td><td>HTML, PDF, CSV</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Technical Impact</strong></td><td><span class="pill pill-gray">Architecture</span></td><td>1</td><td>HTML, JSON</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Architectural Analysis</strong></td><td><span class="pill pill-gray">Architecture</span></td><td>1</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Licensing Analysis</strong></td><td><span class="pill pill-gray">Commercial</span></td><td>1</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Technical Briefing</strong></td><td><span class="pill pill-gray">Outputs</span></td><td>2</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-blue">P2</span></td></tr>
+    <tr><td><strong>Executive Assessment</strong></td><td><span class="pill pill-gray">Outputs</span></td><td>3</td><td>HTML, PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Customer Report</strong></td><td><span class="pill pill-gray">Outputs</span></td><td>3</td><td>PDF, DOCX</td><td><span class="pill pill-red">P1</span></td></tr>
+    <tr><td><strong>Strategic Engagement Plan</strong></td><td><span class="pill pill-gray">Outputs</span></td><td>3</td><td>PDF, DOCX</td><td><span class="pill pill-blue">P2</span></td></tr>
+  </table>
+</div>
+
+<hr class="rule">
+
+<!-- DATA MODEL -->
+<div class="section" id="data-model">
+  <h2 class="section-title"><span class="section-num">§4</span> Application Data Model</h2>
+  <pre>-- SQLite schema
+
+CREATE TABLE jobs (
+  id          TEXT PRIMARY KEY,      -- UUID
+  org_id      TEXT NOT NULL,
+  org_name    TEXT,
+  instance_url TEXT,
+  status      TEXT DEFAULT 'pending', -- pending|extracting|prompting|formatting|complete|failed
+  created_at  INTEGER,
+  updated_at  INTEGER,
+  error       TEXT
+);
+
+CREATE TABLE job_stages (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  job_id      TEXT REFERENCES jobs(id),
+  stage       TEXT,                  -- auth|extract|prompt|format
+  status      TEXT,
+  started_at  INTEGER,
+  completed_at INTEGER,
+  error       TEXT
+);
+
+CREATE TABLE deliverable_status (
+  job_id         TEXT REFERENCES jobs(id),
+  deliverable_id TEXT,
+  status         TEXT,               -- pending|running|complete|failed|skipped
+  prompt_tokens  INTEGER,
+  completion_tokens INTEGER,
+  cost_usd       REAL,
+  started_at     INTEGER,
+  completed_at   INTEGER,
+  error          TEXT,
+  PRIMARY KEY (job_id, deliverable_id)
+);</pre>
+</div>
+
+<hr class="rule">
+
+<!-- ERROR HANDLING -->
+<div class="section" id="error-handling">
+  <h2 class="section-title"><span class="section-num">§5</span> Error Handling</h2>
+  <table>
+    <tr><th>Failure type</th><th>Strategy</th><th>User impact</th></tr>
+    <tr><td>Auth failure (wrong credentials)</td><td>Fail fast, clear error message</td><td>Blocked — must re-auth</td></tr>
+    <tr><td>Insufficient permissions</td><td>Log missing perms, continue with reduced scope</td><td>Some deliverables skipped</td></tr>
+    <tr><td>Metadata API timeout</td><td>Retry 3× with 30s backoff; partial retrieve accepted</td><td>Partial data, noted in report</td></tr>
+    <tr><td>Tooling API 503</td><td>Retry 3× exponential backoff</td><td>Dependent deliverables degrade gracefully</td></tr>
+    <tr><td>LLM invalid JSON response</td><td>Retry with stronger output instruction; fallback to raw text if 3× fails</td><td>Deliverable generated as raw text, not structured</td></tr>
+    <tr><td>LLM context window exceeded</td><td>Summarise context slices further; re-submit</td><td>Transparent — no user action needed</td></tr>
+    <tr><td>PDF generation failure</td><td>Fall back to HTML-only; log error</td><td>HTML available; PDF marked failed</td></tr>
+    <tr><td>Job store write failure</td><td>Retry; if persistent, surface to user immediately</td><td>Job cannot proceed — disk issue</td></tr>
+  </table>
+</div>
+
+<hr class="rule">
+
+<!-- SECURITY -->
+<div class="section" id="security">
+  <h2 class="section-title"><span class="section-num">§6</span> Security &amp; Credential Handling</h2>
+  <div class="spec-block">
+    <div class="spec-label">Access tokens</div>
+    <p>Access tokens are stored in memory only during the active session. They are never written to disk in plaintext. The job store records only the org ID and instance URL — not the token. Refresh tokens (if used) are encrypted at rest using AES-256 with a key derived from the operator's secret.</p>
+  </div>
+  <div class="spec-block blue">
+    <div class="spec-label">Org data handling</div>
+    <p>The org snapshot contains configuration metadata and SOQL query results. It may include field names and record counts but should never include actual record data (PII, business data). Data Quality extraction queries null rates only — not record content. The job store should be treated as sensitive and access-controlled accordingly.</p>
+  </div>
+  <div class="spec-block green">
+    <div class="spec-label">LLM data transmission</div>
+    <p>Org metadata is sent to the Anthropic API as prompt context. Before deployment, obtain explicit customer consent for this data flow. Consider a data processing addendum. For highly sensitive orgs, a self-hosted LLM alternative (e.g. Claude via AWS Bedrock in a VPC) should be offered.</p>
+  </div>
+  <div class="spec-block purple">
+    <div class="spec-label">Minimum required permissions</div>
+    <p>The assessment should connect as a dedicated integration user (not a System Administrator) with only the permissions required. A Permission Set defining the minimum access is provided as a separate artefact (<code>AssessmentRunner.permissionset-meta.xml</code>).</p>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- BUILD PHASES -->
+<div class="section" id="build-phases">
+  <h2 class="section-title"><span class="section-num">§7</span> Build Phases</h2>
+
+  <h3 class="subsection">Phase 1 — Core Pipeline (MVP)</h3>
+  <table>
+    <tr><th>Task</th><th>Effort</th><th>Output</th></tr>
+    <tr><td>M1: Username/password auth + session.json</td><td>1d</td><td>Working auth against sandbox</td></tr>
+    <tr><td>M2: Metadata API extractor (top 10 types)</td><td>2d</td><td>org_snapshot.json partial</td></tr>
+    <tr><td>M2: SOQL extractor (User, UserLicense, Org)</td><td>1d</td><td>org_snapshot.json extended</td></tr>
+    <tr><td>M3: 3 prompt templates (data_model, security, executive)</td><td>2d</td><td>3 working deliverables</td></tr>
+    <tr><td>M4: HTML formatter for 3 deliverables</td><td>2d</td><td>Downloadable HTML reports</td></tr>
+    <tr><td>CLI runner (<code>node run.js --job &lt;id&gt;</code>)</td><td>1d</td><td>End-to-end test harness</td></tr>
+  </table>
+
+  <h3 class="subsection">Phase 2 — Full Extraction &amp; All Deliverables</h3>
+  <table>
+    <tr><th>Task</th><th>Effort</th></tr>
+    <tr><td>M2: Tooling API extractor (coverage, dependencies)</td><td>2d</td></tr>
+    <tr><td>M2: Full Metadata API manifest (all 20+ types)</td><td>1d</td></tr>
+    <tr><td>M3: Remaining 15 prompt templates</td><td>3d</td></tr>
+    <tr><td>M3: Parallel wave execution + BullMQ queue</td><td>2d</td></tr>
+    <tr><td>M4: PDF formatter (Puppeteer)</td><td>2d</td></tr>
+    <tr><td>M4: DOCX formatter</td><td>2d</td></tr>
+    <tr><td>OAuth 2.0 web flow + SFDX auth URL</td><td>1d</td></tr>
+  </table>
+
+  <h3 class="subsection">Phase 3 — UI &amp; Production</h3>
+  <table>
+    <tr><th>Task</th><th>Effort</th></tr>
+    <tr><td>React dashboard: job progress, streaming output</td><td>3d</td></tr>
+    <tr><td>Report viewer: in-browser HTML report preview</td><td>2d</td></tr>
+    <tr><td>Branding configuration UI</td><td>1d</td></tr>
+    <tr><td>Multi-org job history</td><td>1d</td></tr>
+    <tr><td>Export bundle (ZIP of all deliverables)</td><td>1d</td></tr>
+    <tr><td>Prompt customisation (override template per engagement)</td><td>2d</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Total estimate:</strong> Phase 1 = ~9 developer-days. Phase 2 = ~13 days. Phase 3 = ~10 days. A focused team of 2 engineers can deliver Phase 1 in ~1 week and full Phase 2+3 in ~6 weeks.
+  </div>
+</div>
+
+<div style="height: 4rem;"></div>
+
+</main>
+</div>
+
+<script>
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('.section, .cover');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#'+id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const id = link.getAttribute('href').slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
