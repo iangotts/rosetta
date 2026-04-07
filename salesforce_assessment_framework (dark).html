@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Org Assessment Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #111418;
+    --bg3: #181c22;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.14);
+    --text: #e8eaed;
+    --text2: #8a9099;
+    --text3: #525a65;
+    --accent: #3b82f6;
+    --accent2: #22d3ee;
+    --warn: #f59e0b;
+    --success: #10b981;
+    --danger: #f43f5e;
+    --meta-bg: rgba(59,130,246,0.1);
+    --meta-border: rgba(59,130,246,0.3);
+    --meta-text: #93c5fd;
+    --tool-bg: rgba(245,158,11,0.1);
+    --tool-border: rgba(245,158,11,0.3);
+    --tool-text: #fcd34d;
+    --soql-bg: rgba(16,185,129,0.1);
+    --soql-border: rgba(16,185,129,0.3);
+    --soql-text: #6ee7b7;
+    --perm-bg: rgba(244,63,94,0.1);
+    --perm-border: rgba(244,63,94,0.3);
+    --perm-text: #fda4af;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: 10%;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(34,211,238,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .header-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent); background: var(--meta-bg);
+    border: 1px solid var(--meta-border);
+    padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: .5rem;
+  }
+  h1 span { color: var(--accent2); font-weight: 500; }
+  .header-desc {
+    color: var(--text2);
+    font-size: 13px;
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+  }
+  .header-stats {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.6rem; font-weight: 500;
+    color: var(--accent); display: block;
+  }
+  .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* Legend */
+  .legend-bar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: .75rem 2rem;
+  }
+  .legend-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .legend-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-right: .5rem; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Main layout */
+  .main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  /* Category filter tabs */
+  .tabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 1.75rem;
+  }
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tab:hover { border-color: var(--border-hover); color: var(--text); }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* Cards grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(520px, 1fr)); gap: 1px; }
+  .grid-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+  .card {
+    background: var(--bg2);
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transition: background .15s;
+    position: relative;
+  }
+  .card:last-child { border-bottom: none; }
+  .card:hover { background: var(--bg3); }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background .15s;
+  }
+  .card:hover::before { background: var(--accent); }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .cat-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px; white-space: nowrap; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .card-desc { font-size: 12px; color: var(--text2); margin-bottom: 1rem; line-height: 1.5; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--text3); margin: 8px 0 5px;
+  }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+  .pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; padding: 2px 7px;
+    border-radius: 3px; border: 1px solid transparent;
+  }
+  .pill.meta { background: var(--meta-bg); border-color: var(--meta-border); color: var(--meta-text); }
+  .pill.tooling { background: var(--tool-bg); border-color: var(--tool-border); color: var(--tool-text); }
+  .pill.soql { background: var(--soql-bg); border-color: var(--soql-border); color: var(--soql-text); }
+
+  .access-outputs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-top: 10px;
+  }
+  .detail-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 10px;
+  }
+  .detail-box .section-label { margin-top: 0; }
+  .detail-list { list-style: none; }
+  .detail-list li {
+    font-size: 11px; color: var(--text2);
+    padding: 2px 0;
+    display: flex; gap: 6px; align-items: baseline;
+  }
+  .detail-list li::before { content: '—'; color: var(--text3); flex-shrink: 0; }
+
+  /* Category colors */
+  .cat-Foundation { background: rgba(59,130,246,.12); color: #93c5fd; }
+  .cat-Logic { background: rgba(245,158,11,.12); color: #fcd34d; }
+  .cat-Architecture { background: rgba(34,211,238,.12); color: #67e8f9; }
+  .cat-Governance { background: rgba(244,63,94,.12); color: #fda4af; }
+  .cat-Analytics { background: rgba(16,185,129,.12); color: #6ee7b7; }
+  .cat-People { background: rgba(167,139,250,.12); color: #c4b5fd; }
+  .cat-Commercial { background: rgba(251,191,36,.12); color: #fde68a; }
+  .cat-Outputs { background: rgba(148,163,184,.12); color: #cbd5e1; }
+
+  /* Count badge */
+  .count-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--bg3); border: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--text3);
+    margin-left: 4px;
+  }
+
+  /* No items message */
+  .no-items {
+    text-align: center; padding: 3rem;
+    color: var(--text3); font-size: 13px;
+    font-style: italic;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-note { font-size: 11px; color: var(--text3); }
+  .footer-apis { display: flex; gap: .75rem; }
+  .api-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--accent);
+    text-decoration: none; opacity: .7;
+    transition: opacity .15s;
+  }
+  .api-link:hover { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .access-outputs { grid-template-columns: 1fr; }
+    header { padding: 1.5rem 1rem 1rem; }
+    .main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-tag">&#9632; Salesforce Org Assessment</div>
+    <h1>Assessment <span>Framework</span></h1>
+    <p class="header-desc">Metadata API types, Tooling API objects, SOQL queries, and access permissions required for each deliverable in a full org assessment engagement.</p>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num">18</span><span class="stat-label">Deliverables</span></div>
+      <div class="stat"><span class="stat-num">8</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">API surfaces</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="legend-bar">
+  <div class="legend-inner">
+    <span class="legend-label">API Surface</span>
+    <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> <span style="font-size:11px;color:#8a9099">Metadata API</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> <span style="font-size:11px;color:#8a9099">Tooling API</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> <span style="font-size:11px;color:#8a9099">SOQL / REST</span></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="tabs" id="tabs"></div>
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-note">Generated from Salesforce Metadata API v60.0 reference</span>
+    <div class="footer-apis">
+      <a class="api-link" href="https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_intro.htm" target="_blank">Metadata API Docs ↗</a>
+      <a class="api-link" href="https://developer.salesforce.com/docs/atlas.en-us.api_tooling.meta/api_tooling/intro_api_tooling.htm" target="_blank">Tooling API Docs ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const deliverables = [
+  {
+    id:"meta_inv", label:"Metadata Inventory", cat:"Foundation",
+    desc:"Complete catalog of all metadata components in the org — objects, fields, classes, flows, layouts, etc.",
+    metadata:["CustomObject","CustomField","CustomApplication","Layout","RecordType","CustomTab","CustomLabel","GlobalValueSet","CustomPermission","CustomSite","CustomObjectTranslation"],
+    tooling:[],
+    soql:["EntityDefinition","FieldDefinition","EntityParticle"],
+    access:["View Setup and Configuration","Modify All Data OR View Setup","API Enabled","Metadata API access"],
+    outputs:["Component count by type","API names + labels","Last modified dates","Created / modified by","Namespace prefix (managed packages)"]
+  },
+  {
+    id:"data_model", label:"Data Model Analysis", cat:"Foundation",
+    desc:"Schema analysis: objects, fields, relationships, picklist values, validation rules, field utilisation.",
+    metadata:["CustomObject","CustomField","CustomMetadata","ValidationRule","FieldSet","CompactLayout","GlobalValueSet","PicklistValue"],
+    tooling:["CustomObject","CustomField"],
+    soql:["EntityDefinition","FieldDefinition","FieldHistoryRetention"],
+    access:["View Setup and Configuration","Modify All Data (for field utilisation sampling)","API Enabled"],
+    outputs:["ERD / object relationship map","Field count per object","Lookup vs master-detail breakdown","Custom vs standard ratio","Picklist values inventory","Validation rule logic export"]
+  },
+  {
+    id:"data_quality", label:"Data Quality Report", cat:"Foundation",
+    desc:"Null rates, duplicate rates, stale records, formula/rollup errors — requires data-level access.",
+    metadata:["DuplicateRule","MatchingRule"],
+    tooling:[],
+    soql:["All primary objects (Account, Contact, Lead, Opportunity…)","AsyncApexJob (for batch errors)"],
+    access:["View All Data","Modify All Data (for fix scripts)","Reports & Dashboards access","API Enabled"],
+    outputs:["Null-rate heatmap per field","Duplicate record count","Stale record age distribution","Formula error frequency","Duplicate rules coverage map"]
+  },
+  {
+    id:"security", label:"Security & Governance Audit", cat:"Governance",
+    desc:"OWD, sharing rules, profiles, permission sets, field-level security, IP restrictions, password policy.",
+    metadata:["Profile","PermissionSet","PermissionSetGroup","SharingRules","Role","CustomPermission","AuthProvider","ConnectedApp","CertificateAndKeyManagement","SecuritySettings","PasswordPolicies","SessionSettings","OrgPreferenceSettings","NetworkAccess"],
+    tooling:[],
+    soql:["SetupAuditTrail","PermissionSetAssignment","LoginHistory","UserLogin"],
+    access:["View Setup and Configuration","Manage Users","Manage Password Policies","API Enabled"],
+    outputs:["OWD matrix","Profile vs PermSet coverage","FLS heatmap","IP allowlist","SSO / MFA status","Users with Modify All / View All","SetupAuditTrail anomalies"]
+  },
+  {
+    id:"automation", label:"Automation Review", cat:"Logic",
+    desc:"Flows, Process Builders, Workflow Rules, Triggers, Assignment/Escalation rules — overlap and ordering.",
+    metadata:["Flow","WorkflowRule","AssignmentRule","EscalationRule","AutoResponseRule","MilestoneType","EntitlementProcess"],
+    tooling:["FlowDefinition","FlowVersionView","ApexTrigger"],
+    soql:["AsyncApexJob","ApexTrigger","FlowDefinition"],
+    access:["View Setup and Configuration","Manage Flow","View All Data","API Enabled"],
+    outputs:["Automation inventory by object","Active vs inactive","Trigger order analysis","Process Builder → Flow migration candidates","Governor limit risk flags"]
+  },
+  {
+    id:"reports", label:"Reports & Dashboards Inventory", cat:"Analytics",
+    desc:"All reports, dashboards, list views — ownership, last-run dates, public vs private.",
+    metadata:["Report","Dashboard","ListView"],
+    tooling:[],
+    soql:["Report","Dashboard","FolderedContentDocument","ReportFeed"],
+    access:["View All Data","Manage Reports in Public Folders","API Enabled"],
+    outputs:["Report count by folder/owner","Last-run date distribution","Stale report candidates","Dashboard component types","Unused report identification"]
+  },
+  {
+    id:"integration", label:"Integration Analysis", cat:"Architecture",
+    desc:"Connected Apps, Named Credentials, API usage, Remote Sites, external objects, platform events.",
+    metadata:["ConnectedApp","NamedCredential","RemoteSiteSetting","ExternalDataSource","PlatformEventChannel","ExternalServiceRegistration","Certificate"],
+    tooling:[],
+    soql:["EventLogFile (API event type)","ApiEvent","RestApiEvent","PlatformEventUsageMetric"],
+    access:["View Setup and Configuration","Manage Connected Apps","View Event Log Files","API Enabled"],
+    outputs:["Connected App inventory + OAuth scopes","Named Credential list","API call volume by endpoint","Event Bus subscription map","External object sources"]
+  },
+  {
+    id:"code_quality", label:"Code Quality Report", cat:"Logic",
+    desc:"Apex classes, triggers, Visualforce pages, LWC, Aura — complexity, code smells, deprecated APIs.",
+    metadata:["ApexClass","ApexTrigger","ApexPage","LightningComponentBundle","AuraDefinitionBundle","StaticResource"],
+    tooling:["ApexClass","ApexTrigger","ApexClassMember","ContainerAsyncRequest"],
+    soql:["ApexClass","ApexTrigger","ApexPage"],
+    access:["Author Apex","View Setup and Configuration","API Enabled","Tooling API access"],
+    outputs:["Class/trigger inventory + line counts","Cyclomatic complexity scores","Deprecated method usage","Hard-coded IDs","SOQL-in-loops detection","LWC vs Aura ratio"]
+  },
+  {
+    id:"test_coverage", label:"Test Coverage Report", cat:"Logic",
+    desc:"Apex test results, class-level coverage, org-wide aggregate — requires running tests or reading last results.",
+    metadata:["ApexClass","ApexTestSuite"],
+    tooling:["ApexCodeCoverageAggregate","ApexCodeCoverage","ApexTestResult","ApexTestRunResult","ApexOrgWideCoverage"],
+    soql:["ApexTestResult","ApexTestRunResult"],
+    access:["Author Apex","View Setup and Configuration","Run Apex Tests","Tooling API access"],
+    outputs:["Org-wide coverage %","Per-class coverage table","Zero-coverage classes","Test class assertion density","Slowest tests list","Coverage trend (if history available)"]
+  },
+  {
+    id:"change_history", label:"Change History Audit", cat:"Governance",
+    desc:"SetupAuditTrail, field history tracking, version control cross-reference.",
+    metadata:["FieldHistoryRetention","Flow (versioned)","ApexClass (versioned via Tooling API)"],
+    tooling:["ApexClass (CreatedDate/LastModifiedDate)","FlowVersionView"],
+    soql:["SetupAuditTrail","FieldHistory on key objects","LoginHistory"],
+    access:["View Setup and Configuration","View All Data (for field history)","API Enabled"],
+    outputs:["180-day setup change log","Who changed what and when","Field history coverage map","Flow version history","Recent permission changes"]
+  },
+  {
+    id:"team_eval", label:"Team Evaluation", cat:"People",
+    desc:"User licenses, profiles, roles, active vs inactive users, login frequency, last login.",
+    metadata:["Profile","Role","PermissionSet","PermissionSetGroup","Territory"],
+    tooling:[],
+    soql:["User","UserLogin","LoginHistory","PermissionSetAssignment","UserLicense"],
+    access:["Manage Users","View Setup and Configuration","API Enabled"],
+    outputs:["Active user count by license type","Role hierarchy map","Last-login distribution","Admin user list","Inactive users consuming licenses","Permission set assignment matrix"]
+  },
+  {
+    id:"tech_impact", label:"Technical Impact Assessment", cat:"Architecture",
+    desc:"Cross-reference of components — which fields/objects are used in flows, code, reports, layouts.",
+    metadata:["CustomObject","CustomField","Flow","ApexClass","Layout","ValidationRule","Report"],
+    tooling:["MetadataComponentDependency"],
+    soql:["EntityDefinition","FieldDefinition"],
+    access:["View Setup and Configuration","Tooling API access","API Enabled"],
+    outputs:["Dependency graph (field → flow → class)","Safe-to-delete candidates","High-risk components (many dependents)","Orphaned components","Impact matrix for proposed changes"]
+  },
+  {
+    id:"arch", label:"Architectural Analysis", cat:"Architecture",
+    desc:"Org edition, limits consumption, governor limit headroom, multi-org topology, package inventory.",
+    metadata:["InstalledPackage","CustomObject","ExternalDataSource","PlatformEventChannel"],
+    tooling:[],
+    soql:["Organization","UserLicense","LimitsInfo (REST /services/data/vXX/limits)","InstalledSubscriberPackage"],
+    access:["View Setup and Configuration","Manage Installed Packages","API Enabled"],
+    outputs:["Edition + API version","Installed packages + versions","Governor limit utilisation %","Data storage used vs allocated","File storage","API request budget"]
+  },
+  {
+    id:"exec", label:"Executive Assessment", cat:"Outputs",
+    desc:"Board-level summary synthesised from all other reports — health score, risk register, cost exposure.",
+    metadata:["(all of the above)"],
+    tooling:[],
+    soql:["(all of the above)"],
+    access:["All permissions above","Read access to all objects"],
+    outputs:["Org health score (0–100)","Top 5 risks with severity","Technical debt estimate","License cost optimisation opportunities","Strategic recommendations"]
+  },
+  {
+    id:"customer", label:"Customer Report", cat:"Outputs",
+    desc:"Client-facing report summarising findings — plain-language, no internal tooling detail.",
+    metadata:["(derived from other analyses)"],
+    tooling:[],
+    soql:[],
+    access:["No additional access — uses outputs from other reports"],
+    outputs:["Executive summary","Data model overview","Security posture","Automation health","Integration landscape","Prioritised recommendations"]
+  },
+  {
+    id:"engagement", label:"Strategic Engagement Plan", cat:"Outputs",
+    desc:"Roadmap for remediating findings — phased work packages, effort estimates, prioritisation.",
+    metadata:[],
+    tooling:[],
+    soql:[],
+    access:["No direct Salesforce access required — synthesised from findings"],
+    outputs:["Phase 1/2/3 workstreams","Effort estimates per item","Quick wins vs strategic investments","Success metrics per workstream","Stakeholder responsibility matrix"]
+  },
+  {
+    id:"tech_brief", label:"Technical Team Briefing", cat:"Outputs",
+    desc:"Developer-facing deep-dive: code quality, test coverage, automation conflicts, debt backlog.",
+    metadata:["(derived from Code Quality + Test Coverage + Automation)"],
+    tooling:[],
+    soql:[],
+    access:["No additional access required"],
+    outputs:["Apex refactoring list","Test gap backlog","Flow conflict map","SOQL/DML optimisation hotlist","Deprecated API migration list"]
+  },
+  {
+    id:"licensing", label:"Licensing Analysis", cat:"Commercial",
+    desc:"License utilisation vs allocation — over-licensed, under-utilised, and upsell/downsell opportunities.",
+    metadata:["Profile","PermissionSet"],
+    tooling:[],
+    soql:["User","UserLicense","PermissionSetLicense","PermissionSetAssignment","UserPackageLicense","LightningUsageByAppTypeMetrics"],
+    access:["Manage Users","View Setup and Configuration","API Enabled","Salesforce Contract Manager (for entitlement data)"],
+    outputs:["License type × count × cost","Utilisation rate per license type","Last-login vs license cost per user","Add-on licence audit (Marketing Cloud, CPQ, etc.)","Estimated annual saving from right-sizing"]
+  }
+];
+
+const categories = ["Foundation","Logic","Architecture","Governance","Analytics","People","Commercial","Outputs"];
+let active = "all";
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  let html = `<button class="tab ${active==='all'?'active':''}" onclick="setTab('all')">All <span class="count-badge">${deliverables.length}</span></button>`;
+  categories.forEach(c => {
+    const count = deliverables.filter(d=>d.cat===c).length;
+    if (!count) return;
+    html += `<button class="tab ${active===c?'active':''}" onclick="setTab('${c}')">${c} <span class="count-badge">${count}</span></button>`;
+  });
+  el.innerHTML = html;
+}
+
+function renderGrid() {
+  const items = active === 'all' ? deliverables : deliverables.filter(d=>d.cat===active);
+  const el = document.getElementById('grid');
+  if (!items.length) { el.innerHTML = '<div class="no-items">No deliverables in this category.</div>'; return; }
+  el.innerHTML = items.map(d => `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">${d.label}</div>
+        <span class="cat-badge cat-${d.cat}">${d.cat}</span>
+      </div>
+      <div class="card-desc">${d.desc}</div>
+      ${d.metadata.length ? `<div class="section-label">Metadata API</div><div class="pill-row">${d.metadata.map(m=>`<span class="pill meta">${m}</span>`).join('')}</div>` : ''}
+      ${d.tooling.length ? `<div class="section-label">Tooling API</div><div class="pill-row">${d.tooling.map(m=>`<span class="pill tooling">${m}</span>`).join('')}</div>` : ''}
+      ${d.soql.length ? `<div class="section-label">SOQL / REST</div><div class="pill-row">${d.soql.map(m=>`<span class="pill soql">${m}</span>`).join('')}</div>` : ''}
+      <div class="access-outputs">
+        <div class="detail-box">
+          <div class="section-label">Access required</div>
+          <ul class="detail-list">${d.access.map(a=>`<li>${a}</li>`).join('')}</ul>
+        </div>
+        <div class="detail-box">
+          <div class="section-label">Key outputs</div>
+          <ul class="detail-list">${d.outputs.map(o=>`<li>${o}</li>`).join('')}</ul>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setTab(t) { active = t; renderTabs(); renderGrid(); }
+
+renderTabs();
+renderGrid();
+</script>
+</body>
+</html>
