@@ -22,28 +22,22 @@
   h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: #1a1a18; margin-bottom: 4px; }
   .subtitle { font-size: 13px; color: #777770; font-weight: 300; }
 
-  /* Legend */
   .legend { display: flex; flex-wrap: wrap; gap: 14px; max-width: 1240px; margin: 0 auto 20px; }
   .leg { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #666660; }
   .leg-swatch { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
 
-  /* Outer wrapper */
   .table-wrap { max-width: 1240px; margin: 0 auto; background: #fff; border-radius: 12px; border: 1px solid #e2e0d8; overflow: hidden; }
 
-  /* The main grid: label col + 7 phase cols */
   .phase-grid {
     display: grid;
     grid-template-columns: 148px repeat(7, 1fr);
     column-gap: 5px;
-    row-gap: 0;
-    padding: 0;
   }
 
-  /* Column header row */
   .col-header {
     background: #f5f4f0;
     border-bottom: 1px solid #e2e0d8;
-    padding: 10px 6px 10px;
+    padding: 10px 6px;
     text-align: center;
     font-size: 10px;
     font-weight: 500;
@@ -61,7 +55,6 @@
   .col-header.p-deploy   { color: #993556; background: #FDF0F5; }
   .col-header.p-run      { color: #5F5E5A; background: #F3F2EE; }
 
-  /* Group header — full-width banner */
   .group-banner {
     grid-column: 1 / -1;
     background: #1a1a18;
@@ -73,7 +66,6 @@
     padding: 8px 14px;
   }
 
-  /* Provider row wrapper — one per provider */
   .provider-row {
     grid-column: 1 / -1;
     display: grid;
@@ -87,14 +79,10 @@
   .provider-row:last-child { border-bottom: none; }
   .provider-row:hover { background: #faf9f6; }
 
-  /* Provider label */
-  .prov-label {
-    padding: 0 10px 0 14px;
-  }
+  .prov-label { padding: 0 10px 0 14px; }
   .prov-name { font-weight: 500; font-size: 13px; color: #1a1a18; white-space: nowrap; }
   .prov-sub  { font-size: 11px; color: #aaa9a2; margin-top: 2px; }
 
-  /* Phase pill */
   .pill {
     display: flex;
     align-items: center;
@@ -110,12 +98,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: filter 0.12s, transform 0.1s;
   }
-
-  /* spanning pills need to fill width */
+  .pill[data-tip] { cursor: default; }
+  .pill[data-tip]:hover { filter: brightness(0.93); transform: translateY(-1px); }
   .pill.span { white-space: normal; }
 
-  /* Colors */
   .p-discover { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
   .p-analyze  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
   .p-design   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
@@ -124,14 +112,41 @@
   .p-deploy   { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
   .p-run      { background: #F1EFE8; border-color: #B4B2A9; color: #444441; }
 
-  /* Empty cell placeholder */
   .empty { height: 44px; }
+
+  /* Tooltip */
+  #tt {
+    position: fixed;
+    display: none;
+    z-index: 9999;
+    max-width: 290px;
+    background: #1a1a18;
+    color: #e8e6de;
+    border-radius: 9px;
+    padding: 11px 15px;
+    pointer-events: none;
+  }
+  #tt-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888880;
+    margin-bottom: 6px;
+  }
+  #tt-body {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #dddbd2;
+  }
 
   footer { max-width: 1240px; margin: 16px auto 0; font-size: 11px; color: #aaa; display: flex; justify-content: space-between; }
 
   @media print {
     body { background: #fff; padding: 16px; }
     .table-wrap { border: 1px solid #ccc; }
+    #tt { display: none !important; }
   }
 </style>
 </head>
@@ -140,7 +155,7 @@
 <header>
   <div class="eyebrow">SI &amp; SaaS Vendor Analysis</div>
   <h1>Implementation Methodology Comparison</h1>
-  <p class="subtitle">Top-level phases aligned by lifecycle stage — hover to compare across providers</p>
+  <p class="subtitle">Top-level phases aligned by lifecycle stage — hover any phase for background &amp; justification</p>
 </header>
 
 <div class="legend">
@@ -156,7 +171,6 @@
 <div class="table-wrap">
   <div class="phase-grid">
 
-    <!-- Column headers -->
     <div class="col-header label-col">Provider</div>
     <div class="col-header p-discover">Discover<br>/ Plan</div>
     <div class="col-header p-analyze">Analyze<br>/ Define</div>
@@ -166,184 +180,264 @@
     <div class="col-header p-deploy">Deploy<br>/ Go-live</div>
     <div class="col-header p-run">Run<br>/ Operate</div>
 
-    <!-- ── RECOMMENDED ── -->
+    <!-- RECOMMENDED -->
     <div class="group-banner" style="background:#2a4a2a;color:#a8c8a8;">Recommended</div>
-
-    <!-- Recommended (formerly Traditional) -->
     <div class="provider-row" style="background:#f6faf6;">
       <div class="prov-label"><div class="prov-name" style="color:#2a4a2a;">Recommended</div><div class="prov-sub">Best practice</div></div>
-      <div class="pill p-discover" style="grid-column:2">Plan</div>
-      <div class="pill p-analyze" style="grid-column:3">Analyze</div>
-      <div class="pill p-design" style="grid-column:4">Design</div>
-      <div class="pill p-build span" style="grid-column:5/7">Deliver</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
-      <div class="pill p-run" style="grid-column:8">Operate</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Plan|Establish project scope, governance, and stakeholder alignment. Produce a detailed project plan covering timelines, budget, roles, and a change management strategy.">Plan</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Analyze|Gather and document business requirements. Run gap-fit analysis and map current processes to identify pain points and future-state needs.">Analyze</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Design|Define solution architecture, data model, and integration approach. Produce a functional blueprint and solution design document signed off by stakeholders.">Design</div>
+      <div class="pill p-build span" style="grid-column:5/7"
+        data-tip="Deliver|Configure, build, and test the solution iteratively. Covers unit testing, system integration testing (SIT), and user acceptance testing (UAT) within the same delivery phase.">Deliver</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Execute go-live cutover, migrate data to production, deliver end-user training, and confirm system readiness before cut-over.">Deploy</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Operate|Provide ongoing hypercare, BAU support, and continuous improvement. Includes platform optimisation and preparation for subsequent release cycles.">Operate</div>
     </div>
 
-    <!-- ── SALESFORCE ── -->
+    <!-- SALESFORCE -->
     <div class="group-banner">Salesforce (from your document)</div>
 
     <!-- D360 Partner -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">D360 Partner</div><div class="prov-sub">Salesforce</div></div>
-      <!-- col 2: Prepare (discover) -->
-      <div class="pill p-discover" style="grid-column:2">Prepare</div>
-      <!-- cols 3–7: Implement (spans analyze → deploy) -->
-      <div class="pill p-build span" style="grid-column:3/8; flex-direction:column; height:auto; padding: 6px 8px; gap:5px;">
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Prepare|Project initiation and mobilisation. Covers team setup, governance structure, initial scoping, and environment provisioning before any delivery work begins.">Prepare</div>
+      <div class="pill p-build span" style="grid-column:3/8; flex-direction:column; height:auto; padding:6px 8px; gap:5px;"
+        data-tip="Implement|A single broad execution phase encompassing all delivery from requirements through to deployment. Internally structured into five sub-steps: Plan, Architect, Construct, Validate, and Deploy.">
         <span style="font-size:12px;font-weight:600;">Implement</span>
         <div style="display:flex;gap:4px;width:100%;">
-          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Plan</span>
-          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Architect</span>
-          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Construct</span>
-          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Validate</span>
-          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Deploy</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Plan</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Architect</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Construct</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Validate</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Deploy</span>
         </div>
       </div>
-      <!-- col 8: Run & Operate -->
-      <div class="pill p-run" style="grid-column:8">Run &amp; Operate</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Run &amp; Operate|Post go-live hypercare, managed services, and continuous platform improvement. Includes monitoring, incident management, and preparation for future release waves.">Run &amp; Operate</div>
     </div>
 
     <!-- Professional Services -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Professional Services</div><div class="prov-sub">Salesforce</div></div>
-      <div class="pill p-discover" style="grid-column:2">Discover</div>
-      <div class="pill p-analyze" style="grid-column:3">Define</div>
-      <div class="pill p-design" style="grid-column:4">Design</div>
-      <!-- cols 5–7: Deploy (build+test+deploy merged) -->
-      <div class="pill p-deploy span" style="grid-column:5/8">Deploy</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Discover|Business case development, use case definition, and initial stakeholder alignment. Sets the strategic intent and high-level scope for the engagement.">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Define|Planning workshops, solution design outline, and WBS plan creation. Overlaps significantly with Discover in practice — the boundary between the two phases is often unclear.">Define</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Design|Solution design and functional specifications. In practice not formally distinct from Define; the two are often run concurrently without clear exit criteria.">Design</div>
+      <div class="pill p-deploy span" style="grid-column:5/8"
+        data-tip="Deploy|Combines build, test, and rollout into a single phase with no formal separation between them. Includes configuration, UAT, training, and go-live — a noted gap in this model.">Deploy</div>
       <div class="empty" style="grid-column:8"></div>
     </div>
 
     <!-- FDE -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">FDE</div><div class="prov-sub">Salesforce</div></div>
-      <!-- cols 2–3: Prepare (discover+analyze merged) -->
-      <div class="pill p-discover span" style="grid-column:2/4">Prepare</div>
-      <div class="pill p-design" style="grid-column:4">Design</div>
-      <!-- cols 5–6: Deliver (build+test) -->
-      <div class="pill p-build span" style="grid-column:5/7">Deliver</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-discover span" style="grid-column:2/4"
+        data-tip="Prepare|Uniquely bundles discovery and analysis. Covers scope definition, architecture decisions, process mapping, and user story development — analysis and high-level design are merged into one phase.">Prepare</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Design|Agent opportunity identification, detailed process design, user stories, and data model finalisation. Picks up from the architecture work established in Prepare.">Design</div>
+      <div class="pill p-build span" style="grid-column:5/7"
+        data-tip="Deliver|Combined build and test phase. Covers configuration, development, system integration testing (SIT), and UAT — the clearest build/test grouping of the Salesforce models.">Deliver</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Rollout execution, data cutover, end-user training, and hypercare. FDE has the most explicit deploy gate of the Salesforce approaches.">Deploy</div>
       <div class="empty" style="grid-column:8"></div>
     </div>
 
-    <!-- ── TOP-TIER SIs ── -->
+    <!-- TOP-TIER SIs -->
     <div class="group-banner">Top-Tier System Integrators</div>
 
     <!-- Accenture -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Accenture</div><div class="prov-sub">MyConcerto</div></div>
-      <div class="pill p-discover" style="grid-column:2">Discover</div>
-      <!-- cols 3–4: Design (analyze+design merged) -->
-      <div class="pill p-design span" style="grid-column:3/5">Design</div>
-      <!-- cols 5–6: Scale (build+test) -->
-      <div class="pill p-build span" style="grid-column:5/8">Scale</div>
-      <div class="pill p-run" style="grid-column:8">Sustain</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Discover|Rapid diagnostics using MyConcerto platform. Defines the to-be architecture, creates the business case, and establishes value drivers. Focused on speed-to-value from day one.">Discover</div>
+      <div class="pill p-design span" style="grid-column:3/5"
+        data-tip="Design|Uses industry-specific templates and Design Thinking to accelerate solution blueprinting. Analysis and design are merged — Accenture leans on pre-built assets to skip traditional requirements phases.">Design</div>
+      <div class="pill p-build span" style="grid-column:5/8"
+        data-tip="Scale|Provisions systems into environments and executes iterative build, test, and deployment sprints. Spans build through go-live — Accenture's broadest phase, reflecting their accelerator-driven delivery model.">Scale</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Sustain|Uses AI and automation for continuous performance monitoring, optimisation, and managed services. Explicitly treats operations as a named methodology phase — a differentiator from most SI models.">Sustain</div>
     </div>
 
     <!-- IBM -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">IBM</div><div class="prov-sub">Standard SDLC</div></div>
-      <div class="pill p-discover" style="grid-column:2">Planning</div>
-      <div class="pill p-analyze" style="grid-column:3">Analysis</div>
-      <div class="pill p-design" style="grid-column:4">Design</div>
-      <div class="pill p-build" style="grid-column:5">Coding</div>
-      <div class="pill p-test" style="grid-column:6">Testing</div>
-      <div class="pill p-deploy" style="grid-column:7">Deployment</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Planning|Scope definition, feasibility assessment, project charter, and resource planning. IBM's most structured phase — nothing proceeds without formal sign-off. Most gate-controlled of all models.">Planning</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Analysis|Detailed requirements documentation, stakeholder interviews, gap analysis, and the Software Requirements Specification (SRS). The most thorough analysis phase of any model in this comparison.">Analysis</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Design|Technical architecture definition, database design, and the Software Design Document (SDD). IBM maintains the strictest separation between analysis and design — no overlap permitted.">Design</div>
+      <div class="pill p-build" style="grid-column:5"
+        data-tip="Coding|Development and configuration based on the approved SDD. IBM's waterfall heritage means no parallel testing — build must be fully complete before testing begins.">Coding</div>
+      <div class="pill p-test" style="grid-column:6"
+        data-tip="Testing|Dedicated standalone testing phase covering unit, integration, performance, and UAT. IBM is the only model in this comparison with a fully independent testing phase.">Testing</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deployment|Production cutover, end-user training, and handover to support. IBM requires all test defects to be formally resolved before the deployment gate is opened.">Deployment</div>
       <div class="empty" style="grid-column:8"></div>
     </div>
 
     <!-- PwC -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">PwC</div><div class="prov-sub">Accelerate</div></div>
-      <!-- cols 2–3: Assess (discover+analyze) -->
-      <div class="pill p-discover span" style="grid-column:2/4">Assess</div>
-      <div class="pill p-design" style="grid-column:4">Design</div>
-      <div class="pill p-build" style="grid-column:5">Build</div>
-      <div class="pill p-test" style="grid-column:6">Test</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-discover span" style="grid-column:2/4"
+        data-tip="Assess|Combines discovery and analysis. Covers business case, maturity assessment, stakeholder alignment, and roadmap definition — PwC front-loads strategic alignment before any design or configuration begins.">Assess</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Design|Solution design, process re-engineering, and fit-gap workshops. PwC emphasises business process redesign before any configuration begins — a key differentiator from lighter-touch models.">Design</div>
+      <div class="pill p-build" style="grid-column:5"
+        data-tip="Build|Configuration, integration build, and data migration sprints. PwC maintains a clean separation between Build and Test, unlike Deloitte or Accenture which merge them.">Build</div>
+      <div class="pill p-test" style="grid-column:6"
+        data-tip="Test|System integration testing (SIT), UAT, and performance testing. Formal entry and exit criteria gate progress from Build to Test and from Test to Deploy.">Test</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Go-live cutover, hypercare, and stabilisation. PwC treats deployment as a distinct managed phase with formal cutover planning and a defined stabilisation period.">Deploy</div>
       <div class="empty" style="grid-column:8"></div>
     </div>
 
     <!-- Deloitte -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Deloitte</div><div class="prov-sub">CloudSuite / Hybrid</div></div>
-      <div class="pill p-discover" style="grid-column:2">Strategy</div>
-      <!-- cols 3–4: Assess & Design -->
-      <div class="pill p-design span" style="grid-column:3/5">Assess &amp; Design</div>
-      <!-- cols 5–6: Build & Test -->
-      <div class="pill p-build span" style="grid-column:5/7">Build &amp; Test</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
-      <div class="pill p-run" style="grid-column:8">Operate</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Strategy|Vision definition, business case, and cloud-readiness assessment. Deloitte labels this Strategy to signal a broader digital transformation intent beyond simple system implementation.">Strategy</div>
+      <div class="pill p-design span" style="grid-column:3/5"
+        data-tip="Assess &amp; Design|Fit-gap analysis, architecture, and data strategy run concurrently as iterative design sessions. Analysis and design are deliberately merged to accelerate cloud-first deployments.">Assess &amp; Design</div>
+      <div class="pill p-build span" style="grid-column:5/7"
+        data-tip="Build &amp; Test|Agile sprint cycles that combine build and test into continuous iterations. Deloitte's hybrid approach means defects are caught and fixed within the same sprint — no separate test gate.">Build &amp; Test</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Go-live execution, change management activation, and user adoption activities. Deloitte places heavy emphasis on OCM (Organisational Change Management) during this phase.">Deploy</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Operate|Managed services, continuous optimisation, and platform enhancement post go-live. Deloitte's Operate phase is formally scoped and contracted separately from the implementation engagement.">Operate</div>
     </div>
 
-    <!-- ── SaaS / ERP ── -->
+    <!-- SaaS / ERP -->
     <div class="group-banner">SaaS &amp; ERP Vendors</div>
 
     <!-- SAP Activate -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">SAP Activate</div><div class="prov-sub">S/4HANA Cloud</div></div>
-      <div class="pill p-discover" style="grid-column:2">Discover</div>
-      <div class="pill p-analyze" style="grid-column:3">Prepare</div>
-      <div class="pill p-design" style="grid-column:4">Explore</div>
-      <!-- cols 5–6: Realize (build+test merged) -->
-      <div class="pill p-build span" style="grid-column:5/7">Realize</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
-      <div class="pill p-run" style="grid-column:8">Run</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Discover|Provides access to a trial system for initial value discovery. Teams validate the business case and confirm which SAP capabilities align to their requirements before committing to the project.">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Prepare|Project governance, team onboarding, environment provisioning, and infrastructure setup. A dedicated phase just for standing up the project and technical landscape — unique to SAP Activate.">Prepare</div>
+      <div class="pill p-design" style="grid-column:4"
+        data-tip="Explore|Fit-to-standard workshops: teams map business processes to standard SAP capabilities and document gaps. The goal is to adopt the standard rather than customise — a core SAP cloud deployment principle.">Explore</div>
+      <div class="pill p-build span" style="grid-column:5/7"
+        data-tip="Realize|The core execution phase — covers configuration, data migration, integration build, extensibility, and all testing (SIT and UAT). SAP bundles build and test to enforce iterative validation throughout.">Realize</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Final cutover to production, go-live execution, and hypercare. SAP requires formal cutover planning and a go/no-go sign-off gate before production access is granted.">Deploy</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Run|Transition to operations, continuous improvement, and ongoing SAP support. Includes preparation for SAP's quarterly cloud release cycle and long-term value realisation planning.">Run</div>
     </div>
 
     <!-- Oracle OUM -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Oracle OUM</div><div class="prov-sub">Unified Method</div></div>
-      <div class="pill p-discover" style="grid-column:2">Inception</div>
-      <div class="pill p-analyze" style="grid-column:3">Elaboration</div>
-      <!-- cols 4–6: Construction (design+build+test) -->
-      <div class="pill p-build span" style="grid-column:4/7">Construction</div>
-      <div class="pill p-deploy" style="grid-column:7">Transition</div>
-      <div class="pill p-run" style="grid-column:8">Production</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Inception|Achieves stakeholder concurrence on project objectives and scope. Produces the initial architecture vision and business case. More governance-focused than discovery-focused compared to other models.">Inception</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Elaboration|Develops detailed requirements and establishes the architecture baseline. Risk reduction is a primary goal — major technical unknowns must be resolved before Construction begins.">Elaboration</div>
+      <div class="pill p-build span" style="grid-column:4/7"
+        data-tip="Construction|The broadest phase in Oracle OUM — spans design, implementation, and testing of all functional units. Oracle merges these deliberately to reflect real-world delivery where design and build are iterative, not sequential.">Construction</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Transition|Installation, user acceptance, and Go Production cutover. Oracle's Transition phase explicitly includes business readiness validation, not just technical deployment activities.">Transition</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Production|Ongoing support, optimisation, and enhancements in the live environment. Oracle OUM treats Production as a named methodology phase with defined activities, not merely a support contract.">Production</div>
     </div>
 
     <!-- Microsoft D365 -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Microsoft</div><div class="prov-sub">Dynamics 365</div></div>
-      <div class="pill p-discover" style="grid-column:2">Discover</div>
-      <div class="pill p-analyze" style="grid-column:3">Initiate</div>
-      <!-- cols 4–5: Implement (design+build merged) -->
-      <div class="pill p-build span" style="grid-column:4/6">Implement</div>
-      <div class="pill p-test span" style="grid-column:6/8">Prepare</div>
-      <div class="pill p-run" style="grid-column:8">Operate</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Discover|Envisioning workshops, business case development, and solution roadmap definition. Microsoft's Success by Design framework uses this phase to align business goals to Dynamics 365 capabilities.">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3"
+        data-tip="Initiate|Project governance setup, environment provisioning, and confirmation of in-scope workstreams. Includes the Solution Blueprint review — a Success by Design gate that must be passed before Implement begins.">Initiate</div>
+      <div class="pill p-build span" style="grid-column:4/6"
+        data-tip="Implement|Iterative design and build sprints. Solution blueprinting, configuration, and development are combined — Microsoft's hybrid methodology merges waterfall planning with agile sprint execution.">Implement</div>
+      <div class="pill p-test span" style="grid-column:6/8"
+        data-tip="Prepare|Pre-go-live readiness covering UAT, data migration validation, end-user training, cutover planning, and the formal go/no-go gate. Note: 'Prepare' here is near the end — unlike SAP where Prepare is near the start.">Prepare</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Operate|Go-live support, stabilisation, and hypercare. Transitions to the FastTrack for Dynamics 365 support model and ongoing platform managed services.">Operate</div>
     </div>
 
     <!-- ServiceNow -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">ServiceNow</div><div class="prov-sub">Now Create / SIM</div></div>
-      <div class="pill p-discover" style="grid-column:2">Initiate</div>
-      <!-- cols 3–4: Prepare (analyze + design — process workshops, requirements finalisation) -->
-      <div class="pill p-analyze span" style="grid-column:3/5">Prepare</div>
-      <!-- cols 5–6: Create (agile scrum build + UAT) -->
-      <div class="pill p-build span" style="grid-column:5/7">Create</div>
-      <div class="pill p-deploy" style="grid-column:7">Transition</div>
-      <div class="pill p-run" style="grid-column:8">Close</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Initiate|Project vision and scope definition, stakeholder identification, governance structure, team kickoff, and environment setup. SIM formally kicks off here before any workshop or design activity begins.">Initiate</div>
+      <div class="pill p-analyze span" style="grid-column:3/5"
+        data-tip="Prepare|Process and platform workshops to understand business needs. Finalises configuration requirements (user stories) and engagement timeline. Analysis and design are merged — Prepare produces the backlog that drives Create.">Prepare</div>
+      <div class="pill p-build span" style="grid-column:5/7"
+        data-tip="Create|Agile Scrum cycles to configure and build the solution. Iterative sprints combine build and UAT with transparent reporting — uses ServiceNow's own PPM and Test Management tools on the Now Platform.">Create</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Transition|Supports UAT sign-off, customer support readiness, go-live execution, and post go-live hypercare. Partners are accountable for ensuring the customer can operate independently before Close.">Transition</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Close|Formal engagement closure, lessons learned review, and success assessment against outcomes defined at Initiate. Unique to SIM — most other methodologies omit a formal closure gate.">Close</div>
     </div>
 
     <!-- Workday -->
     <div class="provider-row">
       <div class="prov-label"><div class="prov-name">Workday</div><div class="prov-sub">Launch Methodology</div></div>
-      <div class="pill p-discover" style="grid-column:2">Plan</div>
-      <!-- cols 3–4: Architect (foundation tenant, alignment sessions — analysis + design) -->
-      <div class="pill p-design span" style="grid-column:3/5">Architect</div>
-      <div class="pill p-build" style="grid-column:5">Configure</div>
-      <div class="pill p-test" style="grid-column:6">Test</div>
-      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
-      <div class="pill p-run" style="grid-column:8">Support</div>
+      <div class="pill p-discover" style="grid-column:2"
+        data-tip="Plan|Project scope, team assembly, timeline, budget, change management strategy, and governance. Workday requires a detailed data migration plan and legacy system inventory to be produced in this phase.">Plan</div>
+      <div class="pill p-design span" style="grid-column:3/5"
+        data-tip="Architect|Foundation tenant setup and Customer Confirmation Sessions where stakeholders review pre-configured Workday design and make final configuration decisions. Combines analysis and design — the 80% standard configuration target is set here.">Architect</div>
+      <div class="pill p-build" style="grid-column:5"
+        data-tip="Configure|Build the Gold tenant based on confirmed Architect decisions. Covers full configuration, integration build, and data migration preparation. Workday separates Configure from Test more cleanly than most other vendor methodologies.">Configure</div>
+      <div class="pill p-test" style="grid-column:6"
+        data-tip="Test|Multi-stage testing: unit testing per module, end-to-end testing across the full employee lifecycle, and parallel payroll testing run alongside the legacy system to verify pay accuracy before go-live.">Test</div>
+      <div class="pill p-deploy" style="grid-column:7"
+        data-tip="Deploy|Move to Production (MTP) — finalises the Gold tenant, executes final data load, and completes the Go-Live Checklist. A blackout period (typically 2+ weeks) freezes legacy system changes before cutover.">Deploy</div>
+      <div class="pill p-run" style="grid-column:8"
+        data-tip="Support|Post go-live hypercare, optimisation, and ongoing support. Includes preparation for Workday's bi-annual release cycle and management of follow-on phases of functionality rollout.">Support</div>
     </div>
 
-  </div><!-- /phase-grid -->
-</div><!-- /table-wrap -->
+  </div>
+</div>
 
 <footer>
   <span>Source: Salesforce internal documents &amp; published SI/vendor methodologies</span>
   <span style="font-family:'DM Mono',monospace;font-size:10px;">methodology_comparison_aligned.html</span>
 </footer>
 
+<div id="tt"><div id="tt-title"></div><div id="tt-body"></div></div>
+
+<script>
+  const tt    = document.getElementById('tt');
+  const ttTit = document.getElementById('tt-title');
+  const ttBod = document.getElementById('tt-body');
+
+  document.addEventListener('mouseover', e => {
+    const pill = e.target.closest('.pill[data-tip]');
+    if (!pill) { tt.style.display = 'none'; return; }
+    const parts = pill.dataset.tip.split('|');
+    ttTit.textContent = parts[0] || '';
+    ttBod.textContent = parts[1] || '';
+    tt.style.display = 'block';
+    move(e);
+  });
+
+  document.addEventListener('mouseout', e => {
+    const to = e.relatedTarget;
+    if (!to || !to.closest('.pill[data-tip]')) tt.style.display = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (tt.style.display === 'block') move(e);
+  });
+
+  function move(e) {
+    const pad = 16, w = tt.offsetWidth, h = tt.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + w > window.innerWidth  - 8) x = e.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+    tt.style.left = x + 'px';
+    tt.style.top  = y + 'px';
+  }
+</script>
 </body>
 </html>
