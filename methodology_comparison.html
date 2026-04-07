@@ -165,7 +165,7 @@
   <div class="leg"><div class="leg-swatch" style="background:#EF9F27;"></div> Build / Construct</div>
   <div class="leg"><div class="leg-swatch" style="background:#F0997B;"></div> Test / Validate</div>
   <div class="leg"><div class="leg-swatch" style="background:#ED93B1;"></div> Deploy / Go-live</div>
-  <div class="leg"><div class="leg-swatch" style="background:#B4B2A9;"></div> Run / Operate</div>
+  <div class="leg"><div class="leg-swatch" style="background:#B4B2A9;"></div> Run / Monitor</div>
 </div>
 
 <div class="table-wrap">
@@ -178,7 +178,7 @@
     <div class="col-header p-build">Build<br>/ Construct</div>
     <div class="col-header p-test">Test<br>/ Validate</div>
     <div class="col-header p-deploy">Deploy<br>/ Go-live</div>
-    <div class="col-header p-run">Run<br>/ Operate</div>
+    <div class="col-header p-run">Run<br>/ Monitor</div>
 
     <!-- RECOMMENDED -->
     <div class="group-banner" style="background:#2a4a2a;color:#a8c8a8;">Recommended</div>
@@ -190,8 +190,10 @@
         data-tip="Analyze|Gather and document business requirements. Run gap-fit analysis and map current processes to identify pain points and future-state needs.">Analyze</div>
       <div class="pill p-design" style="grid-column:4"
         data-tip="Design|Define solution architecture, data model, and integration approach. Produce a functional blueprint and solution design document signed off by stakeholders.">Design</div>
-      <div class="pill p-build span" style="grid-column:5/7"
-        data-tip="Deliver|Configure, build, and test the solution iteratively. Covers unit testing, system integration testing (SIT), and user acceptance testing (UAT) within the same delivery phase.">Deliver</div>
+      <div class="pill p-build" style="grid-column:5"
+        data-tip="Build|Configure and develop the solution based on the approved design. Covers system configuration, custom development, integration build, and data migration preparation.">Build</div>
+      <div class="pill p-test" style="grid-column:6"
+        data-tip="Test|Validate the solution through unit testing, system integration testing (SIT), and user acceptance testing (UAT). Formal exit criteria must be met before progressing to Deploy.">Test</div>
       <div class="pill p-deploy" style="grid-column:7"
         data-tip="Deploy|Execute go-live cutover, migrate data to production, deliver end-user training, and confirm system readiness before cut-over.">Deploy</div>
       <div class="pill p-run" style="grid-column:8"
