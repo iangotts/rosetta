@@ -13,145 +13,109 @@
     font-family: 'DM Sans', sans-serif;
     background: #f5f4f0;
     color: #1a1a18;
-    padding: 48px 32px;
+    padding: 40px 28px;
     min-height: 100vh;
   }
 
-  header {
-    max-width: 1200px;
-    margin: 0 auto 36px;
-  }
-
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #888780;
-    margin-bottom: 10px;
-  }
-
-  h1 {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: #1a1a18;
-    margin-bottom: 6px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-    color: #666660;
-    font-weight: 300;
-  }
+  header { max-width: 1240px; margin: 0 auto 28px; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #888780; margin-bottom: 8px; }
+  h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: #1a1a18; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #777770; font-weight: 300; }
 
   /* Legend */
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    max-width: 1200px;
-    margin: 0 auto 28px;
-  }
-  .leg { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #555550; }
-  .leg-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; max-width: 1240px; margin: 0 auto 20px; }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #666660; }
+  .leg-swatch { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
 
-  /* Table wrapper */
-  .table-wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid #e2e0d8;
-    overflow: hidden;
+  /* Outer wrapper */
+  .table-wrap { max-width: 1240px; margin: 0 auto; background: #fff; border-radius: 12px; border: 1px solid #e2e0d8; overflow: hidden; }
+
+  /* The main grid: label col + 7 phase cols */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: 148px repeat(7, 1fr);
+    column-gap: 5px;
+    row-gap: 0;
+    padding: 0;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+  /* Column header row */
+  .col-header {
+    background: #f5f4f0;
+    border-bottom: 1px solid #e2e0d8;
+    padding: 10px 6px 10px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #999990;
+    line-height: 1.3;
   }
+  .col-header.label-col { text-align: left; padding-left: 14px; }
+  .col-header.p-discover { color: #534AB7; background: #F4F3FE; }
+  .col-header.p-analyze  { color: #185FA5; background: #EEF5FC; }
+  .col-header.p-design   { color: #0F6E56; background: #EAF7F2; }
+  .col-header.p-build    { color: #854F0B; background: #FDF4E3; }
+  .col-header.p-test     { color: #993C1D; background: #FDF1EC; }
+  .col-header.p-deploy   { color: #993556; background: #FDF0F5; }
+  .col-header.p-run      { color: #5F5E5A; background: #F3F2EE; }
 
-  /* Group header rows */
-  tr.group-header td {
+  /* Group header — full-width banner */
+  .group-banner {
+    grid-column: 1 / -1;
     background: #1a1a18;
-    color: #c8c6bc;
+    color: #b8b6ac;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 9px 18px;
-    font-weight: 400;
+    padding: 8px 14px;
   }
 
-  /* Column headers */
-  thead th {
-    background: #f5f4f0;
-    border-bottom: 1px solid #e2e0d8;
-    padding: 12px 14px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #888780;
-    white-space: nowrap;
-  }
-
-  thead th:first-child { width: 160px; }
-  thead th:nth-child(2) { width: 90px; }
-
-  /* Data rows */
-  tbody tr.data-row {
-    border-bottom: 1px solid #eeece6;
+  /* Provider row wrapper — one per provider */
+  .provider-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 148px repeat(7, 1fr);
+    column-gap: 5px;
+    align-items: center;
+    border-bottom: 1px solid #eeecea;
+    padding: 7px 0;
     transition: background 0.12s;
   }
-  tbody tr.data-row:last-child { border-bottom: none; }
-  tbody tr.data-row:hover { background: #faf9f6; }
+  .provider-row:last-child { border-bottom: none; }
+  .provider-row:hover { background: #faf9f6; }
 
-  td {
-    padding: 11px 14px;
-    vertical-align: middle;
+  /* Provider label */
+  .prov-label {
+    padding: 0 10px 0 14px;
   }
+  .prov-name { font-weight: 500; font-size: 13px; color: #1a1a18; white-space: nowrap; }
+  .prov-sub  { font-size: 11px; color: #aaa9a2; margin-top: 2px; }
 
-  .provider-name {
-    font-weight: 500;
-    font-size: 13px;
-    color: #1a1a18;
-    white-space: nowrap;
-  }
-
-  .provider-sub {
-    font-size: 11px;
-    color: #999993;
-    margin-top: 2px;
-    white-space: nowrap;
-  }
-
-  /* Phase pills */
-  .phase-cell { vertical-align: middle; }
-
-  .phases-wrap {
-    display: flex;
-    gap: 5px;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-
+  /* Phase pill */
   .pill {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 11.5px;
+    text-align: center;
+    height: 44px;
+    padding: 4px 6px;
+    border-radius: 8px;
+    font-size: 12px;
     font-weight: 500;
-    white-space: nowrap;
+    line-height: 1.25;
     border: 1px solid transparent;
-    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Phase colors */
+  /* spanning pills need to fill width */
+  .pill.span { white-space: normal; }
+
+  /* Colors */
   .p-discover { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
   .p-analyze  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
   .p-design   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
@@ -160,41 +124,14 @@
   .p-deploy   { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
   .p-run      { background: #F1EFE8; border-color: #B4B2A9; color: #444441; }
 
-  /* Note column */
-  .note-cell {
-    font-size: 11.5px;
-    color: #777770;
-    line-height: 1.5;
-    min-width: 180px;
-    max-width: 240px;
-  }
+  /* Empty cell placeholder */
+  .empty { height: 44px; }
 
-  /* Phase count badge */
-  .count-badge {
-    display: inline-block;
-    background: #f0efe9;
-    color: #777770;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    padding: 2px 7px;
-    border-radius: 10px;
-    white-space: nowrap;
-  }
-
-  /* Footer */
-  footer {
-    max-width: 1200px;
-    margin: 20px auto 0;
-    font-size: 11.5px;
-    color: #aaa;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  footer { max-width: 1240px; margin: 16px auto 0; font-size: 11px; color: #aaa; display: flex; justify-content: space-between; }
 
   @media print {
-    body { background: #fff; padding: 20px; }
-    .table-wrap { border: 1px solid #ccc; box-shadow: none; }
+    body { background: #fff; padding: 16px; }
+    .table-wrap { border: 1px solid #ccc; }
   }
 </style>
 </head>
@@ -203,7 +140,7 @@
 <header>
   <div class="eyebrow">SI &amp; SaaS Vendor Analysis</div>
   <h1>Implementation Methodology Comparison</h1>
-  <p class="subtitle">Top-level phase mapping across Salesforce approaches, tier-1 System Integrators, and major SaaS/ERP vendors</p>
+  <p class="subtitle">Top-level phases aligned by lifecycle stage — hover to compare across providers</p>
 </header>
 
 <div class="legend">
@@ -217,185 +154,197 @@
 </div>
 
 <div class="table-wrap">
-<table>
-  <thead>
-    <tr>
-      <th>Provider</th>
-      <th>Source / Method</th>
-      <th>Phases</th>
-      <th style="text-align:center;">Count</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
+  <div class="phase-grid">
 
-    <!-- SALESFORCE -->
-    <tr class="group-header"><td colspan="5">Salesforce Approaches</td></tr>
+    <!-- Column headers -->
+    <div class="col-header label-col">Provider</div>
+    <div class="col-header p-discover">Discover<br>/ Plan</div>
+    <div class="col-header p-analyze">Analyze<br>/ Define</div>
+    <div class="col-header p-design">Design<br>/ Architect</div>
+    <div class="col-header p-build">Build<br>/ Construct</div>
+    <div class="col-header p-test">Test<br>/ Validate</div>
+    <div class="col-header p-deploy">Deploy<br>/ Go-live</div>
+    <div class="col-header p-run">Run<br>/ Operate</div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">D360 Partner</div><div class="provider-sub">Salesforce</div></td>
-      <td><span style="font-size:12px;color:#888;">D360</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Prepare</span>
-        <span class="pill p-build">Implement</span>
-        <span class="pill p-run">Run &amp; Operate</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">3</span></td>
-      <td class="note-cell">Most compressed. Implement collapses analysis, design, and build into one broad phase.</td>
-    </tr>
+    <!-- ── RECOMMENDED ── -->
+    <div class="group-banner" style="background:#2a4a2a;color:#a8c8a8;">Recommended</div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Professional Services</div><div class="provider-sub">Salesforce</div></td>
-      <td><span style="font-size:12px;color:#888;">PS</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Discover</span>
-        <span class="pill p-analyze">Define</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-deploy">Deploy</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">4</span></td>
-      <td class="note-cell">Discover and Define overlap in practice. No formal build/test separation — merged into Deploy.</td>
-    </tr>
+    <!-- Recommended (formerly Traditional) -->
+    <div class="provider-row" style="background:#f6faf6;">
+      <div class="prov-label"><div class="prov-name" style="color:#2a4a2a;">Recommended</div><div class="prov-sub">Best practice</div></div>
+      <div class="pill p-discover" style="grid-column:2">Plan</div>
+      <div class="pill p-analyze" style="grid-column:3">Analyze</div>
+      <div class="pill p-design" style="grid-column:4">Design</div>
+      <div class="pill p-build span" style="grid-column:5/7">Deliver</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-run" style="grid-column:8">Operate</div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">FDE</div><div class="provider-sub">Salesforce</div></td>
-      <td><span style="font-size:12px;color:#888;">FDE</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Prepare</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-build">Deliver</span>
-        <span class="pill p-deploy">Deploy</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">4</span></td>
-      <td class="note-cell">Prepare uniquely bundles analysis AND architecture. Clearest build/deploy split of the SFDC models.</td>
-    </tr>
+    <!-- ── SALESFORCE ── -->
+    <div class="group-banner">Salesforce (from your document)</div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Traditional</div><div class="provider-sub">Salesforce</div></td>
-      <td><span style="font-size:12px;color:#888;">Classic SDLC</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Plan</span>
-        <span class="pill p-analyze">Analyze</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-build">Deliver</span>
-        <span class="pill p-deploy">Deploy</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">5</span></td>
-      <td class="note-cell">Most explicit phase separation. Closest alignment to IBM SDLC and PwC.</td>
-    </tr>
+    <!-- D360 Partner -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">D360 Partner</div><div class="prov-sub">Salesforce</div></div>
+      <!-- col 2: Prepare (discover) -->
+      <div class="pill p-discover" style="grid-column:2">Prepare</div>
+      <!-- cols 3–7: Implement (spans analyze → deploy) -->
+      <div class="pill p-build span" style="grid-column:3/8; flex-direction:column; height:auto; padding: 6px 8px; gap:5px;">
+        <span style="font-size:12px;font-weight:600;">Implement</span>
+        <div style="display:flex;gap:4px;width:100%;">
+          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Plan</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Architect</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Construct</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Validate</span>
+          <span style="flex:1;background:#fff4e0;border:1px solid#EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:500;color:#633806;text-align:center;">Deploy</span>
+        </div>
+      </div>
+      <!-- col 8: Run & Operate -->
+      <div class="pill p-run" style="grid-column:8">Run &amp; Operate</div>
+    </div>
 
-    <!-- SIs -->
-    <tr class="group-header"><td colspan="5">Top-Tier System Integrators</td></tr>
+    <!-- Professional Services -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Professional Services</div><div class="prov-sub">Salesforce</div></div>
+      <div class="pill p-discover" style="grid-column:2">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3">Define</div>
+      <div class="pill p-design" style="grid-column:4">Design</div>
+      <!-- cols 5–7: Deploy (build+test+deploy merged) -->
+      <div class="pill p-deploy span" style="grid-column:5/8">Deploy</div>
+      <div class="empty" style="grid-column:8"></div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Accenture</div><div class="provider-sub">MyConcerto</div></td>
-      <td><span style="font-size:12px;color:#888;">MyConcerto</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Discover</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-build">Scale</span>
-        <span class="pill p-run">Sustain</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">4</span></td>
-      <td class="note-cell">Skips a formal analysis phase — moves directly from Discover to Design using industry templates.</td>
-    </tr>
+    <!-- FDE -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">FDE</div><div class="prov-sub">Salesforce</div></div>
+      <!-- cols 2–3: Prepare (discover+analyze merged) -->
+      <div class="pill p-discover span" style="grid-column:2/4">Prepare</div>
+      <div class="pill p-design" style="grid-column:4">Design</div>
+      <!-- cols 5–6: Deliver (build+test) -->
+      <div class="pill p-build span" style="grid-column:5/7">Deliver</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="empty" style="grid-column:8"></div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">IBM</div><div class="provider-sub">Standard SDLC</div></td>
-      <td><span style="font-size:12px;color:#888;">SDLC</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Planning</span>
-        <span class="pill p-analyze">Analysis</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-build">Coding</span>
-        <span class="pill p-test">Testing</span>
-        <span class="pill p-deploy">Deployment</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">6</span></td>
-      <td class="note-cell">Most granular. Only model with a dedicated Testing phase. Baseline reference for traditional SDLC.</td>
-    </tr>
+    <!-- ── TOP-TIER SIs ── -->
+    <div class="group-banner">Top-Tier System Integrators</div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">PwC</div><div class="provider-sub">Accelerate</div></td>
-      <td><span style="font-size:12px;color:#888;">Accelerate</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Assess</span>
-        <span class="pill p-design">Design</span>
-        <span class="pill p-build">Build</span>
-        <span class="pill p-test">Test</span>
-        <span class="pill p-deploy">Deploy</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">5</span></td>
-      <td class="note-cell">Merges discovery and analysis into a single Assess phase. Strong explicit Test phase before Deploy.</td>
-    </tr>
+    <!-- Accenture -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Accenture</div><div class="prov-sub">MyConcerto</div></div>
+      <div class="pill p-discover" style="grid-column:2">Discover</div>
+      <!-- cols 3–4: Design (analyze+design merged) -->
+      <div class="pill p-design span" style="grid-column:3/5">Design</div>
+      <!-- cols 5–6: Scale (build+test) -->
+      <div class="pill p-build span" style="grid-column:5/7">Scale</div>
+      <div class="empty" style="grid-column:7"></div>
+      <div class="pill p-run" style="grid-column:8">Sustain</div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Deloitte</div><div class="provider-sub">CloudSuite / Hybrid</div></td>
-      <td><span style="font-size:12px;color:#888;">Hybrid Agile</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Strategy</span>
-        <span class="pill p-design">Assess &amp; Design</span>
-        <span class="pill p-build">Build &amp; Test</span>
-        <span class="pill p-deploy">Deploy</span>
-        <span class="pill p-run">Operate</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">5</span></td>
-      <td class="note-cell">Agile-influenced — merges build and test into iterative sprints. Explicit Operate phase.</td>
-    </tr>
+    <!-- IBM -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">IBM</div><div class="prov-sub">Standard SDLC</div></div>
+      <div class="pill p-discover" style="grid-column:2">Planning</div>
+      <div class="pill p-analyze" style="grid-column:3">Analysis</div>
+      <div class="pill p-design" style="grid-column:4">Design</div>
+      <div class="pill p-build" style="grid-column:5">Coding</div>
+      <div class="pill p-test" style="grid-column:6">Testing</div>
+      <div class="pill p-deploy" style="grid-column:7">Deployment</div>
+      <div class="empty" style="grid-column:8"></div>
+    </div>
 
-    <!-- SaaS / ERP -->
-    <tr class="group-header"><td colspan="5">SaaS &amp; ERP Vendors</td></tr>
+    <!-- PwC -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">PwC</div><div class="prov-sub">Accelerate</div></div>
+      <!-- cols 2–3: Assess (discover+analyze) -->
+      <div class="pill p-discover span" style="grid-column:2/4">Assess</div>
+      <div class="pill p-design" style="grid-column:4">Design</div>
+      <div class="pill p-build" style="grid-column:5">Build</div>
+      <div class="pill p-test" style="grid-column:6">Test</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="empty" style="grid-column:8"></div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">SAP Activate</div><div class="provider-sub">S/4HANA Cloud</div></td>
-      <td><span style="font-size:12px;color:#888;">Activate</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Discover</span>
-        <span class="pill p-analyze">Prepare</span>
-        <span class="pill p-design">Explore</span>
-        <span class="pill p-build">Realize</span>
-        <span class="pill p-deploy">Deploy</span>
-        <span class="pill p-run">Run</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">6</span></td>
-      <td class="note-cell">Industry standard for SaaS ERP. Explore = fit-to-standard workshops. Realize bundles build, migrate, and test.</td>
-    </tr>
+    <!-- Deloitte -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Deloitte</div><div class="prov-sub">CloudSuite / Hybrid</div></div>
+      <div class="pill p-discover" style="grid-column:2">Strategy</div>
+      <!-- cols 3–4: Assess & Design -->
+      <div class="pill p-design span" style="grid-column:3/5">Assess &amp; Design</div>
+      <!-- cols 5–6: Build & Test -->
+      <div class="pill p-build span" style="grid-column:5/7">Build &amp; Test</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-run" style="grid-column:8">Operate</div>
+    </div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Oracle OUM</div><div class="provider-sub">Unified Method</div></td>
-      <td><span style="font-size:12px;color:#888;">OUM</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Inception</span>
-        <span class="pill p-analyze">Elaboration</span>
-        <span class="pill p-build">Construction</span>
-        <span class="pill p-deploy">Transition</span>
-        <span class="pill p-run">Production</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">5</span></td>
-      <td class="note-cell">Discipline-based. Construction merges design + build + test. Closest to Salesforce FDE's structure.</td>
-    </tr>
+    <!-- ── SaaS / ERP ── -->
+    <div class="group-banner">SaaS &amp; ERP Vendors</div>
 
-    <tr class="data-row">
-      <td><div class="provider-name">Microsoft</div><div class="provider-sub">Dynamics 365</div></td>
-      <td><span style="font-size:12px;color:#888;">D365</span></td>
-      <td class="phase-cell"><div class="phases-wrap">
-        <span class="pill p-discover">Discover</span>
-        <span class="pill p-analyze">Initiate</span>
-        <span class="pill p-build">Implement</span>
-        <span class="pill p-test">Prepare</span>
-        <span class="pill p-run">Operate</span>
-      </div></td>
-      <td style="text-align:center;"><span class="count-badge">5</span></td>
-      <td class="note-cell">Implement = iterative sprints (design + build merged). Prepare = UAT, data migration, training.</td>
-    </tr>
+    <!-- SAP Activate -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">SAP Activate</div><div class="prov-sub">S/4HANA Cloud</div></div>
+      <div class="pill p-discover" style="grid-column:2">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3">Prepare</div>
+      <div class="pill p-design" style="grid-column:4">Explore</div>
+      <!-- cols 5–6: Realize (build+test merged) -->
+      <div class="pill p-build span" style="grid-column:5/7">Realize</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-run" style="grid-column:8">Run</div>
+    </div>
 
-  </tbody>
-</table>
-</div>
+    <!-- Oracle OUM -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Oracle OUM</div><div class="prov-sub">Unified Method</div></div>
+      <div class="pill p-discover" style="grid-column:2">Inception</div>
+      <div class="pill p-analyze" style="grid-column:3">Elaboration</div>
+      <!-- cols 4–6: Construction (design+build+test) -->
+      <div class="pill p-build span" style="grid-column:4/7">Construction</div>
+      <div class="pill p-deploy" style="grid-column:7">Transition</div>
+      <div class="pill p-run" style="grid-column:8">Production</div>
+    </div>
+
+    <!-- Microsoft D365 -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Microsoft</div><div class="prov-sub">Dynamics 365</div></div>
+      <div class="pill p-discover" style="grid-column:2">Discover</div>
+      <div class="pill p-analyze" style="grid-column:3">Initiate</div>
+      <!-- cols 4–5: Implement (design+build merged) -->
+      <div class="pill p-build span" style="grid-column:4/6">Implement</div>
+      <div class="pill p-test" style="grid-column:6">Prepare</div>
+      <div class="empty" style="grid-column:7"></div>
+      <div class="pill p-run" style="grid-column:8">Operate</div>
+    </div>
+
+    <!-- ServiceNow -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">ServiceNow</div><div class="prov-sub">Now Create / SIM</div></div>
+      <div class="pill p-discover" style="grid-column:2">Initiate</div>
+      <!-- cols 3–4: Prepare (analyze + design — process workshops, requirements finalisation) -->
+      <div class="pill p-analyze span" style="grid-column:3/5">Prepare</div>
+      <!-- cols 5–6: Create (agile scrum build + UAT) -->
+      <div class="pill p-build span" style="grid-column:5/7">Create</div>
+      <div class="pill p-deploy" style="grid-column:7">Transition</div>
+      <div class="pill p-run" style="grid-column:8">Close</div>
+    </div>
+
+    <!-- Workday -->
+    <div class="provider-row">
+      <div class="prov-label"><div class="prov-name">Workday</div><div class="prov-sub">Launch Methodology</div></div>
+      <div class="pill p-discover" style="grid-column:2">Plan</div>
+      <!-- cols 3–4: Architect (foundation tenant, alignment sessions — analysis + design) -->
+      <div class="pill p-design span" style="grid-column:3/5">Architect</div>
+      <div class="pill p-build" style="grid-column:5">Configure</div>
+      <div class="pill p-test" style="grid-column:6">Test</div>
+      <div class="pill p-deploy" style="grid-column:7">Deploy</div>
+      <div class="pill p-run" style="grid-column:8">Support</div>
+    </div>
+
+  </div><!-- /phase-grid -->
+</div><!-- /table-wrap -->
 
 <footer>
   <span>Source: Salesforce internal documents &amp; published SI/vendor methodologies</span>
-  <span style="font-family:'DM Mono',monospace;font-size:10px;">methodology_comparison.html</span>
+  <span style="font-family:'DM Mono',monospace;font-size:10px;">methodology_comparison_aligned.html</span>
 </footer>
 
 </body>
