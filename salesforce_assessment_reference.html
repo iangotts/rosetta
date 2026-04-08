@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Assessment Framework — Full Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f9fb;
+  --bg2: #ffffff;
+  --bg3: #f1f3f7;
+  --bg4: #e8ebf0;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.13);
+  --text: #111318;
+  --text2: #4b5160;
+  --text3: #9097a8;
+  --accent: #1d4ed8;
+  --accent-dim: rgba(29,78,216,0.08);
+  --accent-border: rgba(29,78,216,0.25);
+  --amber: #b45309;
+  --amber-dim: rgba(180,83,9,0.08);
+  --amber-border: rgba(180,83,9,0.25);
+  --green: #047857;
+  --green-dim: rgba(4,120,87,0.08);
+  --green-border: rgba(4,120,87,0.25);
+  --red: #be123c;
+  --red-dim: rgba(190,18,60,0.08);
+  --red-border: rgba(190,18,60,0.25);
+  --purple: #6d28d9;
+  --purple-dim: rgba(109,40,217,0.08);
+  --purple-border: rgba(109,40,217,0.25);
+  --teal: #0e7490;
+  --teal-dim: rgba(14,116,144,0.08);
+  --teal-border: rgba(14,116,144,0.25);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; }
+
+/* NAV */
+nav { position: sticky; top: 0; z-index: 100; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; gap: 1.5rem; height: 52px; }
+.nav-brand { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; color: var(--accent); white-space: nowrap; text-transform: uppercase; }
+.nav-tabs { display: flex; gap: 2px; }
+.nav-tab { font-size: 12px; padding: 6px 14px; border-radius: 6px; color: var(--text2); cursor: pointer; transition: all .15s; border: none; background: transparent; }
+.nav-tab:hover { background: var(--bg3); color: var(--text); }
+.nav-tab.on { background: var(--accent-dim); color: var(--accent); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.nav-filter { font-size: 11px; color: var(--text3); }
+select { font-size: 12px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); border-radius: 5px; padding: 4px 8px; cursor: pointer; }
+select:focus { outline: none; border-color: var(--accent); }
+
+/* MAIN */
+.main { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+
+/* SUMMARY STATS */
+.stats-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+.stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; text-align: center; }
+.stat-n { font-family: 'IBM Plex Mono', monospace; font-size: 1.4rem; font-weight: 500; display: block; }
+.stat-l { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+
+/* LEGEND */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1.25rem; align-items: center; }
+.leg-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+.leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+.leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.leg-pill { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; }
+
+/* TABLE WRAPPER */
+.tbl-outer { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.tbl-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+
+/* COLUMN HEADERS */
+thead th { padding: 0; border-bottom: 1px solid var(--border2); background: var(--bg2); position: sticky; top: 52px; z-index: 10; }
+.th-inner { padding: 10px 12px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); white-space: nowrap; }
+.th-vend { text-align: center; border-left: 1px solid var(--border); }
+.th-group { background: var(--bg3); padding: 4px 12px; font-size: 9px; letter-spacing: .1em; color: var(--text3); text-transform: uppercase; border-bottom: 1px solid var(--border); text-align: center; }
+
+/* SECTION ROWS */
+.sec-row td { background: var(--bg3); padding: 5px 12px; border-bottom: 1px solid var(--border); }
+.sec-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); }
+
+/* DATA ROWS */
+tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:not(.sec-row):hover { background: var(--bg3); }
+tbody tr.hidden { display: none; }
+
+td { padding: 8px 12px; vertical-align: middle; }
+.td-name { min-width: 160px; }
+.del-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.del-cat { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* METADATA PILLS */
+.td-meta { min-width: 200px; max-width: 260px; border-left: 1px solid var(--border); }
+.pill-row { display: flex; flex-wrap: wrap; gap: 3px; }
+.pill { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 5px; border-radius: 3px; border: 1px solid transparent; white-space: nowrap; }
+.pill-meta { background: var(--accent-dim); border-color: var(--accent-border); color: #1e40af; }
+.pill-tool { background: var(--amber-dim); border-color: var(--amber-border); color: #92400e; }
+.pill-soql { background: var(--green-dim); border-color: var(--green-border); color: #065f46; }
+.pill-perm { background: var(--red-dim); border-color: var(--red-border); color: #9f1239; }
+
+/* ACCESS + OUTPUTS */
+.td-access { min-width: 160px; border-left: 1px solid var(--border); font-size: 11px; color: var(--text2); }
+.td-outputs { min-width: 160px; border-left: 1px solid var(--border); font-size: 11px; color: var(--text2); }
+.micro-list { list-style: none; }
+.micro-list li { padding: 1px 0; display: flex; gap: 5px; align-items: baseline; color: var(--text2); font-size: 11px; }
+.micro-list li::before { content: '—'; color: var(--text3); flex-shrink: 0; font-size: 10px; }
+
+/* COMPETITOR CELLS */
+.td-comp { border-left: 1px solid var(--border); text-align: center; min-width: 80px; }
+.comp-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 600; }
+.ci-full { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.ci-part { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+.ci-none { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.ci-win { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+
+/* DIFFERENTIATOR CELL */
+.td-diff { min-width: 200px; border-left: 1px solid var(--border2); background: rgba(29,78,216,0.03); font-size: 11px; color: var(--text2); line-height: 1.5; }
+.diff-badge { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 8px; padding: 1px 5px; border-radius: 3px; margin-bottom: 4px; }
+.diff-unique { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.diff-overlap { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+.diff-contested { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+
+/* CATEGORY COLOR ACCENTS */
+.cat-Foundation .del-cat { color: #1d4ed8; }
+.cat-Governance .del-cat { color: #be185d; }
+.cat-Logic .del-cat { color: #b45309; }
+.cat-Architecture .del-cat { color: #047857; }
+.cat-Analytics .del-cat { color: #6d28d9; }
+.cat-People .del-cat { color: #c2410c; }
+.cat-Commercial .del-cat { color: #0e7490; }
+.cat-Outputs .del-cat { color: #64748b; }
+
+/* WAVE BADGE */
+.wave { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--bg4); color: var(--text3); border: 1px solid var(--border); display: inline-block; margin-top: 3px; }
+
+/* HEADER BAND */
+.col-group-header { background: var(--bg3); }
+
+/* FOOTER */
+footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; margin-top: 0; }
+.footer-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-note { font-size: 11px; color: var(--text3); }
+.footer-links { display: flex; gap: 1rem; }
+.footer-link { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent); text-decoration: none; opacity: .6; transition: opacity .15s; }
+.footer-link:hover { opacity: 1; }
+
+/* PRINT */
+@media print { nav { position: static; } thead th { position: static; } }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  nav { padding: 0 1rem; gap: .75rem; }
+  .main { padding: 1rem; }
+  .stats-row { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">SF Assessment Framework</div>
+  <div class="nav-tabs">
+    <button class="nav-tab on" onclick="filterCat('all', this)">All 18</button>
+    <button class="nav-tab" onclick="filterCat('Foundation', this)">Foundation</button>
+    <button class="nav-tab" onclick="filterCat('Logic', this)">Logic</button>
+    <button class="nav-tab" onclick="filterCat('Architecture', this)">Architecture</button>
+    <button class="nav-tab" onclick="filterCat('Governance', this)">Governance</button>
+    <button class="nav-tab" onclick="filterCat('Outputs', this)">Outputs</button>
+  </div>
+  <div class="nav-right">
+    <span class="nav-filter">Overlap filter:</span>
+    <select onchange="filterOverlap(this.value)">
+      <option value="all">All</option>
+      <option value="unique">Our unique ground only</option>
+      <option value="contested">Contested (all 3 cover)</option>
+      <option value="partial">Partial overlap</option>
+    </select>
+  </div>
+</nav>
+
+<div class="main">
+
+<div class="stats-row">
+  <div class="stat"><span class="stat-n" style="color:#111318">18</span><span class="stat-l">Deliverables</span></div>
+  <div class="stat"><span class="stat-n" style="color:#047857">7</span><span class="stat-l">Contested</span></div>
+  <div class="stat"><span class="stat-n" style="color:#b45309">8</span><span class="stat-l">Partial overlap</span></div>
+  <div class="stat"><span class="stat-n" style="color:#1d4ed8">3</span><span class="stat-l">Unique to us</span></div>
+  <div class="stat"><span class="stat-n" style="color:#6d28d9">3</span><span class="stat-l">API surfaces</span></div>
+  <div class="stat"><span class="stat-n" style="color:#0e7490">3</span><span class="stat-l">Competitors</span></div>
+  <div class="stat"><span class="stat-n" style="color:#be123c">0</span><span class="stat-l">Written outputs<br>competitors have</span></div>
+</div>
+
+<div class="legend">
+  <span class="leg-label">API surface —</span>
+  <div class="leg"><div class="leg-dot" style="background:#1d4ed8"></div>Metadata API</div>
+  <div class="leg"><div class="leg-dot" style="background:#b45309"></div>Tooling API</div>
+  <div class="leg"><div class="leg-dot" style="background:#047857"></div>SOQL / REST</div>
+  <span class="leg-label" style="margin-left:8px">Competitor coverage —</span>
+  <div class="leg"><div class="leg-dot" style="background:#047857;border:1px solid #047857"></div>Full</div>
+  <div class="leg"><div class="leg-dot" style="background:#b45309;border:1px solid #b45309"></div>Partial</div>
+  <div class="leg"><div class="leg-dot" style="background:#d1d5db"></div>None</div>
+  <div class="leg"><div class="leg-dot" style="background:#1d4ed8;border:1px solid #1d4ed8"></div>Our win</div>
+</div>
+
+<div class="tbl-outer">
+<div class="tbl-scroll">
+<table id="mainTable">
+<thead>
+  <tr>
+    <th rowspan="2"><div class="th-inner">Deliverable</div></th>
+    <th colspan="3" class="th-vend col-group-header"><div class="th-group">Metadata API types</div></th>
+    <th colspan="2" class="th-vend col-group-header"><div class="th-group">Other APIs</div></th>
+    <th rowspan="2" class="th-vend"><div class="th-inner" style="text-align:left">Access required</div></th>
+    <th rowspan="2" class="th-vend"><div class="th-inner" style="text-align:left">Key outputs</div></th>
+    <th colspan="3" class="th-vend col-group-header"><div class="th-group">Competitor coverage</div></th>
+    <th rowspan="2"><div class="th-inner">Competitive position</div></th>
+  </tr>
+  <tr>
+    <th class="th-vend"><div class="th-inner">Schema</div></th>
+    <th class="th-vend"><div class="th-inner">Security / Auto</div></th>
+    <th class="th-vend"><div class="th-inner">Code / Analytics</div></th>
+    <th class="th-vend"><div class="th-inner">Tooling API</div></th>
+    <th class="th-vend"><div class="th-inner">SOQL / REST</div></th>
+    <th class="th-vend"><div class="th-inner" style="color:#6d28d9">Elements</div></th>
+    <th class="th-vend"><div class="th-inner" style="color:#0e7490">Hubbl</div></th>
+    <th class="th-vend"><div class="th-inner" style="color:#b45309">Cuneiform</div></th>
+  </tr>
+</thead>
+<tbody id="tbody">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-note">Salesforce Assessment Framework · Metadata API v60.0 · Competitive data current as of April 2026</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_intro.htm" target="_blank">Metadata API ↗</a>
+      <a class="footer-link" href="https://elements.cloud" target="_blank">Elements.cloud ↗</a>
+      <a class="footer-link" href="https://hubbl.com" target="_blank">Hubbl ↗</a>
+      <a class="footer-link" href="https://peernova.com/platform/cuneiform-for-salesforce/" target="_blank">Cuneiform ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DATA = [
+  {
+    section: "Foundation"
+  },
+  {
+    id:"meta_inv", name:"Metadata Inventory", cat:"Foundation", wave:1,
+    schema:["CustomObject","CustomField","CustomApplication","Layout","RecordType","CustomTab","CustomLabel","GlobalValueSet"],
+    secauto:[],
+    code:["CustomSite","CustomObjectTranslation"],
+    tooling:[],
+    soql:["EntityDefinition","FieldDefinition","EntityParticle"],
+    access:["View Setup & Configuration","API Enabled","Metadata API access"],
+    outputs:["Component count by type","API names + labels","Last modified dates","Created/modified by","Namespace prefix"],
+    el:"part", hu:"full", cu:"part",
+    position:"contested",
+    diff:"Elements + Hubbl both enumerate metadata. Elements adds doc links and process connections. Hubbl adds complexity scoring. Our differentiator: we generate the formatted inventory document — not just a dashboard view."
+  },
+  {
+    id:"data_model", name:"Data Model Analysis", cat:"Foundation", wave:1,
+    schema:["CustomObject","CustomField","CustomMetadata","ValidationRule","FieldSet","CompactLayout","GlobalValueSet","PicklistValue"],
+    secauto:[],
+    code:[],
+    tooling:["CustomObject","CustomField"],
+    soql:["EntityDefinition","FieldDefinition","FieldHistoryRetention"],
+    access:["View Setup & Configuration","Modify All Data (field utilisation)","API Enabled"],
+    outputs:["ERD / object map","Field count by object","Relationship types breakdown","Custom vs standard ratio","Validation rule logic"],
+    el:"full", hu:"part", cu:"full",
+    position:"contested",
+    diff:"Elements generates ERDs via Configuration Mining. Cuneiform profiles field usage and dependencies deeply. Hubbl covers objects at a surface level. We uniquely produce the written analysis narrative as a client deliverable."
+  },
+  {
+    id:"data_quality", name:"Data Quality Report", cat:"Foundation", wave:1,
+    schema:["DuplicateRule","MatchingRule"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["Account / Contact / Lead / Opportunity (null rates)","AsyncApexJob (batch errors)"],
+    access:["View All Data","Modify All Data (fix scripts)","Reports & Dashboards","API Enabled"],
+    outputs:["Null-rate heatmap per field","Duplicate record count","Stale record age distribution","Formula error frequency","Duplicate rules coverage map"],
+    el:"none", hu:"part", cu:"full",
+    position:"partial",
+    diff:"Cuneiform owns this space — 100% native, profiles 20M records in 20 min, Data Cloud support. Hubbl surfaces unused fields. Elements has no data quality. We add the formatted report layer on top of raw profiling data."
+  },
+  { section:"Governance" },
+  {
+    id:"security", name:"Security & Governance Audit", cat:"Governance", wave:1,
+    schema:[],
+    secauto:["Profile","PermissionSet","PermissionSetGroup","SharingRules","Role","CustomPermission","AuthProvider","ConnectedApp","SecuritySettings","PasswordPolicies","SessionSettings","NetworkAccess"],
+    code:[],
+    tooling:[],
+    soql:["SetupAuditTrail","PermissionSetAssignment","LoginHistory","UserLogin"],
+    access:["View Setup & Configuration","Manage Users","Manage Password Policies","API Enabled"],
+    outputs:["OWD matrix","Profile vs PermSet coverage","FLS heatmap","IP allowlist","MFA/SSO status","Users with Modify All","SetupAuditTrail anomalies"],
+    el:"part", hu:"full", cu:"none",
+    position:"partial",
+    diff:"Hubbl has dedicated security audit with static code analysis and SOQL injection detection. Elements covers access governance. Cuneiform has no security coverage. We produce the structured audit document — Hubbl only surfaces a score."
+  },
+  {
+    id:"change_history", name:"Change History Audit", cat:"Governance", wave:1,
+    schema:["FieldHistoryRetention"],
+    secauto:["Flow (versioned)"],
+    code:[],
+    tooling:["ApexClass (dates)","FlowVersionView"],
+    soql:["SetupAuditTrail","FieldHistory (key objects)","LoginHistory"],
+    access:["View Setup & Configuration","View All Data (field history)","API Enabled"],
+    outputs:["180-day setup change log","Who changed what & when","Field history coverage map","Flow version history","Recent permission changes"],
+    el:"full", hu:"part", cu:"none",
+    position:"partial",
+    diff:"Elements is strongest here — daily change tracking and governance workflows. Hubbl does scheduled monitoring over time. Cuneiform has nothing. We produce the formatted 180-day audit report document for client handoff."
+  },
+  { section:"Logic" },
+  {
+    id:"automation", name:"Automation Review", cat:"Logic", wave:1,
+    schema:[],
+    secauto:["Flow","WorkflowRule","AssignmentRule","EscalationRule","AutoResponseRule","MilestoneType","EntitlementProcess"],
+    code:[],
+    tooling:["FlowDefinition","FlowVersionView","ApexTrigger"],
+    soql:["AsyncApexJob","ApexTrigger","FlowDefinition"],
+    access:["View Setup & Configuration","Manage Flow","View All Data","API Enabled"],
+    outputs:["Automation inventory by object","Active vs inactive","Trigger order analysis","Process Builder → Flow candidates","Governor limit risk flags"],
+    el:"full", hu:"full", cu:"none",
+    position:"contested",
+    diff:"Both Elements (process maps) and Hubbl (gamified Flow migration ROI) cover this well. Cuneiform has none. Our differentiator: structured automation review document with migration backlog, not just a dashboard."
+  },
+  {
+    id:"code_quality", name:"Code Quality Report", cat:"Logic", wave:1,
+    schema:[],
+    secauto:[],
+    code:["ApexClass","ApexTrigger","ApexPage","LightningComponentBundle","AuraDefinitionBundle","StaticResource"],
+    tooling:["ApexClass","ApexTrigger","ApexClassMember","ContainerAsyncRequest"],
+    soql:["ApexClass","ApexTrigger","ApexPage"],
+    access:["Author Apex","View Setup & Configuration","API Enabled","Tooling API"],
+    outputs:["Class/trigger inventory + line counts","Cyclomatic complexity","Deprecated method usage","Hard-coded IDs","SOQL-in-loops","LWC vs Aura ratio"],
+    el:"part", hu:"full", cu:"none",
+    position:"partial",
+    diff:"Hubbl does static Apex analysis and SOQL injection detection. Elements surfaces code as tech debt context. Cuneiform has nothing. We produce the developer-facing technical briefing document — neither competitor does."
+  },
+  {
+    id:"test_coverage", name:"Test Coverage Report", cat:"Logic", wave:1,
+    schema:[],
+    secauto:[],
+    code:["ApexClass","ApexTestSuite"],
+    tooling:["ApexCodeCoverageAggregate","ApexCodeCoverage","ApexTestResult","ApexTestRunResult","ApexOrgWideCoverage"],
+    soql:["ApexTestResult","ApexTestRunResult"],
+    access:["Author Apex","View Setup & Configuration","Run Apex Tests","Tooling API"],
+    outputs:["Org-wide coverage %","Per-class coverage table","Zero-coverage classes","Test assertion density","Slowest tests","Coverage trend"],
+    el:"none", hu:"part", cu:"none",
+    position:"partial",
+    diff:"Hubbl surfaces test coverage in diagnostics. Elements and Cuneiform have no coverage reporting. We produce the formatted test coverage report — unique as a standalone client deliverable."
+  },
+  { section:"Architecture" },
+  {
+    id:"integration", name:"Integration Analysis", cat:"Architecture", wave:1,
+    schema:[],
+    secauto:["ConnectedApp","NamedCredential","RemoteSiteSetting","ExternalDataSource","PlatformEventChannel","ExternalServiceRegistration","Certificate"],
+    code:[],
+    tooling:[],
+    soql:["EventLogFile (API type)","ApiEvent","RestApiEvent","PlatformEventUsageMetric"],
+    access:["View Setup & Configuration","Manage Connected Apps","View Event Log Files","API Enabled"],
+    outputs:["Connected App inventory + OAuth scopes","Named Credential list","API call volume by endpoint","Event Bus subscription map","External object sources"],
+    el:"part", hu:"part", cu:"none",
+    position:"partial",
+    diff:"Elements maps integrations to process diagrams. Hubbl flags connected app security risks (OAuth as attack surface). Cuneiform has nothing. We uniquely produce a standalone integration landscape document."
+  },
+  {
+    id:"tech_impact", name:"Technical Impact Assessment", cat:"Architecture", wave:1,
+    schema:["CustomObject","CustomField","Flow","ApexClass","Layout","ValidationRule","Report"],
+    secauto:[],
+    code:[],
+    tooling:["MetadataComponentDependency"],
+    soql:["EntityDefinition","FieldDefinition"],
+    access:["View Setup & Configuration","Tooling API access","API Enabled"],
+    outputs:["Dependency graph (field→flow→class)","Safe-to-delete candidates","High-risk components","Orphaned components","Impact matrix for changes"],
+    el:"full", hu:"part", cu:"part",
+    position:"contested",
+    diff:"Elements' standout feature — full MetadataComponentDependency visualisation. Hubbl and Cuneiform cover field usage but not cross-component dependency graphs. We add the formatted impact analysis document."
+  },
+  {
+    id:"arch", name:"Architectural Analysis", cat:"Architecture", wave:1,
+    schema:["InstalledPackage","CustomObject","ExternalDataSource","PlatformEventChannel"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["Organization","UserLicense","LimitsInfo (REST /limits/)","InstalledSubscriberPackage"],
+    access:["View Setup & Configuration","Manage Installed Packages","API Enabled"],
+    outputs:["Edition + API version","Installed packages + versions","Governor limit utilisation %","Data storage used","File storage","API request budget"],
+    el:"full", hu:"full", cu:"none",
+    position:"contested",
+    diff:"Both Elements (multi-cloud arch view) and Hubbl (org complexity score, benchmarking) cover org architecture well. Cuneiform has nothing. We produce a standalone architecture document — neither competitor formats this for clients."
+  },
+  { section:"Analytics" },
+  {
+    id:"reports", name:"Reports & Dashboards Inventory", cat:"Analytics", wave:1,
+    schema:["Report","Dashboard","ListView"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["Report","Dashboard","FolderedContentDocument","ReportFeed"],
+    access:["View All Data","Manage Reports in Public Folders","API Enabled"],
+    outputs:["Report count by folder/owner","Last-run date distribution","Stale report candidates","Dashboard component types","Unused report identification"],
+    el:"part", hu:"part", cu:"none",
+    position:"partial",
+    diff:"Neither Elements nor Hubbl focuses on this as a dedicated deliverable. Both can surface report metadata incidentally. Cuneiform has nothing. This is relatively open ground for a formatted inventory deliverable."
+  },
+  { section:"People" },
+  {
+    id:"team_eval", name:"Team Evaluation", cat:"People", wave:1,
+    schema:["Profile","Role","PermissionSet","PermissionSetGroup","Territory"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["User","UserLogin","LoginHistory","PermissionSetAssignment","UserLicense"],
+    access:["Manage Users","View Setup & Configuration","API Enabled"],
+    outputs:["Active user count by license type","Role hierarchy map","Last-login distribution","Admin user list","Inactive licensed users","PermSet assignment matrix"],
+    el:"part", hu:"full", cu:"none",
+    position:"partial",
+    diff:"Hubbl has dedicated adoption tracking, user analytics, and license utilisation. Elements provides non-admin stakeholder access but doesn't focus on team analytics. Cuneiform has nothing. We produce the team evaluation document."
+  },
+  { section:"Commercial" },
+  {
+    id:"licensing", name:"Licensing Analysis", cat:"Commercial", wave:1,
+    schema:["Profile","PermissionSet"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["User","UserLicense","PermissionSetLicense","PermissionSetAssignment","UserPackageLicense","LightningUsageByAppTypeMetrics"],
+    access:["Manage Users","View Setup & Configuration","API Enabled","Contract Manager (entitlement data)"],
+    outputs:["License type × count × cost","Utilisation rate by license type","Last-login vs license cost","Add-on licence audit","Estimated annual saving"],
+    el:"none", hu:"full", cu:"none",
+    position:"partial",
+    diff:"Hubbl owns this — dedicated license audit, benchmark reporting, utilisation tracking. Elements and Cuneiform have no licensing coverage. We uniquely produce the commercial licensing document with cost optimisation narrative."
+  },
+  { section:"Outputs — Unique to our app" },
+  {
+    id:"exec", name:"Executive Assessment", cat:"Outputs", wave:3,
+    schema:["(synthesised from all above)"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:["(all previous outputs as input)"],
+    access:["All permissions above — uses outputs from prior deliverables"],
+    outputs:["Org health score (0–100)","Top 5 risks with severity","Technical debt estimate","Licence cost optimisation","Strategic recommendations"],
+    el:"none", hu:"none", cu:"none",
+    position:"unique",
+    diff:"No competitor generates a C-suite written assessment. All three produce dashboards and scores. We produce a readable executive document synthesised by LLM from all 17 prior deliverables. Entirely uncontested ground."
+  },
+  {
+    id:"customer", name:"Customer Report", cat:"Outputs", wave:3,
+    schema:["(derived from other analyses)"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:[],
+    access:["No additional access — uses outputs from other reports"],
+    outputs:["Executive summary","Data model overview","Security posture","Automation health","Integration landscape","Prioritised recommendations"],
+    el:"none", hu:"none", cu:"none",
+    position:"unique",
+    diff:"Pure differentiator. No competitor generates a client-facing PDF/DOCX report. This is the consulting deliverable output layer — taking what all three competitors surface internally and packaging it for external client handoff."
+  },
+  {
+    id:"engagement", name:"Strategic Engagement Plan", cat:"Outputs", wave:3,
+    schema:[],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:[],
+    access:["No direct Salesforce access required — synthesised from findings"],
+    outputs:["Phase 1/2/3 workstreams","Effort estimates per item","Quick wins vs strategic investments","Success metrics per workstream","Stakeholder responsibility matrix"],
+    el:"none", hu:"none", cu:"none",
+    position:"unique",
+    diff:"No competitor produces phased remediation roadmaps as formatted documents. Elements has internal roadmapping but for admin use — not a client-deliverable engagement plan. Entirely our territory."
+  },
+  {
+    id:"tech_brief", name:"Technical Team Briefing", cat:"Outputs", wave:2,
+    schema:["(derived from Code Quality + Test Coverage + Automation)"],
+    secauto:[],
+    code:[],
+    tooling:[],
+    soql:[],
+    access:["No additional access required — synthesised from prior deliverables"],
+    outputs:["Apex refactoring list","Test gap backlog","Flow conflict map","SOQL/DML optimisation hotlist","Deprecated API migration list"],
+    el:"none", hu:"none", cu:"none",
+    position:"partial",
+    diff:"Hubbl creates Jira tickets from findings — the closest parallel. Elements surfaces tech debt. Neither produces a structured developer briefing document. We uniquely generate this as a client-facing written deliverable."
+  }
+];
+
+const ICON = {
+  full: '<span class="comp-icon ci-full">✓</span>',
+  part: '<span class="comp-icon ci-part">~</span>',
+  none: '<span class="comp-icon ci-none">–</span>',
+  win:  '<span class="comp-icon ci-win">★</span>'
+};
+
+const DIFF_BADGE = {
+  unique:    '<span class="diff-badge diff-unique">Our unique ground</span>',
+  partial:   '<span class="diff-badge diff-overlap">Partial overlap</span>',
+  contested: '<span class="diff-badge diff-contested">Fully contested</span>'
+};
+
+function pills(arr, cls) {
+  if (!arr || !arr.length) return '<span style="color:var(--text3);font-size:10px">—</span>';
+  return arr.map(p => `<span class="pill ${cls}">${p}</span>`).join('');
+}
+
+function buildRow(d) {
+  const pos = d.position === 'unique' ? 'win' : null;
+  const elIcon  = pos ? ICON.win : ICON[d.el];
+  const huIcon  = pos ? ICON.win : ICON[d.hu];
+  const cuIcon  = pos ? ICON.win : ICON[d.cu];
+
+  const allCls = ['cat-'+d.cat];
+  if (d.position === 'unique') allCls.push('row-unique');
+  if (d.position === 'contested') allCls.push('row-contested');
+
+  return `<tr class="${allCls.join(' ')}" data-cat="${d.cat}" data-pos="${d.position}">
+    <td class="td-name">
+      <div class="del-name">${d.name}</div>
+      <div class="del-cat">${d.cat}</div>
+      <span class="wave">Wave ${d.wave}</span>
+    </td>
+    <td class="td-meta">
+      <div class="pill-row">${pills(d.schema,'pill-meta')}</div>
+    </td>
+    <td class="td-meta">
+      <div class="pill-row">${pills(d.secauto,'pill-meta')}</div>
+    </td>
+    <td class="td-meta">
+      <div class="pill-row">${pills(d.code,'pill-meta')}</div>
+    </td>
+    <td class="td-meta">
+      <div class="pill-row">${pills(d.tooling,'pill-tool')}</div>
+    </td>
+    <td class="td-meta">
+      <div class="pill-row">${pills(d.soql,'pill-soql')}</div>
+    </td>
+    <td class="td-access">
+      <ul class="micro-list">${d.access.map(a=>`<li>${a}</li>`).join('')}</ul>
+    </td>
+    <td class="td-outputs">
+      <ul class="micro-list">${d.outputs.map(o=>`<li>${o}</li>`).join('')}</ul>
+    </td>
+    <td class="td-comp">${elIcon}</td>
+    <td class="td-comp">${huIcon}</td>
+    <td class="td-comp">${cuIcon}</td>
+    <td class="td-diff">
+      ${DIFF_BADGE[d.position] || ''}
+      <div style="margin-top:4px">${d.diff}</div>
+    </td>
+  </tr>`;
+}
+
+function buildSection(label) {
+  return `<tr class="sec-row" data-section="${label}"><td colspan="12"><span class="sec-label">${label}</span></td></tr>`;
+}
+
+const tbody = document.getElementById('tbody');
+let currentSection = null;
+DATA.forEach(d => {
+  if (d.section) {
+    currentSection = d.section;
+    tbody.innerHTML += buildSection(d.section);
+  } else {
+    tbody.innerHTML += buildRow(d);
+  }
+});
+
+// Category filter
+function filterCat(cat, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+
+  const rows = tbody.querySelectorAll('tr[data-cat]');
+  const secRows = tbody.querySelectorAll('tr[data-section]');
+
+  rows.forEach(r => {
+    if (cat === 'all' || r.dataset.cat === cat) r.classList.remove('hidden');
+    else r.classList.add('hidden');
+  });
+
+  // Show/hide section rows based on whether any data row in that section is visible
+  secRows.forEach(sr => {
+    let next = sr.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.dataset.section) {
+      if (!next.classList.contains('hidden')) hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    sr.classList.toggle('hidden', !hasVisible);
+  });
+}
+
+// Overlap filter
+function filterOverlap(val) {
+  const rows = tbody.querySelectorAll('tr[data-pos]');
+  const secRows = tbody.querySelectorAll('tr[data-section]');
+
+  rows.forEach(r => {
+    const match = val === 'all'
+      || (val === 'unique' && r.dataset.pos === 'unique')
+      || (val === 'contested' && r.dataset.pos === 'contested')
+      || (val === 'partial' && r.dataset.pos === 'partial');
+    r.classList.toggle('hidden', !match);
+  });
+
+  secRows.forEach(sr => {
+    let next = sr.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.dataset.section) {
+      if (!next.classList.contains('hidden')) hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    sr.classList.toggle('hidden', !hasVisible);
+  });
+}
+</script>
+</body>
+</html>
