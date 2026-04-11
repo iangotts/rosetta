@@ -42,33 +42,48 @@
 
   /* ── PHASE / SWIMLANE TOKENS ──────────────────────────────
      Derived from the Rosetta blue + gold DNA.
-     Four semantic roles, each with: bg · border · text
+     Seven semantic roles, each with: bg · border · text
      -------------------------------------------------------- */
 
-  /* Prepare / foundation — muted blue-lavender */
+  /* Discover / Plan — soft purple-lavender */
+  --phase-discover-bg:     #eeedfe;
+  --phase-discover-border: #afa9ec;
+  --phase-discover-text:   #3c3489;
+
+  /* Analyze / Define — sky blue */
+  --phase-analyze-bg:     #e6f1fb;
+  --phase-analyze-border: #85b7eb;
+  --phase-analyze-text:   #0c447c;
+
+  /* Design / Architect — teal derived from dot-sky */
+  --phase-build-bg:     #e1f5ee;
+  --phase-build-border: #5dcaa5;
+  --phase-build-text:   #085041;
+
+  /* Build / Construct — gold (matches brand gold) */
+  --phase-implement-bg:     #faeeda;
+  --phase-implement-border: #ef9f27;
+  --phase-implement-text:   #633806;
+
+  /* Test / Validate — warm salmon */
+  --phase-test-bg:     #faece7;
+  --phase-test-border: #f0997b;
+  --phase-test-text:   #712b13;
+
+  /* Deploy / Go-live — deep rose anchored to blue-deep complement */
+  --phase-deploy-bg:     #fbeaf0;
+  --phase-deploy-border: #ed93b1;
+  --phase-deploy-text:   #72243e;
+
+  /* Run / Monitor — neutral warm grey */
+  --phase-operate-bg:     #f1efe8;
+  --phase-operate-border: #b4b2a9;
+  --phase-operate-text:   #444441;
+
+  /* Prepare / foundation — muted blue-lavender (style guide base token) */
   --phase-prepare-bg:     #eceef8;
   --phase-prepare-border: #b8c0e0;
   --phase-prepare-text:   #2a3678;
-
-  /* Implement / group wrapper — gold (matches brand gold) */
-  --phase-implement-bg:     var(--gold-pale);
-  --phase-implement-border: var(--gold-bright);
-  --phase-implement-text:   #7a5000;
-
-  /* Define / Design / build — teal derived from dot-sky */
-  --phase-build-bg:     #e4f6f9;
-  --phase-build-border: #5abdd4;
-  --phase-build-text:   #1a5f6e;
-
-  /* Deploy / Run — deep rose anchored to blue-deep complement */
-  --phase-deploy-bg:     #fce8ee;
-  --phase-deploy-border: #e0728e;
-  --phase-deploy-text:   #7a1f36;
-
-  /* Operate / steady-state — neutral warm grey */
-  --phase-operate-bg:     #edeef2;
-  --phase-operate-border: #b0b8cc;
-  --phase-operate-text:   var(--muted);
 }
 
 html { scroll-behavior: smooth; }
@@ -131,7 +146,6 @@ body {
   color: var(--gold);
   margin-bottom: .7rem;
   padding-bottom: .5rem;
-  border-bottom: 1px solid var(--gold-border);
   display: flex;
   align-items: center;
   gap: .5rem;
@@ -140,7 +154,7 @@ body {
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--gold-border);
+  background: var(--border);
 }
 
 p {
@@ -334,13 +348,13 @@ p + p { margin-top: .8rem; }
   text-transform: none;
   color: var(--blue-deep);
 }
-.col-header.p-discover { color: #3C3489; background: #EEEDFE; border-top: 2px solid #AFA9EC; }
-.col-header.p-analyze  { color: #0C447C; background: #E6F1FB; border-top: 2px solid #85B7EB; }
-.col-header.p-design   { color: #085041; background: #E1F5EE; border-top: 2px solid #5DCAA5; }
-.col-header.p-build    { color: #633806; background: #FAEEDA; border-top: 2px solid #EF9F27; }
-.col-header.p-test     { color: #712B13; background: #FAECE7; border-top: 2px solid #F0997B; }
-.col-header.p-deploy   { color: #72243E; background: #FBEAF0; border-top: 2px solid #ED93B1; }
-.col-header.p-run      { color: var(--muted); background: var(--bg); border-top: 2px solid #B4B2A9; }
+.col-header.p-discover { color: var(--phase-discover-text); background: var(--phase-discover-bg); border-top: 2px solid var(--phase-discover-border); }
+.col-header.p-analyze  { color: var(--phase-analyze-text);  background: var(--phase-analyze-bg);  border-top: 2px solid var(--phase-analyze-border); }
+.col-header.p-design   { color: var(--phase-build-text);    background: var(--phase-build-bg);    border-top: 2px solid var(--phase-build-border); }
+.col-header.p-build    { color: var(--phase-implement-text);background: var(--phase-implement-bg);border-top: 2px solid var(--phase-implement-border); }
+.col-header.p-test     { color: var(--phase-test-text);     background: var(--phase-test-bg);     border-top: 2px solid var(--phase-test-border); }
+.col-header.p-deploy   { color: var(--phase-deploy-text);   background: var(--phase-deploy-bg);   border-top: 2px solid var(--phase-deploy-border); }
+.col-header.p-run      { color: var(--phase-operate-text);  background: var(--phase-operate-bg);  border-top: 2px solid var(--phase-operate-border); }
 
 /* ── GROUP BANNERS ────────────────────────────────────────── */
 .group-banner {
@@ -352,15 +366,10 @@ p + p { margin-top: .8rem; }
   letter-spacing: .16em;
   text-transform: uppercase;
   padding: 8px 14px;
-  border-top: 2px solid var(--gold-bright);
   position: relative;
 }
 .group-banner::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--gold-bright);
+  content: none;
 }
 
 /* ── PROVIDER ROWS ────────────────────────────────────────── */
@@ -419,13 +428,13 @@ p + p { margin-top: .8rem; }
 }
 .pill.span { white-space: normal; }
 
-.p-discover { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
-.p-analyze  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
-.p-design   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
-.p-build    { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
-.p-test     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
-.p-deploy   { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
-.p-run      { background: #F1EFE8; border-color: #B4B2A9; color: #444441; }
+.p-discover { background: var(--phase-discover-bg);  border-color: var(--phase-discover-border);  color: var(--phase-discover-text); }
+.p-analyze  { background: var(--phase-analyze-bg);   border-color: var(--phase-analyze-border);   color: var(--phase-analyze-text); }
+.p-design   { background: var(--phase-build-bg);     border-color: var(--phase-build-border);     color: var(--phase-build-text); }
+.p-build    { background: var(--phase-implement-bg); border-color: var(--phase-implement-border); color: var(--phase-implement-text); }
+.p-test     { background: var(--phase-test-bg);      border-color: var(--phase-test-border);      color: var(--phase-test-text); }
+.p-deploy   { background: var(--phase-deploy-bg);    border-color: var(--phase-deploy-border);    color: var(--phase-deploy-text); }
+.p-run      { background: var(--phase-operate-bg);   border-color: var(--phase-operate-border);   color: var(--phase-operate-text); }
 
 .empty { height: 44px; }
 
@@ -529,13 +538,13 @@ p + p { margin-top: .8rem; }
   <div class="sec-label">Phase Legend</div>
 
   <div class="legend">
-    <div class="leg"><div class="leg-swatch" style="background:#AFA9EC;"></div> Discovery / Strategy</div>
-    <div class="leg"><div class="leg-swatch" style="background:#85B7EB;"></div> Analysis / Define</div>
-    <div class="leg"><div class="leg-swatch" style="background:#5DCAA5;"></div> Design / Architect</div>
-    <div class="leg"><div class="leg-swatch" style="background:#EF9F27;"></div> Build / Construct</div>
-    <div class="leg"><div class="leg-swatch" style="background:#F0997B;"></div> Test / Validate</div>
-    <div class="leg"><div class="leg-swatch" style="background:#ED93B1;"></div> Deploy / Go-live</div>
-    <div class="leg"><div class="leg-swatch" style="background:#B4B2A9;"></div> Run / Monitor</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-discover-border);"></div> Discovery / Strategy</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-analyze-border);"></div> Analysis / Define</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-build-border);"></div> Design / Architect</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-implement-border);"></div> Build / Construct</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-test-border);"></div> Test / Validate</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-deploy-border);"></div> Deploy / Go-live</div>
+    <div class="leg"><div class="leg-swatch" style="background:var(--phase-operate-border);"></div> Run / Monitor</div>
   </div>
 
   <div class="horizon"></div>
@@ -553,7 +562,7 @@ p + p { margin-top: .8rem; }
       <div class="col-header p-run">Run<br>/ Monitor</div>
 
       <!-- RECOMMENDED -->
-      <div class="group-banner" style="background:#0f3d1a; border-top-color:#4caf7d;">Recommended</div>
+      <div class="group-banner" style="background:#0f3d1a;">Recommended</div>
       <div class="provider-row" style="background:#f4faf6;">
         <div class="prov-label">
           <div class="prov-name" style="color:#0f3d1a;">Recommended</div>
@@ -590,11 +599,11 @@ p + p { margin-top: .8rem; }
           data-tip="Implement|A single broad execution phase encompassing all delivery from requirements through to deployment. Internally structured into five sub-steps: Plan, Architect, Construct, Validate, and Deploy.">
           <span style="font-size:12px;font-weight:600;">Implement</span>
           <div style="display:flex;gap:4px;width:100%;">
-            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Plan</span>
-            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Architect</span>
-            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Construct</span>
-            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Validate</span>
-            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Deploy</span>
+            <span style="flex:1;background:var(--phase-implement-bg);border:1px solid var(--phase-implement-border);border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:var(--phase-implement-text);text-align:center;">Plan</span>
+            <span style="flex:1;background:var(--phase-implement-bg);border:1px solid var(--phase-implement-border);border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:var(--phase-implement-text);text-align:center;">Architect</span>
+            <span style="flex:1;background:var(--phase-implement-bg);border:1px solid var(--phase-implement-border);border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:var(--phase-implement-text);text-align:center;">Construct</span>
+            <span style="flex:1;background:var(--phase-implement-bg);border:1px solid var(--phase-implement-border);border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:var(--phase-implement-text);text-align:center;">Validate</span>
+            <span style="flex:1;background:var(--phase-implement-bg);border:1px solid var(--phase-implement-border);border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:var(--phase-implement-text);text-align:center;">Deploy</span>
           </div>
         </div>
         <div class="pill p-run" style="grid-column:8"
