@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementation Methodology Comparison | Rosetta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ROSETTA DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── COLOR TOKENS ─────────────────────────────────────────── */
+:root {
+  /* Blues */
+  --blue:        #1040b8;
+  --blue-deep:   #0a2080;
+  --blue-bright: #1a4bc4;
+  --blue-light:  #e8eef8;
+  --blue-pale:   #f0f4fc;
+
+  /* Golds */
+  --gold:        #d4920a;
+  --gold-bright: #f0b429;
+  --gold-pale:   #fef9ec;
+  --gold-border: rgba(212,146,10,.2);
+
+  /* Neutrals */
+  --text:        #1a1a2e;
+  --muted:       #5a6072;
+  --light-muted: #8b91a1;
+  --bg:          #f7f8fc;
+  --surface:     #ffffff;
+  --border:      #e2e6f0;
+
+  /* Accent dots */
+  --dot-sky:   #00a1e0;
+  --dot-amber: #e8a000;
+
+  /* ── PHASE / SWIMLANE TOKENS ──────────────────────────────
+     Derived from the Rosetta blue + gold DNA.
+     Four semantic roles, each with: bg · border · text
+     -------------------------------------------------------- */
+
+  /* Prepare / foundation — muted blue-lavender */
+  --phase-prepare-bg:     #eceef8;
+  --phase-prepare-border: #b8c0e0;
+  --phase-prepare-text:   #2a3678;
+
+  /* Implement / group wrapper — gold (matches brand gold) */
+  --phase-implement-bg:     var(--gold-pale);
+  --phase-implement-border: var(--gold-bright);
+  --phase-implement-text:   #7a5000;
+
+  /* Define / Design / build — teal derived from dot-sky */
+  --phase-build-bg:     #e4f6f9;
+  --phase-build-border: #5abdd4;
+  --phase-build-text:   #1a5f6e;
+
+  /* Deploy / Run — deep rose anchored to blue-deep complement */
+  --phase-deploy-bg:     #fce8ee;
+  --phase-deploy-border: #e0728e;
+  --phase-deploy-text:   #7a1f36;
+
+  /* Operate / steady-state — neutral warm grey */
+  --phase-operate-bg:     #edeef2;
+  --phase-operate-border: #b0b8cc;
+  --phase-operate-text:   var(--muted);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────── */
+.font-display { font-family: 'DM Serif Display', Georgia, serif; }
+
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 2.5rem;
+}
+
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--gold-bright);
+}
+
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-weight: 300;
+}
+p + p { margin-top: .8rem; }
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(10,32,128,.06);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.nav-badge {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.nav-badge.badge-blue {
+  background: var(--blue-pale);
+  border-color: #ccd6f0;
+  color: var(--blue-bright);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,180,41,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.4);
+}
+.meta-item strong {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: .25rem;
+}
+
+/* ── PAGE BODY ────────────────────────────────────────────── */
+.page { max-width: 1240px; margin: 0 auto; padding: 2.5rem 3rem 3rem; }
+
+/* ── HORIZON RULE ─────────────────────────────────────────── */
+.horizon {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-bright) 0%, var(--blue-bright) 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: .3;
+}
+
+/* ── LEGEND ───────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1.4rem;
+}
+.leg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .3rem .65rem;
+}
+.leg-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── TABLE WRAP ───────────────────────────────────────────── */
+.table-wrap {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(10,32,128,.07);
+}
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: 148px repeat(7, 1fr);
+  column-gap: 5px;
+}
+
+/* ── COLUMN HEADERS ───────────────────────────────────────── */
+.col-header {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--light-muted);
+  line-height: 1.3;
+}
+.col-header.label-col {
+  text-align: left;
+  padding-left: 14px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--blue-deep);
+}
+.col-header.p-discover { color: #3C3489; background: #EEEDFE; border-top: 2px solid #AFA9EC; }
+.col-header.p-analyze  { color: #0C447C; background: #E6F1FB; border-top: 2px solid #85B7EB; }
+.col-header.p-design   { color: #085041; background: #E1F5EE; border-top: 2px solid #5DCAA5; }
+.col-header.p-build    { color: #633806; background: #FAEEDA; border-top: 2px solid #EF9F27; }
+.col-header.p-test     { color: #712B13; background: #FAECE7; border-top: 2px solid #F0997B; }
+.col-header.p-deploy   { color: #72243E; background: #FBEAF0; border-top: 2px solid #ED93B1; }
+.col-header.p-run      { color: var(--muted); background: var(--bg); border-top: 2px solid #B4B2A9; }
+
+/* ── GROUP BANNERS ────────────────────────────────────────── */
+.group-banner {
+  grid-column: 1 / -1;
+  background: var(--blue-deep);
+  color: rgba(255,255,255,.55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-top: 2px solid var(--gold-bright);
+  position: relative;
+}
+.group-banner::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--gold-bright);
+}
+
+/* ── PROVIDER ROWS ────────────────────────────────────────── */
+.provider-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 148px repeat(7, 1fr);
+  column-gap: 5px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding: 7px 0;
+  transition: background 0.15s;
+}
+.provider-row:last-child { border-bottom: none; }
+.provider-row:hover { background: var(--blue-pale); }
+
+.prov-label { padding: 0 10px 0 14px; }
+.prov-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--blue-deep);
+  white-space: nowrap;
+}
+.prov-sub {
+  font-size: 10.5px;
+  color: var(--light-muted);
+  margin-top: 2px;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+/* ── PILLS ────────────────────────────────────────────────── */
+.pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 44px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: filter 0.12s, transform 0.1s, box-shadow 0.12s;
+  letter-spacing: .01em;
+}
+.pill[data-tip] { cursor: default; }
+.pill[data-tip]:hover {
+  filter: brightness(0.93);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10,32,128,.12);
+}
+.pill.span { white-space: normal; }
+
+.p-discover { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+.p-analyze  { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.p-design   { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+.p-build    { background: #FAEEDA; border-color: #EF9F27; color: #633806; }
+.p-test     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+.p-deploy   { background: #FBEAF0; border-color: #ED93B1; color: #72243E; }
+.p-run      { background: #F1EFE8; border-color: #B4B2A9; color: #444441; }
+
+.empty { height: 44px; }
+
+/* ── TOOLTIP ──────────────────────────────────────────────── */
+#tt {
+  position: fixed;
+  display: none;
+  z-index: 9999;
+  max-width: 300px;
+  background: var(--blue-deep);
+  color: rgba(255,255,255,.88);
+  border-radius: 10px;
+  padding: 12px 16px;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 8px 32px rgba(10,32,128,.25);
+}
+#tt-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 7px;
+}
+#tt-body {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.75);
+  font-weight: 300;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav { padding: 1rem 1.2rem; }
+  .hero { padding: 3rem 1.2rem; }
+  .page { padding: 1.5rem 1rem; }
+  .doc-footer { flex-direction: column; gap: .5rem; text-align: center; padding: 1.2rem; }
+  .nav-meta { display: none; }
+}
+
+@media print {
+  .nav, #tt { display: none !important; }
+  .hero { padding: 1.5rem 2rem; }
+  .table-wrap { box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="logo">
+    <img class="logo-icon"
+      src="data:image/jpeg;base64,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"
+      alt="Rosetta Logo">
+    <div class="logo-wordmark">
+      <strong>Rosetta</strong>
+      <span>KeenanVision.net</span>
+    </div>
+  </a>
+  <div class="nav-meta">
+    <span>SI &amp; SaaS Vendor Analysis</span>
+    <span>2026</span>
+    <div class="nav-badge">Confidential</div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">SI &amp; SaaS Vendor Analysis</div>
+    <div class="hero-title">Implementation Methodology Comparison</div>
+    <div class="hero-subtitle">Top-level phases aligned by lifecycle stage — hover any phase for background &amp; justification</div>
+    <div class="hero-meta">
+      <div class="meta-item">Scope <strong>7 Lifecycle Stages</strong></div>
+      <div class="meta-item">Coverage <strong>Salesforce · Top-Tier SIs · SaaS &amp; ERP</strong></div>
+      <div class="meta-item">Source <strong>Salesforce Internal &amp; Published Methodologies</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="page">
+
+  <div class="sec-label">Phase Legend</div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-swatch" style="background:#AFA9EC;"></div> Discovery / Strategy</div>
+    <div class="leg"><div class="leg-swatch" style="background:#85B7EB;"></div> Analysis / Define</div>
+    <div class="leg"><div class="leg-swatch" style="background:#5DCAA5;"></div> Design / Architect</div>
+    <div class="leg"><div class="leg-swatch" style="background:#EF9F27;"></div> Build / Construct</div>
+    <div class="leg"><div class="leg-swatch" style="background:#F0997B;"></div> Test / Validate</div>
+    <div class="leg"><div class="leg-swatch" style="background:#ED93B1;"></div> Deploy / Go-live</div>
+    <div class="leg"><div class="leg-swatch" style="background:#B4B2A9;"></div> Run / Monitor</div>
+  </div>
+
+  <div class="horizon"></div>
+
+  <div class="table-wrap">
+    <div class="phase-grid">
+
+      <div class="col-header label-col">Provider</div>
+      <div class="col-header p-discover">Discover<br>/ Plan</div>
+      <div class="col-header p-analyze">Analyze<br>/ Define</div>
+      <div class="col-header p-design">Design<br>/ Architect</div>
+      <div class="col-header p-build">Build<br>/ Construct</div>
+      <div class="col-header p-test">Test<br>/ Validate</div>
+      <div class="col-header p-deploy">Deploy<br>/ Go-live</div>
+      <div class="col-header p-run">Run<br>/ Monitor</div>
+
+      <!-- RECOMMENDED -->
+      <div class="group-banner" style="background:#0f3d1a; border-top-color:#4caf7d;">Recommended</div>
+      <div class="provider-row" style="background:#f4faf6;">
+        <div class="prov-label">
+          <div class="prov-name" style="color:#0f3d1a;">Recommended</div>
+          <div class="prov-sub">Best practice</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Plan|Establish project scope, governance, and stakeholder alignment. Produce a detailed project plan covering timelines, budget, roles, and a change management strategy.">Plan</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Analyze|Gather and document business requirements. Run gap-fit analysis and map current processes to identify pain points and future-state needs.">Analyze</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Design|Define solution architecture, data model, and integration approach. Produce a functional blueprint and solution design document signed off by stakeholders.">Design</div>
+        <div class="pill p-build" style="grid-column:5"
+          data-tip="Build|Configure and develop the solution based on the approved design. Covers system configuration, custom development, integration build, and data migration preparation.">Build</div>
+        <div class="pill p-test" style="grid-column:6"
+          data-tip="Test|Validate the solution through unit testing, system integration testing (SIT), and user acceptance testing (UAT). Formal exit criteria must be met before progressing to Deploy.">Test</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Execute go-live cutover, migrate data to production, deliver end-user training, and confirm system readiness before cut-over.">Deploy</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Operate|Provide ongoing hypercare, BAU support, and continuous improvement. Includes platform optimisation and preparation for subsequent release cycles.">Operate</div>
+      </div>
+
+      <!-- SALESFORCE -->
+      <div class="group-banner">Salesforce (from your document)</div>
+
+      <!-- D360 Partner -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">D360 Partner</div>
+          <div class="prov-sub">Salesforce</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Prepare|Project initiation and mobilisation. Covers team setup, governance structure, initial scoping, and environment provisioning before any delivery work begins.">Prepare</div>
+        <div class="pill p-build span" style="grid-column:3/8; flex-direction:column; height:auto; padding:6px 8px; gap:5px;"
+          data-tip="Implement|A single broad execution phase encompassing all delivery from requirements through to deployment. Internally structured into five sub-steps: Plan, Architect, Construct, Validate, and Deploy.">
+          <span style="font-size:12px;font-weight:600;">Implement</span>
+          <div style="display:flex;gap:4px;width:100%;">
+            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Plan</span>
+            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Architect</span>
+            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Construct</span>
+            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Validate</span>
+            <span style="flex:1;background:#fff4e0;border:1px solid #EF9F27;border-radius:5px;padding:3px 4px;font-size:10px;font-weight:600;color:#633806;text-align:center;">Deploy</span>
+          </div>
+        </div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Run &amp; Operate|Post go-live hypercare, managed services, and continuous platform improvement. Includes monitoring, incident management, and preparation for future release waves.">Run &amp; Operate</div>
+      </div>
+
+      <!-- Professional Services -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Professional Services</div>
+          <div class="prov-sub">Salesforce</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Discover|Business case development, use case definition, and initial stakeholder alignment. Sets the strategic intent and high-level scope for the engagement.">Discover</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Define|Planning workshops, solution design outline, and WBS plan creation. Overlaps significantly with Discover in practice — the boundary between the two phases is often unclear.">Define</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Design|Solution design and functional specifications. In practice not formally distinct from Define; the two are often run concurrently without clear exit criteria.">Design</div>
+        <div class="pill p-deploy span" style="grid-column:5/8"
+          data-tip="Deploy|Combines build, test, and rollout into a single phase with no formal separation between them. Includes configuration, UAT, training, and go-live — a noted gap in this model.">Deploy</div>
+        <div class="empty" style="grid-column:8"></div>
+      </div>
+
+      <!-- FDE -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">FDE</div>
+          <div class="prov-sub">Salesforce</div>
+        </div>
+        <div class="pill p-discover span" style="grid-column:2/4"
+          data-tip="Prepare|Uniquely bundles discovery and analysis. Covers scope definition, architecture decisions, process mapping, and user story development — analysis and high-level design are merged into one phase.">Prepare</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Design|Agent opportunity identification, detailed process design, user stories, and data model finalisation. Picks up from the architecture work established in Prepare.">Design</div>
+        <div class="pill p-build span" style="grid-column:5/7"
+          data-tip="Deliver|Combined build and test phase. Covers configuration, development, system integration testing (SIT), and UAT — the clearest build/test grouping of the Salesforce models.">Deliver</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Rollout execution, data cutover, end-user training, and hypercare. FDE has the most explicit deploy gate of the Salesforce approaches.">Deploy</div>
+        <div class="empty" style="grid-column:8"></div>
+      </div>
+
+      <!-- TOP-TIER SIs -->
+      <div class="group-banner">Top-Tier System Integrators</div>
+
+      <!-- Accenture -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Accenture</div>
+          <div class="prov-sub">MyConcerto</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Discover|Rapid diagnostics using MyConcerto platform. Defines the to-be architecture, creates the business case, and establishes value drivers. Focused on speed-to-value from day one.">Discover</div>
+        <div class="pill p-design span" style="grid-column:3/5"
+          data-tip="Design|Uses industry-specific templates and Design Thinking to accelerate solution blueprinting. Analysis and design are merged — Accenture leans on pre-built assets to skip traditional requirements phases.">Design</div>
+        <div class="pill p-build span" style="grid-column:5/8"
+          data-tip="Scale|Provisions systems into environments and executes iterative build, test, and deployment sprints. Spans build through go-live — Accenture's broadest phase, reflecting their accelerator-driven delivery model.">Scale</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Sustain|Uses AI and automation for continuous performance monitoring, optimisation, and managed services. Explicitly treats operations as a named methodology phase — a differentiator from most SI models.">Sustain</div>
+      </div>
+
+      <!-- IBM -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">IBM</div>
+          <div class="prov-sub">Standard SDLC</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Planning|Scope definition, feasibility assessment, project charter, and resource planning. IBM's most structured phase — nothing proceeds without formal sign-off. Most gate-controlled of all models.">Planning</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Analysis|Detailed requirements documentation, stakeholder interviews, gap analysis, and the Software Requirements Specification (SRS). The most thorough analysis phase of any model in this comparison.">Analysis</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Design|Technical architecture definition, database design, and the Software Design Document (SDD). IBM maintains the strictest separation between analysis and design — no overlap permitted.">Design</div>
+        <div class="pill p-build" style="grid-column:5"
+          data-tip="Coding|Development and configuration based on the approved SDD. IBM's waterfall heritage means no parallel testing — build must be fully complete before testing begins.">Coding</div>
+        <div class="pill p-test" style="grid-column:6"
+          data-tip="Testing|Dedicated standalone testing phase covering unit, integration, performance, and UAT. IBM is the only model in this comparison with a fully independent testing phase.">Testing</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deployment|Production cutover, end-user training, and handover to support. IBM requires all test defects to be formally resolved before the deployment gate is opened.">Deployment</div>
+        <div class="empty" style="grid-column:8"></div>
+      </div>
+
+      <!-- PwC -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">PwC</div>
+          <div class="prov-sub">Accelerate</div>
+        </div>
+        <div class="pill p-discover span" style="grid-column:2/4"
+          data-tip="Assess|Combines discovery and analysis. Covers business case, maturity assessment, stakeholder alignment, and roadmap definition — PwC front-loads strategic alignment before any design or configuration begins.">Assess</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Design|Solution design, process re-engineering, and fit-gap workshops. PwC emphasises business process redesign before any configuration begins — a key differentiator from lighter-touch models.">Design</div>
+        <div class="pill p-build" style="grid-column:5"
+          data-tip="Build|Configuration, integration build, and data migration sprints. PwC maintains a clean separation between Build and Test, unlike Deloitte or Accenture which merge them.">Build</div>
+        <div class="pill p-test" style="grid-column:6"
+          data-tip="Test|System integration testing (SIT), UAT, and performance testing. Formal entry and exit criteria gate progress from Build to Test and from Test to Deploy.">Test</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Go-live cutover, hypercare, and stabilisation. PwC treats deployment as a distinct managed phase with formal cutover planning and a defined stabilisation period.">Deploy</div>
+        <div class="empty" style="grid-column:8"></div>
+      </div>
+
+      <!-- Deloitte -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Deloitte</div>
+          <div class="prov-sub">CloudSuite / Hybrid</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Strategy|Vision definition, business case, and cloud-readiness assessment. Deloitte labels this Strategy to signal a broader digital transformation intent beyond simple system implementation.">Strategy</div>
+        <div class="pill p-design span" style="grid-column:3/5"
+          data-tip="Assess &amp; Design|Fit-gap analysis, architecture, and data strategy run concurrently as iterative design sessions. Analysis and design are deliberately merged to accelerate cloud-first deployments.">Assess &amp; Design</div>
+        <div class="pill p-build span" style="grid-column:5/7"
+          data-tip="Build &amp; Test|Agile sprint cycles that combine build and test into continuous iterations. Deloitte's hybrid approach means defects are caught and fixed within the same sprint — no separate test gate.">Build &amp; Test</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Go-live execution, change management activation, and user adoption activities. Deloitte places heavy emphasis on OCM (Organisational Change Management) during this phase.">Deploy</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Operate|Managed services, continuous optimisation, and platform enhancement post go-live. Deloitte's Operate phase is formally scoped and contracted separately from the implementation engagement.">Operate</div>
+      </div>
+
+      <!-- SaaS / ERP Vendors -->
+      <div class="group-banner">SaaS &amp; ERP Vendors</div>
+
+      <!-- SAP Activate -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">SAP Activate</div>
+          <div class="prov-sub">S/4HANA Cloud</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Discover|Provides access to a trial system for initial value discovery. Teams validate the business case and confirm which SAP capabilities align to their requirements before committing to the project.">Discover</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Prepare|Project governance, team onboarding, environment provisioning, and infrastructure setup. A dedicated phase just for standing up the project and technical landscape — unique to SAP Activate.">Prepare</div>
+        <div class="pill p-design" style="grid-column:4"
+          data-tip="Explore|Fit-to-standard workshops: teams map business processes to standard SAP capabilities and document gaps. The goal is to adopt the standard rather than customise — a core SAP cloud deployment principle.">Explore</div>
+        <div class="pill p-build span" style="grid-column:5/7"
+          data-tip="Realize|The core execution phase — covers configuration, data migration, integration build, extensibility, and all testing (SIT and UAT). SAP bundles build and test to enforce iterative validation throughout.">Realize</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Final cutover to production, go-live execution, and hypercare. SAP requires formal cutover planning and a go/no-go sign-off gate before production access is granted.">Deploy</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Run|Transition to operations, continuous improvement, and ongoing SAP support. Includes preparation for SAP's quarterly cloud release cycle and long-term value realisation planning.">Run</div>
+      </div>
+
+      <!-- Oracle OUM -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Oracle OUM</div>
+          <div class="prov-sub">Unified Method</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Inception|Achieves stakeholder concurrence on project objectives and scope. Produces the initial architecture vision and business case. More governance-focused than discovery-focused compared to other models.">Inception</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Elaboration|Develops detailed requirements and establishes the architecture baseline. Risk reduction is a primary goal — major technical unknowns must be resolved before Construction begins.">Elaboration</div>
+        <div class="pill p-build span" style="grid-column:4/7"
+          data-tip="Construction|The broadest phase in Oracle OUM — spans design, implementation, and testing of all functional units. Oracle merges these deliberately to reflect real-world delivery where design and build are iterative, not sequential.">Construction</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Transition|Installation, user acceptance, and Go Production cutover. Oracle's Transition phase explicitly includes business readiness validation, not just technical deployment activities.">Transition</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Production|Ongoing support, optimisation, and enhancements in the live environment. Oracle OUM treats Production as a named methodology phase with defined activities, not merely a support contract.">Production</div>
+      </div>
+
+      <!-- Microsoft D365 -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Microsoft</div>
+          <div class="prov-sub">Dynamics 365</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Discover|Envisioning workshops, business case development, and solution roadmap definition. Microsoft's Success by Design framework uses this phase to align business goals to Dynamics 365 capabilities.">Discover</div>
+        <div class="pill p-analyze" style="grid-column:3"
+          data-tip="Initiate|Project governance setup, environment provisioning, and confirmation of in-scope workstreams. Includes the Solution Blueprint review — a Success by Design gate that must be passed before Implement begins.">Initiate</div>
+        <div class="pill p-build span" style="grid-column:4/6"
+          data-tip="Implement|Iterative design and build sprints. Solution blueprinting, configuration, and development are combined — Microsoft's hybrid methodology merges waterfall planning with agile sprint execution.">Implement</div>
+        <div class="pill p-test span" style="grid-column:6/8"
+          data-tip="Prepare|Pre-go-live readiness covering UAT, data migration validation, end-user training, cutover planning, and the formal go/no-go gate. Note: 'Prepare' here is near the end — unlike SAP where Prepare is near the start.">Prepare</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Operate|Go-live support, stabilisation, and hypercare. Transitions to the FastTrack for Dynamics 365 support model and ongoing platform managed services.">Operate</div>
+      </div>
+
+      <!-- ServiceNow -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">ServiceNow</div>
+          <div class="prov-sub">Now Create / SIM</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Initiate|Project vision and scope definition, stakeholder identification, governance structure, team kickoff, and environment setup. SIM formally kicks off here before any workshop or design activity begins.">Initiate</div>
+        <div class="pill p-analyze span" style="grid-column:3/5"
+          data-tip="Prepare|Process and platform workshops to understand business needs. Finalises configuration requirements (user stories) and engagement timeline. Analysis and design are merged — Prepare produces the backlog that drives Create.">Prepare</div>
+        <div class="pill p-build span" style="grid-column:5/7"
+          data-tip="Create|Agile Scrum cycles to configure and build the solution. Iterative sprints combine build and UAT with transparent reporting — uses ServiceNow's own PPM and Test Management tools on the Now Platform.">Create</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Transition|Supports UAT sign-off, customer support readiness, go-live execution, and post go-live hypercare. Partners are accountable for ensuring the customer can operate independently before Close.">Transition</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Close|Formal engagement closure, lessons learned review, and success assessment against outcomes defined at Initiate. Unique to SIM — most other methodologies omit a formal closure gate.">Close</div>
+      </div>
+
+      <!-- Workday -->
+      <div class="provider-row">
+        <div class="prov-label">
+          <div class="prov-name">Workday</div>
+          <div class="prov-sub">Launch Methodology</div>
+        </div>
+        <div class="pill p-discover" style="grid-column:2"
+          data-tip="Plan|Project scope, team assembly, timeline, budget, change management strategy, and governance. Workday requires a detailed data migration plan and legacy system inventory to be produced in this phase.">Plan</div>
+        <div class="pill p-design span" style="grid-column:3/5"
+          data-tip="Architect|Foundation tenant setup and Customer Confirmation Sessions where stakeholders review pre-configured Workday design and make final configuration decisions. Combines analysis and design — the 80% standard configuration target is set here.">Architect</div>
+        <div class="pill p-build" style="grid-column:5"
+          data-tip="Configure|Build the Gold tenant based on confirmed Architect decisions. Covers full configuration, integration build, and data migration preparation. Workday separates Configure from Test more cleanly than most other vendor methodologies.">Configure</div>
+        <div class="pill p-test" style="grid-column:6"
+          data-tip="Test|Multi-stage testing: unit testing per module, end-to-end testing across the full employee lifecycle, and parallel payroll testing run alongside the legacy system to verify pay accuracy before go-live.">Test</div>
+        <div class="pill p-deploy" style="grid-column:7"
+          data-tip="Deploy|Move to Production (MTP) — finalises the Gold tenant, executes final data load, and completes the Go-Live Checklist. A blackout period (typically 2+ weeks) freezes legacy system changes before cutover.">Deploy</div>
+        <div class="pill p-run" style="grid-column:8"
+          data-tip="Support|Post go-live hypercare, optimisation, and ongoing support. Includes preparation for Workday's bi-annual release cycle and management of follow-on phases of functionality rollout.">Support</div>
+      </div>
+
+    </div><!-- /phase-grid -->
+  </div><!-- /table-wrap -->
+
+</div><!-- /page -->
+
+<!-- ── FOOTER ── -->
+<footer class="doc-footer">
+  <span>Source: Salesforce internal documents &amp; published SI/vendor methodologies</span>
+  <span>Rosetta by KeenanVision.net</span>
+</footer>
+
+<!-- ── TOOLTIP ── -->
+<div id="tt"><div id="tt-title"></div><div id="tt-body"></div></div>
+
+<script>
+  const tt    = document.getElementById('tt');
+  const ttTit = document.getElementById('tt-title');
+  const ttBod = document.getElementById('tt-body');
+
+  document.addEventListener('mouseover', e => {
+    const pill = e.target.closest('.pill[data-tip]');
+    if (!pill) { tt.style.display = 'none'; return; }
+    const parts = pill.dataset.tip.split('|');
+    ttTit.textContent = parts[0] || '';
+    ttBod.textContent = parts[1] || '';
+    tt.style.display = 'block';
+    move(e);
+  });
+
+  document.addEventListener('mouseout', e => {
+    const to = e.relatedTarget;
+    if (!to || !to.closest('.pill[data-tip]')) tt.style.display = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (tt.style.display === 'block') move(e);
+  });
+
+  function move(e) {
+    const pad = 16, w = tt.offsetWidth, h = tt.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + w > window.innerWidth  - 8) x = e.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+    tt.style.left = x + 'px';
+    tt.style.top  = y + 'px';
+  }
+</script>
+</body>
+</html>
