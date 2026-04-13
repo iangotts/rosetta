@@ -710,145 +710,63 @@ section:last-child { border-bottom: none; }
    END OF ROSETTA DESIGN SYSTEM — STYLE BLOCK
    ══════════════════════════════════════════════════ */
 
-.page-wide {
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 0 2rem 4rem;
-}
+.page-wide { max-width: 1320px; margin: 0 auto; padding: 0 2rem 4rem; }
 
 .filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem;
-  align-items: flex-end;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.4rem 1.6rem;
-  margin: 2rem 0 1.5rem;
+  display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-end;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.4rem 1.6rem; margin: 2rem 0 1.5rem;
   box-shadow: 0 2px 12px rgba(10,32,128,.05);
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: .35rem;
-  flex: 1;
-  min-width: 160px;
-}
+.filter-group { display: flex; flex-direction: column; gap: .35rem; flex: 1; min-width: 160px; }
 
 .filter-group label {
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--gold);
+  font-size: .6rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gold);
 }
 
 .filter-group select {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .82rem;
-  color: var(--text);
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 7px;
-  padding: .5rem .75rem;
-  cursor: pointer;
-  outline: none;
-  transition: border-color .18s;
+  font-family: 'DM Sans', sans-serif; font-size: .82rem; color: var(--text);
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 7px;
+  padding: .5rem .75rem; cursor: pointer; outline: none; transition: border-color .18s;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6072' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right .75rem center;
-  padding-right: 2rem;
+  background-repeat: no-repeat; background-position: right .75rem center; padding-right: 2rem;
 }
 
 .filter-group select:focus { border-color: var(--blue-bright); }
 
-.filter-actions {
-  display: flex;
-  align-items: flex-end;
-  gap: .5rem;
-  padding-bottom: .05rem;
-}
+.filter-actions { display: flex; align-items: flex-end; gap: .5rem; padding-bottom: .05rem; }
 
 .btn-reset {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 7px;
-  padding: .52rem 1.1rem;
-  cursor: pointer;
-  transition: all .18s;
-  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif; font-size: .75rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 7px;
+  padding: .52rem 1.1rem; cursor: pointer; transition: all .18s; white-space: nowrap;
 }
-
 .btn-reset:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
 
-.results-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: .75rem;
-  flex-wrap: wrap;
-  gap: .5rem;
-}
-
+.results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; flex-wrap: wrap; gap: .5rem; }
 .results-count { font-size: .75rem; color: var(--muted); font-weight: 400; }
 .results-count strong { color: var(--blue-deep); font-weight: 700; }
 
-.table-wrap {
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 16px rgba(10,32,128,.07);
-}
+.table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 16px rgba(10,32,128,.07); }
 
 table { width: 100%; border-collapse: collapse; font-size: .82rem; }
 
-thead tr {
-  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 100%);
-}
+thead tr { background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 100%); }
 
 thead th {
-  padding: .9rem 1rem;
-  text-align: left;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.85);
-  white-space: nowrap;
-  cursor: pointer;
-  user-select: none;
+  padding: .9rem 1rem; text-align: left; font-size: .62rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.85);
+  white-space: nowrap; cursor: pointer; user-select: none;
 }
-
 thead th:hover { color: #fff; }
 thead th .sort-icon { display: inline-block; margin-left: .35rem; opacity: .4; font-size: .7rem; vertical-align: middle; }
 thead th.sorted-asc .sort-icon::after { content: '▲'; opacity: 1; }
 thead th.sorted-desc .sort-icon::after { content: '▼'; opacity: 1; }
 thead th:not(.sorted-asc):not(.sorted-desc) .sort-icon::after { content: '⇅'; }
-
-/* Highlight the last (Rosetta Validated) column */
-thead th:last-child {
-  background: rgba(240,180,41,.18);
-  color: var(--gold-bright);
-  border-left: 2px solid rgba(240,180,41,.3);
-}
-
-tbody td:last-child {
-  border-left: 1px solid var(--border);
-  background: rgba(240,180,41,.04);
-}
-
-tbody tr:hover td:last-child {
-  background: rgba(240,180,41,.08);
-}
 
 tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
 tbody tr:last-child { border-bottom: none; }
@@ -856,26 +774,13 @@ tbody tr:nth-child(even) { background: var(--bg); }
 tbody tr:hover { background: var(--blue-pale); }
 tbody tr.hidden { display: none; }
 
-tbody td {
-  padding: .75rem 1rem;
-  color: var(--text);
-  vertical-align: top;
-  line-height: 1.45;
-}
+tbody td { padding: .75rem 1rem; color: var(--text); vertical-align: top; line-height: 1.45; }
 
 .badge {
-  display: inline-block;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: .22rem .65rem;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  white-space: nowrap;
+  display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; padding: .22rem .65rem; border-radius: 4px;
+  border: 1px solid transparent; white-space: nowrap;
 }
-
-.badge-rosetta { background: var(--phase-build-bg); border-color: var(--phase-build-border); color: var(--phase-build-text); }
 .badge-yes { background: #eef7f0; border-color: #7ec99a; color: #1a5c35; }
 .badge-no { background: var(--phase-deploy-bg); border-color: var(--phase-deploy-border); color: var(--phase-deploy-text); }
 .badge-consider { background: var(--gold-pale); border-color: var(--gold-border); color: var(--gold); }
@@ -913,7 +818,6 @@ tbody td {
     <div class="hero-subtitle">A filterable audit of all content assets — by creator, destination, type, and Rosetta validation status.</div>
     <div class="hero-meta">
       <div class="meta-item">Total Records <strong>51</strong></div>
-      <div class="meta-item">Rosetta Validated <strong>4</strong></div>
       <div class="meta-item">Consider for Rosetta <strong>31</strong></div>
     </div>
   </div>
@@ -922,14 +826,6 @@ tbody td {
 <div class="page-wide">
 
   <div class="filter-bar">
-    <div class="filter-group">
-      <label>Rosetta Validated</label>
-      <select id="f-rosetta" onchange="applyFilters()">
-        <option value="">All</option>
-        <option value="YES">Yes</option>
-        <option value="NO">No</option>
-      </select>
-    </div>
     <div class="filter-group">
       <label>Created by</label>
       <select id="f-created" onchange="applyFilters()">
@@ -1039,11 +935,10 @@ tbody td {
           <th onclick="sortTable(4)">Publish Date <span class="sort-icon"></span></th>
           <th onclick="sortTable(5)">Feedback Clear <span class="sort-icon"></span></th>
           <th onclick="sortTable(6)">Consider for Rosetta <span class="sort-icon"></span></th>
-          <th onclick="sortTable(7)">Rosetta Validated <span class="sort-icon"></span></th>
         </tr>
       </thead>
       <tbody id="table-body">
-        <tr data-created="Ecosystem: SI" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="YES">
+        <tr data-created="Ecosystem: SI" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="YES">
       <td>Ecosystem: SI</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1051,8 +946,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="Ecosystem: SI" data-published="SF: Help Docs" data-type="Help doc" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="Ecosystem: SI" data-published="SF: Help Docs" data-type="Help doc" data-format="HTML" data-consider="YES">
       <td>Ecosystem: SI</td>
       <td>SF: Help Docs</td>
       <td>Help doc</td>
@@ -1060,8 +954,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="Ecosystem: SI" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Post" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="Ecosystem: SI" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Post" data-consider="NO">
       <td>Ecosystem: SI</td>
       <td>SF: Trailblazer Community Channel</td>
       <td>Community channel</td>
@@ -1069,8 +962,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="Ecosystem: SI" data-published="SF: Trailhead" data-type="Training course" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="Ecosystem: SI" data-published="SF: Trailhead" data-type="Training course" data-format="HTML" data-consider="YES">
       <td>Ecosystem: SI</td>
       <td>SF: Trailhead</td>
       <td>Training course</td>
@@ -1078,8 +970,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Admin Evangelists" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Admin Evangelists" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Admin Evangelists</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1087,8 +978,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Admin Evangelists" data-published="SF: Blog" data-type="Blog" data-format="Podcast" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Admin Evangelists" data-published="SF: Blog" data-type="Blog" data-format="Podcast" data-consider="NO">
       <td>SF: Admin Evangelists</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1096,8 +986,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Implementation guides" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Implementation guides" data-format="HTML" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF PLC Partner Learning Camp</td>
       <td>Implementation guides</td>
@@ -1105,8 +994,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Presentation" data-format="Slide deck" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Presentation" data-format="Slide deck" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF PLC Partner Learning Camp</td>
       <td>Presentation</td>
@@ -1114,8 +1002,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Training course" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF PLC Partner Learning Camp" data-type="Training course" data-format="HTML" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF PLC Partner Learning Camp</td>
       <td>Training course</td>
@@ -1123,8 +1010,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: AppExchange/Agentexchange" data-type="Implementation guides" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: AppExchange/Agentexchange" data-type="Implementation guides" data-format="HTML" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: AppExchange/Agentexchange</td>
       <td>Implementation guides</td>
@@ -1132,8 +1018,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Alliances / Partners</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1141,8 +1026,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Code" data-format="Code" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Code" data-format="Code" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Code</td>
@@ -1150,8 +1034,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="HTML" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Implementation guides</td>
@@ -1159,8 +1042,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="PDF" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="PDF" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Implementation guides</td>
@@ -1168,8 +1050,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Quip" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Quip" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Implementation guides</td>
@@ -1177,8 +1058,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Slide deck" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Slide deck" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Implementation guides</td>
@@ -1186,8 +1066,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Spreadsheet" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Implementation guides" data-format="Spreadsheet" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Implementation guides</td>
@@ -1195,8 +1074,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Presentation" data-format="Slide deck" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Presentation" data-format="Slide deck" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Presentation</td>
@@ -1204,8 +1082,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Solution kit" data-format="Code" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Solution kit" data-format="Code" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Solution kit</td>
@@ -1213,8 +1090,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Video" data-format="Video" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: short URL" data-type="Video" data-format="Video" data-consider="NO">
       <td>SF: Alliances / Partners</td>
       <td>SF: short URL</td>
       <td>Video</td>
@@ -1222,8 +1098,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Post" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Post" data-consider="NO">
       <td>SF: Alliances / Partners</td>
       <td>SF: Trailblazer Community Channel</td>
       <td>Community channel</td>
@@ -1231,8 +1106,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Implementation guides" data-format="Video" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Implementation guides" data-format="Video" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: YouTube/Vidyard</td>
       <td>Implementation guides</td>
@@ -1240,8 +1114,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Release note" data-format="Video" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Release note" data-format="Video" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: YouTube/Vidyard</td>
       <td>Release note</td>
@@ -1249,8 +1122,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Webinar" data-format="Video" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Alliances / Partners" data-published="SF: YouTube/Vidyard" data-type="Webinar" data-format="Video" data-consider="YES">
       <td>SF: Alliances / Partners</td>
       <td>SF: YouTube/Vidyard</td>
       <td>Webinar</td>
@@ -1258,8 +1130,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Decision Guide" data-format="HTML" data-rosetta="YES" data-consider="YES">
+    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Decision Guide" data-format="HTML" data-consider="YES">
       <td>SF: Architect Evangelists</td>
       <td>SF: Architect site</td>
       <td>Architect Decision Guide</td>
@@ -1267,8 +1138,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-rosetta">✓ Validated</span></td>
-    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Diagrams" data-format="Diagram/image" data-rosetta="YES" data-consider="YES">
+    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Diagrams" data-format="Diagram/image" data-consider="YES">
       <td>SF: Architect Evangelists</td>
       <td>SF: Architect site</td>
       <td>Architect Diagrams</td>
@@ -1276,8 +1146,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-rosetta">✓ Validated</span></td>
-    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Framework" data-format="HTML" data-rosetta="YES" data-consider="YES">
+    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Architect Framework" data-format="HTML" data-consider="YES">
       <td>SF: Architect Evangelists</td>
       <td>SF: Architect site</td>
       <td>Architect Framework</td>
@@ -1285,8 +1154,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-rosetta">✓ Validated</span></td>
-    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Architect site" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Architect Evangelists</td>
       <td>SF: Architect site</td>
       <td>Blog</td>
@@ -1294,8 +1162,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Help Docs" data-type="Data model" data-format="Diagram/image" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Architect Evangelists" data-published="SF: Help Docs" data-type="Data model" data-format="Diagram/image" data-consider="YES">
       <td>SF: Architect Evangelists</td>
       <td>SF: Help Docs</td>
       <td>Data model</td>
@@ -1303,8 +1170,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Community Evanglist" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Community Evanglist" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Community Evanglist</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1312,8 +1178,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Community Evanglist" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Community post" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Community Evanglist" data-published="SF: Trailblazer Community Channel" data-type="Community channel" data-format="Community post" data-consider="NO">
       <td>SF: Community Evanglist</td>
       <td>SF: Trailblazer Community Channel</td>
       <td>Community channel</td>
@@ -1321,8 +1186,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Corp marketing" data-published="External: Press site eg SalesforceBen" data-type="Press Release" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Corp marketing" data-published="External: Press site eg SalesforceBen" data-type="Press Release" data-format="HTML" data-consider="NO">
       <td>SF: Corp marketing</td>
       <td>External: Press site eg SalesforceBen</td>
       <td>Press Release</td>
@@ -1330,8 +1194,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Corp marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Corp marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Corp marketing</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1339,8 +1202,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Corp marketing" data-published="SF: Press/newroom" data-type="Press Release" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Corp marketing" data-published="SF: Press/newroom" data-type="Press Release" data-format="HTML" data-consider="NO">
       <td>SF: Corp marketing</td>
       <td>SF: Press/newroom</td>
       <td>Press Release</td>
@@ -1348,8 +1210,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Customer Success" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Customer Success" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Customer Success</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1357,8 +1218,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Engineering</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1366,8 +1226,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Blog" data-type="Code" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Blog" data-type="Code" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Blog</td>
       <td>Code</td>
@@ -1375,8 +1234,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Github" data-type="Code" data-format="Code" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Github" data-type="Code" data-format="Code" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Github</td>
       <td>Code</td>
@@ -1384,8 +1242,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Architect Decision Guide" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Architect Decision Guide" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Help Docs</td>
       <td>Architect Decision Guide</td>
@@ -1393,8 +1250,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Architect Decision Guide" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Architect Decision Guide" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Help Docs</td>
       <td>Architect Decision Guide</td>
@@ -1402,8 +1258,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Help doc" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Help Docs" data-type="Help doc" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Help Docs</td>
       <td>Help doc</td>
@@ -1411,8 +1266,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Known Issues DB" data-type="Help doc" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Known Issues DB" data-type="Help doc" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Known Issues DB</td>
       <td>Help doc</td>
@@ -1420,8 +1274,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: Website" data-type="Product data sheet" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Engineering" data-published="SF: Website" data-type="Product data sheet" data-format="HTML" data-consider="YES">
       <td>SF: Engineering</td>
       <td>SF: Website</td>
       <td>Product data sheet</td>
@@ -1429,8 +1282,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Engineering" data-published="SF: YouTube/Vidyard" data-type="Webinar" data-format="Video" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Engineering" data-published="SF: YouTube/Vidyard" data-type="Webinar" data-format="Video" data-consider="NO">
       <td>SF: Engineering</td>
       <td>SF: YouTube/Vidyard</td>
       <td>Webinar</td>
@@ -1438,8 +1290,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Marketing</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1447,8 +1298,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Product Marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Product Marketing" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Product Marketing</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1456,8 +1306,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: ProServe/FDE" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: ProServe/FDE" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: ProServe/FDE</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1465,8 +1314,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Research" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Research" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Research</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1474,8 +1322,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Sales/account management" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-rosetta="NO" data-consider="NO">
+    </tr><tr data-created="SF: Sales/account management" data-published="SF: Blog" data-type="Blog" data-format="HTML" data-consider="NO">
       <td>SF: Sales/account management</td>
       <td>SF: Blog</td>
       <td>Blog</td>
@@ -1483,8 +1330,7 @@ tbody td {
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-yes">Yes</span></td>
       <td><span class="badge badge-no">No</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Trailhead" data-published="SF: Trailhead" data-type="Training course" data-format="HTML" data-rosetta="NO" data-consider="YES">
+    </tr><tr data-created="SF: Trailhead" data-published="SF: Trailhead" data-type="Training course" data-format="HTML" data-consider="YES">
       <td>SF: Trailhead</td>
       <td>SF: Trailhead</td>
       <td>Training course</td>
@@ -1492,8 +1338,7 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-no">No</span></td>
-    </tr><tr data-created="SF: Trailhead" data-published="SF: Trailhead Academy" data-type="Training course" data-format="HTML" data-rosetta="YES" data-consider="YES">
+    </tr><tr data-created="SF: Trailhead" data-published="SF: Trailhead Academy" data-type="Training course" data-format="HTML" data-consider="YES">
       <td>SF: Trailhead</td>
       <td>SF: Trailhead Academy</td>
       <td>Training course</td>
@@ -1501,7 +1346,6 @@ tbody td {
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-no">No</span></td>
       <td><span class="badge badge-consider">Yes</span></td>
-      <td><span class="badge badge-rosetta">✓ Validated</span></td>
     </tr>
       </tbody>
     </table>
@@ -1516,7 +1360,6 @@ tbody td {
 
 <script>
 function applyFilters() {
-  const rosetta  = document.getElementById('f-rosetta').value;
   const created  = document.getElementById('f-created').value;
   const published= document.getElementById('f-published').value;
   const type     = document.getElementById('f-type').value;
@@ -1528,7 +1371,6 @@ function applyFilters() {
 
   rows.forEach(row => {
     const match = (
-      (!rosetta   || row.dataset.rosetta   === rosetta)   &&
       (!created   || row.dataset.created   === created)   &&
       (!published || row.dataset.published === published) &&
       (!type      || row.dataset.type      === type)      &&
@@ -1544,7 +1386,7 @@ function applyFilters() {
 }
 
 function resetFilters() {
-  ['f-rosetta','f-created','f-published','f-type','f-format','f-consider'].forEach(id => {
+  ['f-created','f-published','f-type','f-format','f-consider'].forEach(id => {
     document.getElementById(id).value = '';
   });
   applyFilters();
