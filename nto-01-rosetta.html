@@ -1,0 +1,2589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTO-01 Steel Thread — Rosetta Project Archaeology</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ROSETTA DESIGN SYSTEM — STYLE GUIDE
+   Copy this <style> block (everything between the ═══ lines)
+   into any new HTML page to get the full Rosetta look.
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── COLOR TOKENS ─────────────────────────────────────────── */
+:root {
+  /* Blues */
+  --blue:        #1040b8;
+  --blue-deep:   #0a2080;
+  --blue-bright: #1a4bc4;
+  --blue-light:  #e8eef8;
+  --blue-pale:   #f0f4fc;
+
+  /* Golds */
+  --gold:        #d4920a;
+  --gold-bright: #f0b429;
+  --gold-pale:   #fef9ec;
+  --gold-border: rgba(212,146,10,.2);
+
+  /* Neutrals */
+  --text:        #1a1a2e;
+  --muted:       #5a6072;
+  --light-muted: #8b91a1;
+  --bg:          #f7f8fc;
+  --surface:     #ffffff;
+  --border:      #e2e6f0;
+
+  /* Accent dots */
+  --dot-sky:   #00a1e0;
+  --dot-amber: #e8a000;
+
+  /* ── PHASE / SWIMLANE TOKENS ──────────────────────────────
+     Derived from the Rosetta blue + gold DNA.
+     Four semantic roles, each with: bg · border · text
+     -------------------------------------------------------- */
+
+  /* Prepare / foundation — muted blue-lavender */
+  --phase-prepare-bg:     #eceef8;
+  --phase-prepare-border: #b8c0e0;
+  --phase-prepare-text:   #2a3678;
+
+  /* Implement / group wrapper — gold (matches brand gold) */
+  --phase-implement-bg:     var(--gold-pale);
+  --phase-implement-border: var(--gold-bright);
+  --phase-implement-text:   #7a5000;
+
+  /* Define / Design / build — teal derived from dot-sky */
+  --phase-build-bg:     #e4f6f9;
+  --phase-build-border: #5abdd4;
+  --phase-build-text:   #1a5f6e;
+
+  /* Deploy / Run — deep rose anchored to blue-deep complement */
+  --phase-deploy-bg:     #fce8ee;
+  --phase-deploy-border: #e0728e;
+  --phase-deploy-text:   #7a1f36;
+
+  /* Operate / steady-state — neutral warm grey */
+  --phase-operate-bg:     #edeef2;
+  --phase-operate-border: #b0b8cc;
+  --phase-operate-text:   var(--muted);
+}
+
+/* ── BASE ─────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────── */
+/* Display / Serif — use for hero titles & section headlines */
+.font-display { font-family: 'DM Serif Display', Georgia, serif; }
+
+/* Hero title */
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 2.5rem;
+}
+
+/* Section headline */
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+}
+
+/* Eyebrow label (hero) */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--gold-bright);
+}
+
+/* Section label (body sections) */
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+/* Body text */
+p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-weight: 300;
+}
+p + p { margin-top: .8rem; }
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(10,32,128,.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* Badges */
+.nav-badge {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.nav-badge.badge-blue {
+  background: var(--blue-pale);
+  border-color: #ccd6f0;
+  color: var(--blue-bright);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+/* Grid overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+/* Gold glow bottom-right */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,180,41,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero meta strip */
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.4);
+}
+.meta-item strong {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: .25rem;
+}
+
+/* ── PAGE BODY ────────────────────────────────────────────── */
+.page { max-width: 1000px; margin: 0 auto; }
+
+section {
+  padding: 3rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+section:nth-child(even) { background: var(--bg); }
+section:last-child { border-bottom: none; }
+
+/* ── DECORATIVE RULE ──────────────────────────────────────── */
+.horizon {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-bright) 0%, var(--blue-bright) 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: .3;
+}
+
+/* ── PULL QUOTE / IMPERATIVE ──────────────────────────────── */
+.imperative {
+  background: var(--gold-pale);
+  border-left: 3px solid var(--gold-bright);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.imperative p {
+  font-size: .95rem;
+  font-style: italic;
+  color: #6b4c00;
+  font-weight: 400;
+}
+
+/* ── KPI CARDS ────────────────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  background: var(--blue-pale);
+  border: 1px solid #ccd6f0;
+  border-radius: 10px;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  border-top: 3px solid var(--blue-bright);
+}
+.kpi-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.kpi-label {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ── USE-CASE CARDS ───────────────────────────────────────── */
+.use-cases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.uc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-top: 3px solid var(--gold-bright);
+  transition: box-shadow .2s, border-color .2s;
+}
+.uc:hover {
+  box-shadow: 0 4px 20px rgba(10,32,128,.08);
+  border-color: var(--gold);
+}
+.uc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+.uc-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: .55rem;
+  line-height: 1.3;
+}
+.uc-desc {
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 300;
+}
+.uc-pill {
+  display: inline-block;
+  margin-top: .8rem;
+  background: var(--blue-pale);
+  color: var(--blue-bright);
+  font-size: .63rem;
+  font-weight: 700;
+  padding: .22rem .65rem;
+  border-radius: 4px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid #ccd6f0;
+}
+
+/* ── TECH / LIST GRID ─────────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+.tech-item {
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .9rem 1rem;
+}
+.tech-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .38rem;
+}
+.dot-gold  { background: var(--gold-bright); }
+.dot-sky   { background: var(--dot-sky); }
+.dot-amber { background: var(--dot-amber); }
+.dot-light { background: #b0b8cc; }
+.tech-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--blue-deep);
+  line-height: 1.15;
+}
+.tech-role {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: .2rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── PROOF / STAT CARDS ───────────────────────────────────── */
+.proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.proof-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-left: 4px solid var(--blue-bright);
+}
+.proof-logo {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--light-muted);
+  margin-bottom: .6rem;
+}
+.proof-stat {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.2rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.proof-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── INVESTMENT / DARK CTA BLOCK ──────────────────────────── */
+.invest-box {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 100%);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem;
+  margin-top: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.invest-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.invest-box .sec-label {
+  color: rgba(240,180,41,.8);
+  border-color: rgba(240,180,41,.2);
+}
+.invest-box .sec-label::after { background: rgba(240,180,41,.15); }
+.invest-box .section-headline { color: #ffffff; }
+.invest-box p { color: rgba(255,255,255,.7); }
+
+.ask-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+.ask-item {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  border-top: 2px solid var(--gold-bright);
+}
+.ask-item-phase {
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  color: rgba(240,180,41,.75);
+  margin-bottom: .4rem;
+}
+.ask-item-val {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .nav { padding: 1rem 1.2rem; }
+  section { padding: 2.2rem 1.2rem; }
+  .hero { padding: 3rem 1.2rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .use-cases { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .proof { grid-template-columns: 1fr; }
+  .ask-row { grid-template-columns: 1fr; }
+  .hero-meta { gap: 1.2rem; }
+  .doc-footer { flex-direction: column; gap: .5rem; text-align: center; }
+  .nav-meta { display: none; }
+}
+
+/* ── SWIMLANE / PHASE DIAGRAM ─────────────────────────────
+   Use .swimlane-table to wrap rows.
+   Each .swimlane-row has a .swimlane-label on the left and
+   .swimlane-stages on the right.
+   Phase boxes use modifier classes: .phase--prepare,
+   .phase--implement, .phase--build, .phase--deploy,
+   .phase--operate.
+   -------------------------------------------------------- */
+
+/* Outer wrapper */
+.swimlane-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 .75rem;
+}
+
+/* One horizontal lane */
+.swimlane-row {
+  display: flex;
+  align-items: stretch;
+  gap: .75rem;
+  margin-bottom: .75rem;
+}
+
+/* Left label column */
+.swimlane-label {
+  min-width: 140px;
+  max-width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.swimlane-label-name {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: 1.2;
+}
+.swimlane-label-sub {
+  font-size: .65rem;
+  font-weight: 400;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: .15rem;
+}
+
+/* Stage boxes container */
+.swimlane-stages {
+  flex: 1;
+  display: flex;
+  gap: .5rem;
+  align-items: stretch;
+}
+
+/* Individual phase box */
+.phase {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1.5px solid;
+  padding: .65rem .75rem;
+  font-size: .78rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: .01em;
+}
+
+/* Group wrapper (e.g. "Implement" spanning multiple sub-phases) */
+.phase-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.phase-group-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: .2rem .5rem;
+  border-radius: 6px 6px 0 0;
+  border: 1.5px solid;
+  border-bottom: none;
+  line-height: 1.4;
+}
+.phase-group-stages {
+  display: flex;
+  gap: .4rem;
+}
+.phase-group-stages .phase {
+  border-radius: 0 0 6px 6px;
+}
+
+/* ── Phase colour modifiers ── */
+.phase--prepare,
+.phase-group--prepare .phase-group-label,
+.phase-group--prepare .phase {
+  background: var(--phase-prepare-bg);
+  border-color: var(--phase-prepare-border);
+  color: var(--phase-prepare-text);
+}
+
+.phase--implement,
+.phase-group--implement .phase-group-label {
+  background: var(--phase-implement-bg);
+  border-color: var(--phase-implement-border);
+  color: var(--phase-implement-text);
+}
+.phase-group--implement .phase {
+  background: var(--phase-implement-bg);
+  border-color: var(--phase-implement-border);
+  color: var(--phase-implement-text);
+  opacity: .85;
+}
+
+.phase--build,
+.phase-group--build .phase-group-label,
+.phase-group--build .phase {
+  background: var(--phase-build-bg);
+  border-color: var(--phase-build-border);
+  color: var(--phase-build-text);
+}
+
+.phase--deploy,
+.phase-group--deploy .phase-group-label,
+.phase-group--deploy .phase {
+  background: var(--phase-deploy-bg);
+  border-color: var(--phase-deploy-border);
+  color: var(--phase-deploy-text);
+}
+
+.phase--operate,
+.phase-group--operate .phase-group-label,
+.phase-group--operate .phase {
+  background: var(--phase-operate-bg);
+  border-color: var(--phase-operate-border);
+  color: var(--phase-operate-text);
+}
+
+
+
+  /* ── NTO-01 DOCUMENT-SPECIFIC COMPONENTS ─────────────────── */
+
+  :root {
+    --paper:        var(--surface);
+    --paper-deep:   var(--blue-pale);
+    --ink:          var(--text);
+    --ink-muted:    var(--muted);
+    --ink-soft:     var(--light-muted);
+    --rule:         var(--border);
+    --rule-soft:    #e8ecf6;
+    --accent:       var(--blue);
+    --accent-soft:  var(--blue-bright);
+    --warning:      var(--gold);
+    --warning-soft: var(--gold-pale);
+    --good:         #3d7a2e;
+    --bad:          #991b1b;
+    --bad-soft:     #fef2f2;
+    --conditional:  var(--gold);
+    --conditional-soft: var(--gold-pale);
+    --gridline:     rgba(226,230,240,0.55);
+    --serif:        'DM Serif Display', Georgia, serif;
+    --sans:         'DM Sans', system-ui, sans-serif;
+    --mono:         'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  ::selection { background: var(--blue); color: #fff; }
+
+  .ribbon {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0 2rem;
+    display: flex; gap: 0; align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 8px rgba(10,32,128,.06);
+  }
+  .ribbon-item {
+    color: var(--light-muted);
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+    padding: 1rem .75rem;
+    border-bottom: 2px solid transparent;
+    display: flex; align-items: center;
+  }
+  .ribbon-item:hover { color: var(--blue-deep); border-bottom-color: var(--gold-bright); }
+  .ribbon-spacer { flex: 1; }
+  .ribbon-version {
+    color: var(--light-muted); font-size: 10px;
+    padding: 1rem 0 1rem .75rem; display: flex; align-items: center;
+  }
+  .ribbon-logo {
+    display: flex; align-items: center; gap: .5rem;
+    text-decoration: none; padding: .55rem 1.2rem .55rem 0;
+    border-right: 1px solid var(--border); margin-right: 1rem;
+  }
+  .ribbon-logo img { width: 30px; height: 30px; border-radius: 6px; object-fit: contain; }
+  .ribbon-logo-wordmark strong {
+    display: block; font-size: .8rem; font-weight: 700;
+    color: var(--blue-deep); letter-spacing: .02em; font-family: var(--sans); text-transform: none;
+  }
+  .ribbon-logo-wordmark span {
+    font-size: .58rem; color: var(--light-muted); letter-spacing: .1em;
+    text-transform: uppercase; font-family: var(--sans);
+  }
+  .ribbon-badge {
+    background: var(--gold-pale); border: 1px solid rgba(212,146,10,.2);
+    color: var(--gold); font-size: .58rem; font-weight: 700;
+    padding: .2rem .6rem; border-radius: 4px;
+    letter-spacing: .1em; text-transform: uppercase;
+    align-self: center; margin-left: .6rem;
+  }
+
+  .strip {
+    border-top: 4px solid var(--blue);
+    padding: 12px 2rem;
+    background: var(--blue-pale);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 2rem;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .strip-id { font-weight: 700; color: var(--blue-deep); letter-spacing: 0.1em; }
+  .strip-meta { display: flex; gap: 1.5rem; }
+  .strip-meta span strong { color: var(--blue-deep); font-weight: 700; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+    padding: 5rem 3rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size: 56px 56px; pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(240,180,41,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: .6rem;
+    font-family: var(--mono); font-size: .68rem; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--gold-bright); margin-bottom: 1.4rem;
+  }
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--gold-bright); }
+  .hero-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    line-height: .95; letter-spacing: -.02em;
+    color: #ffffff; margin: 0 0 1rem;
+  }
+  .hero-title em { color: var(--gold-bright); font-style: italic; }
+  .hero-deck {
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+    font-size: clamp(.95rem, 2vw, 1.2rem); line-height: 1.75;
+    color: rgba(255,255,255,.7); max-width: 800px; margin: 0 0 2.5rem;
+  }
+  .hero-byline {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,.15); padding-top: 1.8rem;
+  }
+  .byline-item label {
+    display: block; font-family: var(--mono); font-size: .6rem;
+    text-transform: uppercase; letter-spacing: .14em; margin-bottom: .3rem;
+    color: rgba(255,255,255,.4);
+  }
+  .byline-item span { font-size: .85rem; font-weight: 600; color: #fff; font-family: var(--sans); }
+  .hero-ornament { display: none; }
+
+  section {
+    max-width: 1000px; margin: 0 auto;
+    padding: 3rem; background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  section:nth-child(even) { background: var(--bg); }
+  section.tight { padding: 2rem 3rem; }
+
+  .section-eyebrow {
+    font-size: .65rem; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .7rem;
+    padding-bottom: .5rem; border-bottom: 1px solid rgba(212,146,10,.2);
+    display: flex; align-items: center; gap: .5rem; font-family: var(--sans);
+  }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: rgba(212,146,10,.2); }
+
+  h1, h2, h3, h4 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    color: var(--blue-deep); letter-spacing: -.01em;
+  }
+  h2 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); line-height: 1.1; margin: 0 0 1.25rem; font-weight: 400; }
+  h2 em { font-style: italic; color: var(--gold); }
+  h3 { font-weight: 400; font-size: 1.35rem; line-height: 1.25; margin: 2.5rem 0 .75rem; color: var(--blue-deep); }
+  h4 { font-weight: 600; font-size: 1rem; margin: 1.5rem 0 .5rem; font-family: var(--sans); color: var(--blue-deep); }
+
+  p { margin: 0 0 .9rem; max-width: 800px; }
+  .lede { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; line-height: 1.75; color: var(--muted); font-weight: 300; max-width: 820px; margin-bottom: 1.5rem; }
+  .lede strong { font-weight: 600; color: var(--text); }
+
+  table { border-collapse: collapse; width: 100%; margin: 1.2rem 0 1.5rem; font-size: .88rem; }
+  th, td { padding: .75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 700; border-bottom: 2px solid var(--blue-deep); padding-bottom: .6rem; }
+  td.mono { font-family: var(--mono); font-size: .8rem; }
+  td.num { font-variant-numeric: tabular-nums; }
+
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 100px; font-family: var(--mono); font-size: .65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; border: 1px solid; }
+  .pill-met { background: #e8f5e0; color: #3d7a2e; border-color: #b5dda0; }
+  .pill-cond { background: var(--gold-pale); color: var(--gold); border-color: rgba(212,146,10,.3); }
+  .pill-not { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+  .pill-na { background: var(--blue-pale); color: var(--muted); border-color: var(--border); }
+  .pill-gray { background: var(--blue-pale); color: var(--muted); border-color: var(--border); }
+
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin: 1.5rem 0; }
+  .threecol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+  @media (max-width: 880px) { .twocol, .threecol { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+  .quote { border-left: 3px solid var(--gold-bright); background: var(--gold-pale); padding: 1rem 1.5rem; margin: 1.2rem 0; font-family: 'DM Sans', sans-serif; font-size: .95rem; line-height: 1.75; color: #6b4c00; font-style: italic; border-radius: 0 8px 8px 0; }
+  .quote ul { padding-left: 1.2rem; margin: .6rem 0 .8rem; }
+  .quote li { margin: .35rem 0; }
+  .quote-attr { display: block; font-style: normal; font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(107,76,0,.6); margin-top: 1rem; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 10px; margin: .9rem 0; position: relative; box-shadow: 0 1px 4px rgba(10,32,128,.04); }
+  .card-ribbon { position: absolute; top: 0; left: 0; height: 100%; width: 4px; border-radius: 10px 0 0 10px; }
+  .card-ribbon.refine { background: var(--blue-bright); }
+  .card-ribbon.supplement { background: #3d7a2e; }
+  .card-ribbon.base { background: var(--light-muted); }
+  .card-ribbon.replace { background: #991b1b; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1.2rem; margin-bottom: .7rem; padding-bottom: .8rem; border-bottom: 1px solid var(--border); }
+  .card-id { font-family: var(--mono); font-size: .62rem; color: var(--light-muted); letter-spacing: 0.08em; }
+  .card-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.2rem; font-weight: 400; margin: .25rem 0 0; color: var(--blue-deep); }
+  .card-meta { font-family: var(--mono); font-size: .62rem; color: var(--muted); text-align: right; line-height: 1.5; }
+  .card-meta strong { color: var(--text); }
+  .card-body p { font-size: .88rem; margin-bottom: .65rem; }
+  .card-body p:last-child { margin-bottom: 0; }
+  .field-label { font-family: var(--mono); font-size: .6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--light-muted); margin: .9rem 0 .25rem; }
+  .field-text { font-size: .88rem; line-height: 1.55; }
+
+  .criteria-list { list-style: none; padding: 0; margin: .35rem 0 0; font-size: .85rem; line-height: 1.5; }
+  .criteria-list li { padding: .4rem 0 .4rem 1.3rem; position: relative; border-bottom: 1px dashed var(--border); }
+  .criteria-list li:last-child { border-bottom: none; }
+  .criteria-list.positive li::before { content: '+'; position: absolute; left: 0; font-family: var(--mono); color: #3d7a2e; font-weight: 700; }
+  .criteria-list.negative li::before { content: '−'; position: absolute; left: 0; font-family: var(--mono); color: #991b1b; font-weight: 700; }
+
+  details.cypher { margin: .9rem 0 0; border-top: 1px dashed var(--border); padding-top: .8rem; }
+  details.cypher summary { cursor: pointer; font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light-muted); user-select: none; list-style: none; display: flex; gap: 8px; align-items: center; }
+  details.cypher summary::before { content: '▸'; transition: transform 0.15s; color: var(--blue); }
+  details.cypher[open] summary::before { transform: rotate(90deg); }
+  details.cypher summary:hover { color: var(--blue); }
+  details.cypher pre { font-family: var(--mono); font-size: .7rem; line-height: 1.55; background: var(--blue-deep); color: #c8d8f8; padding: 1rem 1.2rem; border-radius: 8px; margin-top: .8rem; overflow-x: auto; white-space: pre; }
+  details.cypher pre .keyword { color: var(--gold-bright); font-weight: 500; }
+  details.cypher pre .string { color: #86efac; }
+  details.cypher pre .comment { color: #6b7db8; font-style: italic; }
+  details.cypher pre .var { color: #93c5fd; }
+
+  .callout { border-left: 3px solid var(--blue); background: var(--blue-pale); padding: 1.2rem 1.5rem; margin: 1.4rem 0; font-size: .92rem; line-height: 1.7; border-radius: 0 8px 8px 0; }
+  .callout.warn { border-left-color: var(--gold); background: var(--gold-pale); }
+  .callout.archi { border-left-color: var(--blue-deep); background: var(--blue-pale); }
+  .callout-label { font-family: var(--mono); font-size: .62rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: .45rem; color: var(--blue); font-weight: 700; }
+  .callout.warn .callout-label { color: var(--gold); }
+  .callout.archi .callout-label { color: var(--blue-deep); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 1.5rem 0; border-top: 2px solid var(--blue); padding-top: 1.5rem; }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat-num { font-family: 'DM Serif Display', Georgia, serif; font-size: 3rem; line-height: 1; letter-spacing: -.02em; color: var(--blue-deep); }
+  .stat-num em { color: var(--gold); font-style: italic; }
+  .stat-label { font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: 0.12em; margin-top: .4rem; color: var(--muted); line-height: 1.4; }
+
+  .phase-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  @media (max-width: 880px) { .phase-flow { grid-template-columns: repeat(2, 1fr); } }
+  .phase-cell { padding: 1.3rem 1.1rem; border-right: 1px solid var(--border); position: relative; background: var(--surface); }
+  .phase-cell:nth-child(even) { background: var(--bg); }
+  .phase-cell:last-child { border-right: none; }
+  .phase-num { font-family: var(--mono); font-size: .62rem; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+  .phase-name { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.2rem; font-weight: 400; margin: .35rem 0 .55rem; color: var(--blue-deep); }
+  .phase-out { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+  .phase-out strong { color: var(--text); font-weight: 600; }
+
+  .dep-wrap { background: var(--blue-pale); border: 1px solid var(--border); padding: 1.5rem 1.2rem; border-radius: 10px; margin: 1.2rem 0 1.5rem; overflow-x: auto; }
+  .dep-wrap svg { display: block; max-width: 100%; height: auto; }
+
+  .marginalia { font-family: var(--mono); font-size: .65rem; color: var(--light-muted); border-top: 1px solid var(--border); padding-top: .65rem; margin-top: 1.5rem; }
+
+  .anchor { display: block; height: 0; visibility: hidden; padding-top: 56px; margin-top: -56px; }
+
+  .toc { background: var(--blue-pale); border: 1px solid #ccd6f0; padding: 1.6rem 2rem; margin: 1.5rem 0; border-radius: 10px; border-top: 3px solid var(--blue-bright); }
+  .toc-title { font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--light-muted); margin-bottom: .8rem; }
+  .toc ol { column-count: 2; column-gap: 2rem; list-style: none; padding: 0; margin: 0; counter-reset: toc-item; }
+  @media (max-width: 720px) { .toc ol { column-count: 1; } }
+  .toc li { counter-increment: toc-item; padding: .4rem 0; border-bottom: 1px solid var(--border); break-inside: avoid; }
+  .toc li::before { content: counter(toc-item, decimal-leading-zero); font-family: var(--mono); font-size: .62rem; color: var(--gold); margin-right: .6rem; letter-spacing: 0.05em; }
+  .toc a { color: var(--blue-deep); text-decoration: none; font-family: 'DM Serif Display', Georgia, serif; font-size: .92rem; transition: color 0.15s; }
+  .toc a:hover { color: var(--blue-bright); }
+
+  footer { background: var(--blue-deep); color: #fff; padding: 3.5rem 3rem; text-align: center; }
+  footer .foot-eye { font-family: var(--mono); font-size: .65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(240,180,41,.7); margin-bottom: .8rem; }
+  footer h2 { color: #fff; font-size: 1.75rem; font-weight: 400; max-width: 640px; margin: 0 auto 1.2rem; font-family: 'DM Serif Display', Georgia, serif; }
+  footer p { color: rgba(255,255,255,.6); max-width: 600px; margin: 0 auto .6rem; font-size: .88rem; }
+  footer .credit { font-family: var(--mono); font-size: .62rem; color: rgba(255,255,255,.3); margin-top: 1.5rem; letter-spacing: 0.08em; }
+
+  .dt-grid > .card { margin: .75rem 0; }
+
+  .inheritance { font-family: var(--mono); font-size: .8rem; background: var(--blue-pale); padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 8px; margin: .8rem 0 1.4rem; line-height: 1.9; color: var(--muted); }
+  .inheritance .chain-leaf { color: var(--blue); font-weight: 700; }
+  .inheritance .chain-arrow { color: var(--light-muted); margin: 0 6px; }
+
+  .verdict-matrix th { white-space: nowrap; }
+  .verdict-matrix .dim-num { font-family: var(--mono); font-size: .75rem; color: var(--gold); font-weight: 700; }
+  .verdict-matrix .dim-name { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-size: .95rem; }
+
+  .promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin: 1.5rem 0; }
+  @media (max-width: 880px) { .promo-grid { grid-template-columns: 1fr; } }
+  .promo-card { background: var(--surface); border: 1px solid var(--border); padding: 1.3rem; border-top: 3px solid #3d7a2e; border-radius: 0 0 10px 10px; box-shadow: 0 1px 4px rgba(10,32,128,.04); }
+  .promo-card.held { border-top-color: var(--light-muted); opacity: 0.85; }
+  .promo-card-id { font-family: var(--mono); font-size: .62rem; color: var(--light-muted); letter-spacing: 0.06em; }
+  .promo-card-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.05rem; font-weight: 400; margin: .35rem 0 .65rem; line-height: 1.3; color: var(--blue-deep); }
+  .promo-card-target { font-family: var(--mono); font-size: .68rem; color: #3d7a2e; margin-bottom: .65rem; font-weight: 700; letter-spacing: 0.04em; }
+  .promo-card.held .promo-card-target { color: var(--light-muted); }
+  .promo-card-body { font-size: .82rem; line-height: 1.55; color: var(--muted); }
+
+  .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+  @media (max-width: 720px) { .meta-grid { grid-template-columns: 1fr; } }
+  .meta-cell { background: var(--surface); padding: 1.4rem 1.2rem; }
+  .meta-cell strong { display: block; font-family: 'DM Serif Display', Georgia, serif; font-size: 1.8rem; font-weight: 400; color: var(--blue-deep); line-height: 1.1; margin-bottom: .4rem; }
+  .meta-cell em { color: var(--gold); font-style: italic; }
+  .meta-cell span { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  .archi-decisions { border: 2px solid var(--blue); padding: 1.8rem 2rem; background: var(--blue-pale); border-radius: 10px; margin: 1.5rem 0; position: relative; }
+  .archi-decisions::before { content: 'Architectural decisions for Vernon and Mehmet'; position: absolute; top: -10px; left: 20px; background: var(--blue-pale); padding: 0 .6rem; font-family: var(--mono); font-size: .6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); font-weight: 700; }
+  .archi-decisions ol { padding-left: 0; list-style: none; counter-reset: archi; }
+  .archi-decisions li { counter-increment: archi; padding: .8rem 0 .8rem 3.2rem; position: relative; border-bottom: 1px solid var(--border); font-size: .92rem; line-height: 1.55; }
+  .archi-decisions li:last-child { border-bottom: none; }
+  .archi-decisions li::before { content: counter(archi); position: absolute; left: 0; top: .8rem; font-family: 'DM Serif Display', Georgia, serif; font-size: 1.8rem; font-weight: 400; color: var(--gold); line-height: 1; width: 2.4rem; }
+  .archi-decisions li strong { display: block; margin-bottom: .3rem; font-weight: 700; font-size: .95rem; color: var(--blue-deep); }
+
+  code { font-family: var(--mono); font-size: .82em; background: var(--blue-pale); color: var(--blue-deep); padding: .1em .35em; border-radius: 4px; border: 1px solid #ccd6f0; }
+  a { color: var(--blue); }
+  a:hover { color: var(--blue-deep); }
+
+  @media (max-width: 720px) {
+    .ribbon { padding: 0 1rem; }
+    .ribbon-item { padding: .8rem .4rem; font-size: 9px; }
+    .strip { flex-direction: column; gap: .5rem; padding: .8rem 1rem; }
+    .strip-meta { flex-wrap: wrap; gap: .5rem; }
+    .hero { padding: 3rem 1.2rem 2.5rem; }
+    section { padding: 2rem 1.2rem; }
+    footer { padding: 2.5rem 1.2rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="ribbon">
+  <a href="#" class="ribbon-logo">
+    <img src="data:image/jpeg;base64,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" alt="Rosetta Logo">
+    <div class="ribbon-logo-wordmark">
+      <strong>Rosetta</strong>
+      <span>Project Archaeology</span>
+    </div>
+  </a>
+    <a class="ribbon-item" href="#summary">Summary</a>
+    <a class="ribbon-item" href="#methodology">Methodology</a>
+    <a class="ribbon-item" href="#phase1">Survey</a>
+    <a class="ribbon-item" href="#phase2">Excavation</a>
+    <a class="ribbon-item" href="#phase3">Classification</a>
+    <a class="ribbon-item" href="#phase4">Preservation</a>
+    <a class="ribbon-item" href="#cert">Certification</a>
+  <span class="ribbon-spacer"></span>
+  <span class="ribbon-version">NTO-01 · Steel Thread · v1.0</span>
+  <span class="ribbon-badge">Confidential</span>
+</nav>
+
+<div class="strip">
+  <span class="strip-id">DOSSIER · SALESFORCE-FDE/NTO-01</span>
+  <span class="strip-meta">
+    <span><strong>Manual</strong> Project Archaeology v1.3</span>
+    <span><strong>Plugin</strong> rosetta-archaeology v0.1.6</span>
+    <span><strong>Generated</strong> 2026-04-27</span>
+  </span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+  <div class="hero-eyebrow">A Steel Thread for Salesforce Forward-Deployed Engineering</div>
+  <h1 class="hero-title">A Digital Twin,<br>excavated <em>from a discovery dossier</em>.</h1>
+  <p class="hero-deck">
+    Northern Trail Outfitters — fictional, but exactly the engagement shape Salesforce FDE sees
+    in real life — handed us seven discovery documents. Four pipeline phases later, we have a
+    governed Digital Twin: a leaf KnowledgeDomain, three-layer Context Artifacts, six
+    DecisionTraces with full v1.3 schema, an honest eleven-dimension readiness verdict, and three
+    PromotionCandidates ready for partner certification. This document is what Salesforce
+    leadership asked for when they asked for a steel thread.
+  </p>
+  <div class="hero-byline">
+    <div class="byline-item">
+      <label>Engagement</label>
+      <span>salesforce-fde:nto-01</span>
+    </div>
+    <div class="byline-item">
+      <label>Verdict</label>
+      <span>Not Ready — Remediable</span>
+    </div>
+    <div class="byline-item">
+      <label>Methodology</label>
+      <span>Project Archaeology v1.3</span>
+    </div>
+    <div class="byline-item">
+      <label>Authoring</label>
+      <span>Keenan Vision LLC</span>
+    </div>
+  </div>
+  </div>
+</header>
+
+<span class="anchor" id="summary"></span>
+<section>
+  <div class="section-eyebrow">Executive Summary</div>
+  <h2>The methodology held. The verdict is honest.</h2>
+
+  <p class="lede">
+    A four-phase pipeline turned seven discovery documents into a governed Digital Twin. The
+    bundle contains <strong>4,419 lines of generated Cypher</strong>, <strong>three Cypher seed
+    files</strong> for the engagement-scoped knowledge graph, a <strong>complete Site Package</strong>
+    with three trajectory files, and a <strong>verdict-rendered readiness assessment</strong>
+    against the eleven-dimension rubric. The verdict is <strong>Not Ready — Remediable</strong>
+    for both intended agentic actions, with a documented six-item remediation path.
+  </p>
+
+  <div class="stats">
+    <div>
+      <div class="stat-num"><em>4</em>/4</div>
+      <div class="stat-label">Phases completed</div>
+    </div>
+    <div>
+      <div class="stat-num"><em>6</em></div>
+      <div class="stat-label">DecisionTraces with full v1.3 schema</div>
+    </div>
+    <div>
+      <div class="stat-num"><em>3</em>/6</div>
+      <div class="stat-label">Promoted to candidate</div>
+    </div>
+    <div>
+      <div class="stat-num"><em>11</em>/11</div>
+      <div class="stat-label">Readiness dimensions addressed</div>
+    </div>
+  </div>
+
+  <div class="callout archi">
+    <div class="callout-label">Why this matters for Rahul, Steve, and Anil</div>
+    <p>
+      Salesforce FDE has been asked to scale beyond hand-crafted onboarding. The bottleneck is not
+      headcount — it is the discipline transfer required for an engagement architect to produce a
+      defensible Digital Twin from messy real-world discovery materials. <strong>This pipeline
+      operationalizes that discipline.</strong> The methodology is not novel; what is novel is that
+      it now runs against an arbitrary engagement dossier and produces governed Cypher that conforms
+      to the rosetta-platform metamodel, with negative criteria mandatory and tooling symmetry
+      enforced.
+    </p>
+    <p>
+      What this is <em>not</em>: a sales pitch, a marketing rendition, or a drop-in product. The plugin's value
+      is the discipline contract it enforces — that an empty <code>validation.negativeCriteria</code>
+      array is a hard fail; that anti-patterns must be cataloged before patterns can be promoted;
+      that "Not Ready — Structural" is a permitted and sometimes correct verdict. The NTO-01 run
+      proves the contract holds. The next conversation is about
+      <a href="#archi" style="color: var(--accent); text-decoration: underline;">how engagement-scoped
+      content enters the canonical build pipeline</a>.
+    </p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">In this document</div>
+    <ol>
+      <li><a href="#engagement">The engagement (Northern Trail Outfitters)</a></li>
+      <li><a href="#methodology">The four-phase methodology</a></li>
+      <li><a href="#phase1">Phase 1 — Survey</a></li>
+      <li><a href="#phase2">Phase 2 — Excavation</a></li>
+      <li><a href="#phase3">Phase 3 — Classification (the keystone)</a></li>
+      <li><a href="#verdict">The eleven-dimension readiness verdict</a></li>
+      <li><a href="#deps">The dependency map</a></li>
+      <li><a href="#gaps">The remediation path</a></li>
+      <li><a href="#phase4">Phase 4 — Preservation</a></li>
+      <li><a href="#cert">The Gate 3 partner certification request</a></li>
+      <li><a href="#archi">Architectural decisions ahead</a></li>
+      <li><a href="#whatittook">What this took, and what's next</a></li>
+    </ol>
+  </div>
+</section>
+
+<span class="anchor" id="engagement"></span>
+<section>
+  <div class="section-eyebrow">The Engagement</div>
+  <h2>Northern Trail Outfitters, in <em>two voices</em>.</h2>
+
+  <p class="lede">
+    NTO is a fictional retailer that ships in every Salesforce demo for a reason — it has the
+    shape of a real engagement: a CMO with a unification problem, a Head of Customer Service
+    with a deflection problem, four operational systems (CRM, Demandware, Marketing Cloud,
+    POS), partial loyalty coverage, an unresolved data-warehouse question, and a stated
+    intent to deploy agentic experiences <em>before</em> the data is ready.
+  </p>
+
+  <p>
+    The discovery dossier is seven Word documents — two business scenarios (CMO voice + Head of
+    Service voice), a discovery framework, a data-readiness guide, and three execution scenarios
+    that play out the same use case three different ways. <strong>Per Manual Chapter 8 doctrine,
+    Phase 1 captures Business Intent verbatim — no interpretation.</strong> What follows are the
+    actual stakeholder voices the plugin pulled from the dossier.
+  </p>
+
+  <div class="twocol">
+    <div>
+      <h3 style="margin-top: 0;">CMO Voice — Tier-Based Customer Growth</h3>
+      <div class="quote">
+        At NTO, we've grown rapidly across digital and in-store channels, but our ability to
+        truly understand and engage our customers has not kept pace. Today, our customer data is
+        fragmented across commerce, marketing, and service systems. As a result, we are not
+        consistently recognizing our most valuable customers, nor are we effectively guiding
+        others toward higher-value relationships with our brand.
+        <br><br>
+        My priority is to increase revenue and customer lifetime value by:
+        <ul>
+          <li>Identifying and deeply understanding our top-tier customers</li>
+          <li>Engaging mid-tier customers with personalized experiences that increase their loyalty and spend</li>
+          <li>Ensuring every interaction — whether marketing or service — is relevant, timely, and context-aware</li>
+        </ul>
+        At the same time, we are investing in agentic experiences to scale customer engagement.
+        However, these experiences must be grounded in trusted, complete, and current data, or we
+        risk damaging customer trust.
+        <span class="quote-attr">Source — 1.A Business Scenario (CMO/CDP) §1</span>
+      </div>
+
+      <h4>Use case</h4>
+      <p style="font-size: 14.5px;">Tier-Based Customer Growth and Intelligent Engagement.</p>
+      <h4>Business action</h4>
+      <p style="font-size: 14.5px;">Identify Tier 2 customers with high potential and engage them with personalized,
+      context-aware experiences to increase their spend and move them into Tier 1.</p>
+      <h4>Success metrics</h4>
+      <p style="font-size: 14.5px;">% Tier 2 → Tier 1 promotion; AOV increase; repeat purchase frequency; campaign
+      conversion rates; revenue contribution by tier.</p>
+    </div>
+
+    <div>
+      <h3 style="margin-top: 0;">Head of Service Voice — 24/7 Case Deflection</h3>
+      <div class="quote">
+        At NTO, customer expectations have evolved faster than our ability to support them at scale.
+        Customers expect fast, accurate, and always-available support, whether they are checking
+        an order, resolving an issue, or deciding whether to purchase again. Today, we rely
+        heavily on human agents, which creates challenges:
+        <ul>
+          <li>Limited availability outside business hours</li>
+          <li>Inconsistent response quality depending on the agent</li>
+          <li>Increasing case volumes driving longer wait times</li>
+        </ul>
+        At the same time, our customer data is spread across multiple systems. This makes it
+        difficult for agents — human or digital — to quickly understand the full context of a
+        customer's situation.
+        <span class="quote-attr">Source — 1.B Business Scenario (Customer Service) §1</span>
+      </div>
+
+      <h4>Use case</h4>
+      <p style="font-size: 14.5px;">24/7 Case Deflection and Intelligent Customer Service.</p>
+      <h4>Business action</h4>
+      <p style="font-size: 14.5px;">Allow customers to self-serve common support needs through an AI agent, while
+      ensuring the agent can accurately identify the customer, understand their context, and
+      provide correct, consistent responses.</p>
+      <h4>Success metrics</h4>
+      <p style="font-size: 14.5px;">% cases successfully deflected; average response time; CSAT; first-contact resolution
+      rate; reduction in AHT; escalation accuracy.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A doctrinal claim shared by both stakeholders</div>
+    <p>
+      Both voices state the same precondition for success: <em>"these experiences must be grounded
+      in trusted, complete, and current data."</em> This is the load-bearing claim of the entire
+      engagement. Phase 3's verdict will measure whether NTO is, in fact, ready to host such
+      experiences. The answer turns out to be <strong>not yet</strong>, and the plugin is willing
+      to say so honestly.
+    </p>
+  </div>
+</section>
+
+<span class="anchor" id="methodology"></span>
+<section>
+  <div class="section-eyebrow">The Methodology</div>
+  <h2>Four phases. Five gates. <em>One discipline contract.</em></h2>
+
+  <p class="lede">
+    Project Archaeology v1.3 is the methodology Vernon Keenan and the Rosetta team developed for
+    excavating a Digital Twin from messy brownfield evidence. It defines four phases, four
+    governance gates, an evidence taxonomy with seven classes, an eleven-dimension readiness
+    rubric, and a v1.3 DecisionTrace schema with three mandatory blocks. The plugin operationalizes
+    that doctrine.
+  </p>
+
+  <div class="phase-flow">
+    <div class="phase-cell">
+      <div class="phase-num">Phase 1</div>
+      <div class="phase-name">Survey</div>
+      <div class="phase-out">
+        Establish domain placement. Capture <strong>verbatim</strong> Business Intent. Map org
+        topology. Survey canonical inheritance candidates.
+      </div>
+    </div>
+    <div class="phase-cell">
+      <div class="phase-num">Phase 2</div>
+      <div class="phase-name">Excavation</div>
+      <div class="phase-out">
+        Inventory every evidence item by class. Build the <strong>Site Package</strong>. Catalog
+        anti-patterns. Document <em>what's not here</em>.
+      </div>
+    </div>
+    <div class="phase-cell">
+      <div class="phase-num">Phase 3</div>
+      <div class="phase-name">Classification</div>
+      <div class="phase-out">
+        Three-layer Context Artifacts. <strong>v1.3 DecisionTraces</strong> with mandatory negative
+        criteria. The <em>eleven-dimension readiness verdict</em>.
+      </div>
+    </div>
+    <div class="phase-cell">
+      <div class="phase-num">Phase 4</div>
+      <div class="phase-name">Preservation</div>
+      <div class="phase-out">
+        Identify <strong>PromotionCandidates</strong>. Generate the partner certification request
+        for Gate 3 review. Stage validation checklist.
+      </div>
+    </div>
+  </div>
+
+  <h3>The non-negotiables</h3>
+  <p>The plugin enforces three doctrinal contracts at hard gates. Skipping them is not allowed.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Contract</th>
+        <th>What it means</th>
+        <th style="width: 30%">Where the plugin enforces it</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Negative criteria are mandatory</strong></td>
+        <td>Every DecisionTrace's <code>validation.negativeCriteria</code> must be non-empty. An
+            empty list is a hard fail per Manual Chapter 7 Principle 1. The plugin refuses to
+            advance Phase 3 if any DecisionTrace has empty negative criteria.</td>
+        <td>Phase 3 static analysis check 2; refuses to build the bundle until satisfied.</td>
+      </tr>
+      <tr>
+        <td><strong>Tooling symmetry</strong></td>
+        <td>Every DecisionTrace's <code>alternativesConsidered</code> must have at least 2 entries
+            (the selected alternative plus at least one rejected). "No alternatives considered"
+            must be stated explicitly with rationale, not implicitly via a single entry.</td>
+        <td>Phase 3 schema validation; ≥2 alternatives per trace.</td>
+      </tr>
+      <tr>
+        <td><strong>Existing config is evidence, not truth</strong></td>
+        <td>What's in an org is evidence of past activity, not a verdict on current correctness.
+            Confidence cannot exceed Medium without cross-class corroboration.</td>
+        <td>Phase 2 evidence-taxonomy classification; Phase 3 confidence bounding.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Combined, these contracts produce a Digital Twin where every claim is traceable to its
+    evidence, every decision shows its rejected alternatives, and every absence-of-evidence is
+    annotated rather than papered over.
+  </p>
+</section>
+
+<span class="anchor" id="phase1"></span>
+<section>
+  <div class="section-eyebrow">Phase 1 · Survey</div>
+  <h2>Reconnaissance and <em>domain placement</em>.</h2>
+
+  <p class="lede">
+    Phase 1's job is to put the engagement on the inheritance tree, capture business intent
+    without interpreting it, and survey which canonical patterns might apply. It is the
+    smallest phase by output volume and the easiest to do badly — the failure mode is
+    "requirements capture instead of intent capture."
+  </p>
+
+  <h3>Domain placement</h3>
+  <p>
+    The engagement enters the rosetta-platform domain hierarchy as a leaf KnowledgeDomain under
+    the FDE partner domain. The inheritance chain is the operational projection of Manual
+    Chapter 12.
+  </p>
+  <div class="inheritance">
+    <span>salesforce:rosetta-core</span>
+    <span class="chain-arrow">▸</span>
+    <span>salesforce-fde</span>
+    <span class="chain-arrow">▸</span>
+    <span class="chain-leaf">salesforce-fde:nto-01</span>
+  </div>
+
+  <h3>Org topology, as-found</h3>
+  <p>
+    Five systems are present in the dossier; one (Snowflake) appears with three different
+    statuses across the three execution scenarios — a contradiction Phase 3 will be forced to
+    resolve.
+  </p>
+  <table>
+    <thead>
+      <tr><th style="width: 18%">System</th><th style="width: 25%">Role</th><th>Source for this entry</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">Salesforce CRM</td><td>System of record (Contacts, Accounts, Cases)</td><td>1.A §5; 1.B §4</td></tr>
+      <tr><td class="mono">Demandware</td><td>B2C eCommerce; orders, browse, abandonment</td><td>1.A §5; Scenario 2 Step 2</td></tr>
+      <tr><td class="mono">Marketing Cloud</td><td>Campaign engagement, journeys</td><td>1.A §5; Scenario 1 Step 4</td></tr>
+      <tr><td class="mono">POS</td><td>In-store transactions</td><td>1.A §5; Scenario 2 Step 2</td></tr>
+      <tr><td class="mono">Snowflake</td><td>Status contested across scenarios</td><td>1.A §5 ("potential external"); Scenario 2 elevates to primary; Scenario 2 §What Went Wrong rejects authority</td></tr>
+    </tbody>
+  </table>
+
+  <h3>15 inheritance candidates surveyed</h3>
+  <p>
+    The plugin grepped <code>db/seeds/</code> for canonical patterns plausibly relevant to the
+    engagement and produced 15 inheritance candidates — the gate required only 3. The abundance
+    is itself a signal: NTO-01 is squarely on the canonical seed-corpus axis, not a novel
+    engagement shape.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 14%">Cluster</th>
+        <th style="width: 12%">Pattern ID</th>
+        <th>Pattern name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>CDP / customer-growth</td><td class="mono">CL-042</td><td>Hybrid Commerce Identity Resolution</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">CL-046</td><td>Audience Segmentation w/ Calculated Insights</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">CL-048</td><td>Streaming Ingestion</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">CL-050</td><td>Consent Management & Data Ethics</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">MC-001</td><td>Journey Builder w/ Data Cloud Segments</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">MC-002</td><td>Personalization w/ Calculated Insights</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">MC-004</td><td>Predictive Audience Scoring</td></tr>
+      <tr><td>CDP / customer-growth</td><td class="mono">MC-006</td><td>Loyalty Program Data Foundation</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">CL-043</td><td>Service Context Assembly</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">AF-001</td><td>Agent Topic & Action Binding</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">AF-002</td><td>Knowledge-Grounded Service Agent</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">AF-004</td><td>Agent Guardrails & Trust Layer</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">AF-007</td><td>Agent Observability & Lifecycle Management</td></tr>
+      <tr><td>Service / Agentforce</td><td class="mono">AF-009</td><td>Conversational Commerce Agent</td></tr>
+      <tr><td>Cross-cutting</td><td class="mono">CL-049</td><td>Data Cloud Model Governance</td></tr>
+    </tbody>
+  </table>
+
+  <details class="cypher">
+    <summary>The leaf KnowledgeDomain Cypher (00-domain.cypher)</summary>
+<pre><span class="comment">// Engagement Leaf Domain — Northern Trail Outfitters (NTO-01)</span>
+<span class="keyword">MERGE</span> (leaf:<span class="var">KnowledgeDomain</span> {qualifiedKey:
+    <span class="string">'salesforce:rosetta-core::domain:salesforce-fde::domain:nto-01'</span>})
+  <span class="keyword">ON CREATE SET</span>
+    leaf.domainKey         = <span class="string">'salesforce-fde:nto-01'</span>,
+    leaf.stableKey         = <span class="string">'domain:nto-01'</span>,
+    leaf.displayId         = <span class="string">'NTO-01'</span>,
+    leaf.parentDomain      = <span class="string">'salesforce-fde'</span>,
+    leaf.defaultOverrideMode = <span class="string">'base'</span>,
+    leaf.projectId         = <span class="string">'NTO-01'</span>,
+    leaf.engagementName    = <span class="string">'Northern Trail Outfitters — D360/CDP + Agentforce'</span>,
+    leaf.partnerKey        = <span class="string">'salesforce-fde'</span>,
+    leaf.engagementKey     = <span class="string">'nto-01'</span>,
+    leaf.lifecyclePhase    = <span class="string">'phase-1-survey'</span>,
+    leaf.createdDate       = <span class="keyword">datetime</span>();</pre>
+  </details>
+</section>
+
+<span class="anchor" id="phase2"></span>
+<section>
+  <div class="section-eyebrow">Phase 2 · Excavation</div>
+  <h2>Evidence inventory, anti-pattern catalog, <em>and the gap list</em>.</h2>
+
+  <p class="lede">
+    Phase 2 builds the Archaeological Site Package and classifies every distinct piece of
+    evidence in the dossier by the seven-class evidence taxonomy. The most valuable artifact
+    Phase 2 produces is the <strong>"What's NOT here" section</strong> — an explicit list of
+    forensic gaps that bounds Phase 3's verdict from above.
+  </p>
+
+  <h3>The evidence inventory</h3>
+  <p>
+    Eleven distinct evidence items were classified, with cross-class corroboration tracked
+    explicitly. <strong>Three claims are flagged as not yet corroborated</strong>, which means
+    Phase 3 cannot rely on them as load-bearing without a forensic confirmation step.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%">ID</th>
+        <th style="width: 25%">Evidence item</th>
+        <th>Class</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">ev-001</td><td>CMO business-scenario testimony</td><td>practitioner_testimony</td><td><span class="pill pill-cond">Medium</span></td></tr>
+      <tr><td class="mono">ev-002</td><td>Head of Service business-scenario testimony</td><td>practitioner_testimony</td><td><span class="pill pill-cond">Medium</span></td></tr>
+      <tr><td class="mono">ev-003</td><td>Cuneiform-cited contact-point findings (claimed)</td><td>practitioner_testimony*</td><td><span class="pill pill-not">Low</span></td></tr>
+      <tr><td class="mono">ev-004</td><td>Discovery Framework — Information Landscape</td><td>authoritative_guidance</td><td><span class="pill pill-met">High</span></td></tr>
+      <tr><td class="mono">ev-005</td><td>Data Readiness & Activation Guide</td><td>authoritative_guidance</td><td><span class="pill pill-met">High</span></td></tr>
+      <tr><td class="mono">ev-101</td><td>Scenario 1 — Naïve Unification (anti-pattern reference)</td><td>anti_pattern</td><td><span class="pill pill-met">High</span></td></tr>
+      <tr><td class="mono">ev-102</td><td>Scenario 2 — Discovery-Driven (mixed; anti-pattern segments)</td><td>anti_pattern + practitioner_testimony</td><td><span class="pill pill-met">High</span></td></tr>
+      <tr><td class="mono">ev-103</td><td>Scenario 3 — Forensic-Driven (methodological correction)</td><td>practitioner_testimony</td><td><span class="pill pill-cond">Medium</span></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size: 13px; color: var(--ink-soft); font-style: italic;">
+    *ev-003 is shaped like a vendor_scan with vendorId=peernova but its actual evidenceClass is
+    practitioner_testimony because the scan didn't really run; the numbers are
+    scenario-author claims pending forensic confirmation. This honest disclosure is the kind
+    of thing the methodology is designed to surface.
+  </p>
+
+  <h3>The anti-pattern catalog</h3>
+  <p>
+    Nine anti-patterns were cataloged from Scenarios 1 and 2. These are not just rhetorical —
+    they become explicit <code>negativeCriteria</code> entries on the Phase 3 DecisionTraces,
+    operationalizing the methodological transfer the Manual demands.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%">ID</th>
+        <th style="width: 30%">Anti-pattern</th>
+        <th>Why it's wrong</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">ap-101</td><td>Default to canonical pattern without measuring fit</td><td>CL-042 default settings assume contact-point quality NTO does not have</td></tr>
+      <tr><td class="mono">ap-102</td><td>Population rate ≡ reliability</td><td>A field can be 95% populated and 60% accurate. Population is not validation.</td></tr>
+      <tr><td class="mono">ap-103</td><td>Skip identity validation before activation</td><td>Producing journeys against unverified resolution propagates errors at scale</td></tr>
+      <tr><td class="mono">ap-104</td><td>Compute tiers without verifying inputs</td><td>Tier accuracy is bounded above by identity accuracy. Confidently-wrong segmentation</td></tr>
+      <tr><td class="mono">ap-105</td><td>"Looks Unified ≡ Trusted"</td><td>Manual Chapter 5 doctrine: existing configuration is evidence, not truth</td></tr>
+      <tr><td class="mono">ap-201</td><td>Aggregate population stats as identity evidence</td><td>Aggregate ≠ per-record; populated ≠ unique; populated ≠ matched</td></tr>
+      <tr><td class="mono">ap-202</td><td>Snowflake authority assumption</td><td>"Snowflake contains the full truth" — but it's a warehouse, not a system of record</td></tr>
+      <tr><td class="mono">ap-203</td><td>Email-alone deterministic match</td><td>Email collisions, spousal-shared, role-based — false positives at scale</td></tr>
+      <tr><td class="mono">ap-204</td><td>Activate without per-channel consent gating</td><td>Channel mismatches in consent state corrupt downstream consent posture</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-label">Phase 2 disclosure — what's NOT here</div>
+    <p>
+      A dossier-only excavation has eight known forensic gaps: no live org metadata snapshot;
+      no actual data-catalog scan output; no live integration trace; no live permission-model
+      audit; no real Cuneiform pass; no actual interview transcripts; no live order-volume
+      counts; no actual platform-feature inventory.
+    </p>
+    <p>
+      <strong>These eight gaps are expected for a worked-example excavation. They are unacceptable
+      for a real engagement headed to Phase 3 readiness verdict.</strong> Phase 3 cannot issue
+      "Ready" against the eleven-dimension rubric on the basis of practitioner testimony plus
+      authoritative guidance alone. This single methodological discipline — refusing to issue
+      an unbounded "Ready" verdict — is what separates Project Archaeology from generic
+      AI-readiness assessments.
+    </p>
+  </div>
+</section>
+
+<span class="anchor" id="phase3"></span>
+<section>
+  <div class="section-eyebrow">Phase 3 · Classification — The Keystone</div>
+  <h2>The Digital Twin <em>takes shape</em>.</h2>
+
+  <p class="lede">
+    Phase 3 is the methodological climax. It produces three-layer Context Artifacts (intent,
+    structure, binding) for each functional domain, externalizes DecisionTraces from trajectory
+    evidence using the forensic-extraction rule, and renders the eleven-dimension readiness
+    verdict — for a specific intended agentic action, not a generic quality assessment.
+  </p>
+
+  <h3>Four Context Artifacts, four override modes</h3>
+  <p>
+    Each artifact carries the full Manual Chapter 13 schema with all three layers populated. The
+    diversity of override modes (refine, supplement, base, refine) is itself a sign of methodology
+    fidelity — a phase that produced four "base" artifacts would be evidence of disengagement.
+  </p>
+
+  <div class="card">
+    <div class="card-ribbon refine"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">ca-nto01-001 · refine CL-042</div>
+        <div class="card-title">Customer Data Unification</div>
+      </div>
+      <div class="card-meta">
+        complexity: <strong>high</strong><br>
+        confidence: <strong>medium</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Intent (verbatim derivation from CMO + Service voices)</div>
+      <p class="field-text">Build a unified, trusted profile of every NTO customer across commerce,
+        service, marketing, and in-store activity, so that both human and AI agents act on
+        consistent, current data and never damage customer trust by misclassification.</p>
+
+      <div class="field-label">Structure</div>
+      <p class="field-text">Resolve identity across CRM Contact, Demandware Customer, Marketing
+        Cloud Subscriber, and POS records using primary deterministic match on email + loyalty ID,
+        with fuzzy fallback gated by Cuneiform-measured value-quality thresholds. Snowflake is
+        treated as a downstream warehouse, not authoritative — see ap-202.</p>
+
+      <div class="field-label">Binding</div>
+      <p class="field-text">Data Cloud Individual DMO; UnifiedIndividual rule set; Salesforce CRM
+        Contact + Account; Demandware connector → Order DLM; Marketing Cloud connector → Subscriber
+        DLM; POS connector via streaming ingest (CL-048 candidate).</p>
+
+      <div class="field-label">Contradictions surfaced</div>
+      <p class="field-text">Snowflake disposition contested across the dossier; Demandware
+        cadence claim (hourly) is practitioner_testimony pending forensic verification.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon supplement"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">ca-nto01-002 · supplement CL-046</div>
+        <div class="card-title">Tier-Based Segmentation</div>
+      </div>
+      <div class="card-meta">
+        complexity: <strong>medium</strong><br>
+        confidence: <strong>low</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Intent</div>
+      <p class="field-text">Compute Tier 1 / Tier 2 segmentation that the CMO can act on, with
+        deterministic, auditable rules tied to LTV-relevant attributes and bounded above by
+        identity-resolution confidence.</p>
+
+      <div class="field-label">Structure</div>
+      <p class="field-text">A calculated insight running over UnifiedIndividual, gated by data
+        quality — the segmentation cannot run until DT-NTO01-001's identity rule set passes
+        Pass@k threshold against held-out test data.</p>
+
+      <div class="field-label">Binding</div>
+      <p class="field-text">Data Cloud Calculated Insight (CL-046 supplement); Marketing Cloud
+        activation gated by per-channel consent posture (CL-050); MC-004 predictive scoring
+        layered on top once tier accuracy is established.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon base"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">ca-nto01-003 · base MC-001</div>
+        <div class="card-title">Personalized Engagement</div>
+      </div>
+      <div class="card-meta">
+        complexity: <strong>medium</strong><br>
+        confidence: <strong>medium</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Intent</div>
+      <p class="field-text">Run personalized engagement campaigns via Journey Builder against the
+        validated tier segmentation, ensuring every touchpoint is "relevant, timely, and
+        context-aware" per CMO doctrine.</p>
+
+      <div class="field-label">Structure</div>
+      <p class="field-text">Inherits MC-001 canonical pattern as base. Engagement-specific
+        configuration (campaign templates, branching logic, send-time optimization) handled at
+        runtime, not graph-time.</p>
+
+      <div class="field-label">Binding</div>
+      <p class="field-text">Marketing Cloud Journey Builder consuming Data Cloud segments; Mobile
+        push and Email channels gated by CL-050 consent state.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon refine"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">ca-nto01-004 · refine AF-002</div>
+        <div class="card-title">Agentforce Customer Service</div>
+      </div>
+      <div class="card-meta">
+        complexity: <strong>high</strong><br>
+        confidence: <strong>medium</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Intent</div>
+      <p class="field-text">Enable 24/7 case deflection via an AI service agent that accurately
+        identifies the customer, understands their context, and provides correct, consistent
+        responses — escalating to humans on low identity confidence.</p>
+
+      <div class="field-label">Structure</div>
+      <p class="field-text">AF-002 (Knowledge-Grounded Service Agent) refined with an explicit
+        identity-confidence threshold (selected: 0.85) below which the agent must escalate. This
+        is bounded above by DT-NTO01-001's resolution accuracy.</p>
+
+      <div class="field-label">Binding</div>
+      <p class="field-text">Service Cloud Case + Contact + Account + Knowledge + Entitlement;
+        Agentforce Topic + Action library; Trust Layer; Agent Builder; Data Cloud Individual DMO
+        as read-only context; Demandware order context surfaced via integration.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 64px;">Six DecisionTraces, with full v1.3 schema</h3>
+  <p>
+    The DecisionTraces are where the methodology earns its keep. Each carries
+    <code>stateAtDecision</code> (closes retrospective-hallucination), at least 2
+    <code>alternativesConsidered</code> (closes tooling-symmetry), and non-empty
+    <code>validation.negativeCriteria</code> (Manual Chapter 7 hard fail otherwise).
+    What follows is the substance, with the Cypher folded behind disclosures.
+  </p>
+
+  <div class="dt-grid">
+
+  <div class="card">
+    <div class="card-ribbon refine"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-001</div>
+        <div class="card-title">Identity Resolution Rule Set</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>pattern-selection</strong><br>
+        urgency: <strong>high</strong> · reversibility: <strong>medium</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">What identity-resolution rule set should NTO use to unify Individuals
+        across Salesforce CRM, Demandware, Marketing Cloud, and POS, given Cuneiform-cited
+        contact-point reliability gaps?</p>
+
+      <div class="field-label">Discovery</div>
+      <p class="field-text">NTO-cited Cuneiform findings (Email ~75%, BusinessPhone ~69%, duplicates
+        ~4%) make dossier-claimed deterministic match on email alone insufficient. CL-042 provides
+        the canonical pattern but with default settings that assume higher contact-point quality
+        than NTO has.</p>
+
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text"><code>CL-042-refined-for-NTO</code> with overrideMode <code>refine</code>:
+        require email + loyalty ID dual-key deterministic match where loyalty ID is present, gate
+        fuzzy fallback by per-field value-quality thresholds, preserve source-system lineage on
+        every UnifiedIndividual.</p>
+
+      <div class="field-label">Alternatives considered (3)</div>
+      <p class="field-text">
+        <strong>1.</strong> CL-042 base (no refinement, accept canonical defaults) — <em>rejected</em> per
+        ap-101..105.
+        <strong>2.</strong> CL-042 with refine (selected) — only option that survives the anti-pattern catalog.
+        <strong>3.</strong> Replace CL-042 with a custom identity service — <em>rejected for now</em>; carried as
+        evidenceGap for Phase 4.
+      </p>
+
+      <div class="field-label">Positive criteria (4)</div>
+      <ul class="criteria-list positive">
+        <li>Identity resolution must use email + loyalty ID as dual-key deterministic match where loyalty ID is present.</li>
+        <li>Fuzzy fallback must be gated by per-field value-quality thresholds derived from a current data-catalog scan.</li>
+        <li>Every UnifiedIndividual must carry source-system lineage attribution for each contributing record.</li>
+        <li>Resolution accuracy must be measurable via held-out test set with documented Pass@k.</li>
+      </ul>
+
+      <div class="field-label">Negative criteria (5) — derived from forensic-extraction rule</div>
+      <ul class="criteria-list negative">
+        <li>Must not use email alone as deterministic match (ap-203 from Scenario 2).</li>
+        <li>Must not assume contact-point fields are reliable on the basis of population rate alone (ap-102).</li>
+        <li>Must not treat Snowflake as authoritative for cross-system identity (ap-202).</li>
+        <li>Must not promote this refinement to the salesforce-fde partner domain without Phase 4 partner certification.</li>
+        <li>Must not present a single-source testimony (the CMO voice) as corroborated evidence for tier definitions downstream.</li>
+      </ul>
+
+      <details class="cypher">
+        <summary>Show the v1.3 DecisionTrace Cypher</summary>
+<pre><span class="keyword">MERGE</span> (dt1:<span class="var">DecisionTrace</span> {traceKey: <span class="string">'DT-NTO01-001'</span>})
+  <span class="keyword">ON CREATE SET</span>
+    dt1.lifecycleState                = <span class="string">'decisionTrace'</span>,
+    dt1.originDomainKey               = <span class="string">'salesforce-fde:nto-01'</span>,
+    dt1.sourceTrajectoryRef           = <span class="string">'.../trajectory-...-scenario-03-forensic-driven.json'</span>,
+    dt1.decisionPoint_question        = <span class="string">'What identity-resolution rule set should NTO use...'</span>,
+    dt1.decisionPoint_decisionType    = <span class="string">'pattern-selection'</span>,
+    dt1.decisionPoint_domain          = <span class="string">'identity-resolution'</span>,
+    dt1.decisionPoint_urgency         = <span class="string">'high'</span>,
+    dt1.decisionPoint_reversibility   = <span class="string">'medium'</span>,
+    dt1.confidenceLevel               = <span class="string">'medium'</span>,
+
+    <span class="comment">// State at decision (v1.3)</span>
+    dt1.stateAtDecision_orgSnapshotId = <span class="string">'placeholder-no-live-org'</span>,
+    dt1.stateAtDecision_governingADRs = [<span class="string">'ADR-PL-001'</span>, <span class="string">'ADR-001'</span>],
+    dt1.stateAtDecision_notKnowableNote = <span class="string">'Live forensic measurement of contact-point reliability has not been performed...'</span>,
+
+    <span class="comment">// Alternatives considered (v1.3, ≥2)</span>
+    dt1.alternativesCount             = 3,
+    dt1.alt1_disposition              = <span class="string">'rejected'</span>,
+    dt1.alt2_disposition              = <span class="string">'selected'</span>,
+    dt1.alt3_disposition              = <span class="string">'rejected_for_now'</span>,
+
+    <span class="comment">// Decision (v1.3)</span>
+    dt1.decision_selectedPattern      = <span class="string">'CL-042-refined-for-NTO'</span>,
+    dt1.decision_overrideMode         = <span class="string">'refine'</span>,
+
+    <span class="comment">// Validation (v1.3) — both criteria arms required</span>
+    dt1.validation_positiveCriteria   = [<span class="string">'Identity resolution must use email + loyalty ID...'</span>, ...],
+    dt1.validation_negativeCriteria   = [<span class="string">'Must not use email alone as deterministic match (ap-203)'</span>, ...],
+
+    <span class="comment">// Evidence gaps (v1.3, required)</span>
+    dt1.evidenceGaps                  = [<span class="string">'Live Cuneiform / equivalent scan against NTO sandbox...'</span>, ...];</pre>
+      </details>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon supplement"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-002</div>
+        <div class="card-title">Tier Readiness Gate</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>governance-gate</strong><br>
+        urgency: <strong>medium</strong> · reversibility: <strong>high</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">Is the current state of NTO customer data sufficient to compute Tier 1
+        / Tier 2 segmentation that the CMO can act on?</p>
+      <div class="field-label">Discovery</div>
+      <p class="field-text">Tier accuracy is bounded above by identity resolution confidence
+        (DT-NTO01-001) and by per-field value quality on LTV-relevant attributes. Scenario 1
+        illustrates the failure mode of computing tiers without verifying these inputs (ap-104).</p>
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text">CL-046 + MC-004 supplement (NTO Tier 1/2 calculated insight) — staged,
+        not production-bound until DT-NTO01-001 validation passes.</p>
+      <div class="field-label">Negative criteria (5)</div>
+      <ul class="criteria-list negative">
+        <li>Must not bind tier-based journeys to production until DT-NTO01-001 validation passes.</li>
+        <li>Must not infer tier thresholds from object names or canonical defaults.</li>
+        <li>Must not promote this engagement-specific tier calculated insight as a universal pattern without Phase 4 review.</li>
+        <li>Must not treat populated fields as reliable inputs to LTV calculation (ap-102).</li>
+        <li>Must not present aggregate population rates as evidence of identifier consistency (ap-201).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon base"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-003</div>
+        <div class="card-title">Snowflake Authority Disposition</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>integration-pattern</strong><br>
+        urgency: <strong>medium</strong> · reversibility: <strong>high</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">Is Snowflake an authoritative system of record for any NTO data, or is
+        it a downstream warehouse?</p>
+      <div class="field-label">Discovery</div>
+      <p class="field-text">Scenario 2 introduces Snowflake as a primary data source ("Yes —
+        Snowflake stores our full historical dataset"). Scenario 2 §What Went Wrong then catalogs
+        "Snowflake Contains the Full Truth" as a confidently-wrong assumption. Phase 2 raised
+        gq-001 / fq-ds-003 to resolve the contradiction.</p>
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text">CL-045 / CL-047 (zero-copy federation) — under evaluation, not committed.
+        Snowflake treated as corroboration source, not system of record, until forensic
+        verification confirms.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon refine"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-004</div>
+        <div class="card-title">Agentforce Identity-Confidence Gate</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>configuration</strong><br>
+        urgency: <strong>medium</strong> · reversibility: <strong>high</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">At what identity-resolution confidence threshold should the Agentforce
+        service agent answer a customer inquiry vs. auto-escalate to a human agent?</p>
+      <div class="field-label">Discovery</div>
+      <p class="field-text">1.B §6 Risk 1 names "Incorrect Customer Identification" as the lead
+        service-side risk. Identity resolution is bounded above by DT-NTO01-001. AF-002 default
+        behavior assumes high-confidence identity by default.</p>
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text">AF-002-refined-for-NTO with confidence threshold 0.85: below this, the
+        agent must escalate to a human; above it, the agent may proceed with answers grounded in
+        the unified profile.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon supplement"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-005</div>
+        <div class="card-title">Per-Channel Consent Posture</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>governance-gate</strong><br>
+        urgency: <strong>high</strong> · reversibility: <strong>medium</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">What is the per-channel consent posture (Email, SMS, Mobile push, Web
+        personalization) and how must it gate Marketing Cloud journey activation for tier-progression
+        campaigns?</p>
+      <div class="field-label">Discovery</div>
+      <p class="field-text">CMO doctrine names "trusted, complete, current data" as the precondition
+        for AI scale. The Data Readiness Guide names consent as a precondition for short-term
+        contact-based engagement. Phase 2 raised gq-005 / fq-ac-002. CL-050 is canonical.</p>
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text">CL-050 supplemented for NTO with explicit per-channel state machine and
+        activation gating on Marketing Cloud journey entry.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-ribbon base"></div>
+    <div class="card-head">
+      <div>
+        <div class="card-id">DT-NTO01-006</div>
+        <div class="card-title">Batch vs. Streaming Ingestion</div>
+      </div>
+      <div class="card-meta">
+        decision_type: <strong>integration-pattern</strong><br>
+        urgency: <strong>low</strong> · reversibility: <strong>high</strong>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field-label">Decision question</div>
+      <p class="field-text">Should NTO activate streaming ingestion (CL-048) for the tier-progression
+        trigger pipeline, or rely on batch cadences (POS nightly, Demandware hourly) plus a nightly
+        tier-recompute?</p>
+      <div class="field-label">Decision · selected pattern</div>
+      <p class="field-text">Batch ingestion baseline; CL-048 deferred. Tier-progression actions
+        do not need real-time triggers for the POV; reconsider if CDP latency requirements upgrade.</p>
+    </div>
+  </div>
+
+  </div>
+</section>
+
+<span class="anchor" id="verdict"></span>
+<section>
+  <div class="section-eyebrow">Phase 3 · Readiness Verdict</div>
+  <h2>Eleven dimensions, <em>not a checklist</em>.</h2>
+
+  <p class="lede">
+    The verdict applies to two specific intended agentic actions: (1) <strong>activate Marketing
+    Cloud journeys for Tier 2 → Tier 1 progression</strong>, and (2) <strong>deploy Agentforce
+    for 24/7 case deflection</strong>. The verdict is identical for both because they share the
+    load-bearing dependencies — a structural feature, not a coincidence (see the dependency map
+    below).
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">The verdict</div>
+    <p style="font-family: var(--serif); font-size: 26px; font-weight: 500; margin: 0; color: var(--ink); line-height: 1.2;">
+      Not Ready — <em style="color: var(--accent);">Remediable</em>
+    </p>
+    <p style="margin-top: 14px; font-size: 14.5px;">
+      Two dimensions fail with high-confidence evidence (<strong>Data quality</strong> and
+      <strong>Identity resolution</strong>) and remediation is feasible within engagement scope.
+      Six dimensions are conditionally met pending forensic excavation; three are met. The
+      production-readiness gap list documents six items with owner shapes and cost bands.
+    </p>
+  </div>
+
+  <table class="verdict-matrix">
+    <thead>
+      <tr>
+        <th style="width: 4%">#</th>
+        <th style="width: 22%">Dimension</th>
+        <th style="width: 14%">CDP action</th>
+        <th style="width: 14%">Agentforce action</th>
+        <th>Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="dim-num">01</td>
+        <td class="dim-name">Business intent clarity</td>
+        <td><span class="pill pill-met">Met</span></td>
+        <td><span class="pill pill-met">Met</span></td>
+        <td>Verbatim CMO and CS voices captured Phase 1; success metrics computable from telemetry alone.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">02</td>
+        <td class="dim-name">Data-source availability</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>Four core systems named; Snowflake disposition unresolved (DT-NTO01-003 / gq-001).</td>
+      </tr>
+      <tr style="background: var(--bad-soft);">
+        <td class="dim-num">03</td>
+        <td class="dim-name">Data quality</td>
+        <td><span class="pill pill-not">Not Met</span></td>
+        <td><span class="pill pill-not">Not Met</span></td>
+        <td>Cuneiform-cited Email ~75%, Phone ~69%, duplicates ~4%; live measurement (fq-dq-001..003) has not run. Tier accuracy and identity confidence both bounded above.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">04</td>
+        <td class="dim-name">Permission model</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>No live permission archaeology done. Manual Chapter 9 "most archaeologically revealing layer" is the largest blind spot.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">05</td>
+        <td class="dim-name">Governance policy</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>Consent posture per channel unmeasured (DT-NTO01-005 / gq-005 / fq-ac-002). CL-050 inheritance staged.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">06</td>
+        <td class="dim-name">Integration pattern</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>Batch baseline selected for tier-progression POV (DT-NTO01-006); cadence claims unverified (fq-fr-001).</td>
+      </tr>
+      <tr style="background: var(--bad-soft);">
+        <td class="dim-num">07</td>
+        <td class="dim-name">Identity resolution</td>
+        <td><span class="pill pill-not">Not Met</span></td>
+        <td><span class="pill pill-not">Not Met</span></td>
+        <td>Load-bearing failure mode for both actions. DT-NTO01-001 selects CL-042 refine; production cutover gated on Pass@k threshold against held-out test set.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">08</td>
+        <td class="dim-name">Latency requirement</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>Tier-progression: nightly recompute acceptable for POV. Agentforce: sub-second context assembly required and not yet measured.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">09</td>
+        <td class="dim-name">Activation path</td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td><span class="pill pill-cond">Conditional</span></td>
+        <td>Marketing Cloud Journey Builder + Data Cloud activations exist; consent-gated activation pending. Agentforce action surface inventory not collected.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">10</td>
+        <td class="dim-name">Proof-of-value feasibility</td>
+        <td><span class="pill pill-met">Met</span></td>
+        <td><span class="pill pill-met">Met</span></td>
+        <td>POV scope can be defined on a curated high-quality subset. POV exercises every other dimension as a precondition.</td>
+      </tr>
+      <tr>
+        <td class="dim-num">11</td>
+        <td class="dim-name">Production-readiness gap</td>
+        <td><span class="pill pill-met">Documented</span></td>
+        <td><span class="pill pill-met">Documented</span></td>
+        <td>Six-item gap list rendered below; each item has a remediation owner shape and expected cost-of-resolution band.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-label">Why not "Conditionally Ready"</div>
+    <p>
+      Per Manual Chapter 6, "Conditionally Ready" means met for the specified action subject to
+      specific, named conditions. The Identity-resolution and Data-quality dimensions <em>do not
+      yet meet the specified action — they fail</em>. The remediation is feasible, hence
+      "Remediable" rather than "Structural", but failure is failure: claiming "Conditionally Ready"
+      against unmeasured contact-point reliability would reproduce <strong>ap-105 (Looks Unified ≡
+      Trusted)</strong>. This is the methodology eating its own dogfood — the anti-pattern catalog
+      from Phase 2 is being used as a check on Phase 3's own verdict-shaping.
+    </p>
+  </div>
+</section>
+
+<span class="anchor" id="deps"></span>
+<section>
+  <div class="section-eyebrow">The Dependency Map</div>
+  <h2>One root cause, <em>two failure cascades</em>.</h2>
+
+  <p class="lede">
+    The Manual is explicit: "These eleven dimensions are not a checklist. A readiness assessment
+    is a graph of dependencies between them." The map below shows why the verdict is identical
+    for the CDP action and the Agentforce action — they share the load-bearing dependencies.
+  </p>
+
+  <div class="dep-wrap">
+    <svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#8b3a1f"/>
+        </marker>
+        <marker id="arrow-soft" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10 Z" fill="#78716c"/>
+        </marker>
+      </defs>
+
+      <!-- Root: Data quality -->
+      <g>
+        <rect x="350" y="20" width="280" height="68" rx="2" fill="#fef2f2" stroke="#991b1b" stroke-width="1.5"/>
+        <text x="490" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">DIMENSION 03 · NOT MET</text>
+        <text x="490" y="64" text-anchor="middle" font-size="16" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">Data quality</text>
+        <text x="490" y="80" text-anchor="middle" font-size="11" fill="#57534e" font-style="italic">Cuneiform-cited gaps; unmeasured live</text>
+      </g>
+
+      <!-- Arrow root → 7 -->
+      <line x1="490" y1="88" x2="490" y2="138" stroke="#8b3a1f" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="500" y="115" font-size="10.5" fill="#8b3a1f" font-style="italic" font-family="JetBrains Mono, monospace">bounds-above</text>
+
+      <!-- Choke point: Identity resolution -->
+      <g>
+        <rect x="290" y="140" width="400" height="76" rx="2" fill="#fef2f2" stroke="#991b1b" stroke-width="2"/>
+        <text x="490" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#991b1b" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">DIMENSION 07 · NOT MET · CHOKE POINT</text>
+        <text x="490" y="186" text-anchor="middle" font-size="18" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">Identity resolution</text>
+        <text x="490" y="204" text-anchor="middle" font-size="11.5" fill="#57534e" font-style="italic">DT-NTO01-001 — CL-042 refined; Pass@k gated</text>
+      </g>
+
+      <!-- Bifurcation arrows -->
+      <line x1="380" y1="216" x2="200" y2="280" stroke="#8b3a1f" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="600" y1="216" x2="780" y2="280" stroke="#8b3a1f" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="244" y="260" font-size="10.5" fill="#8b3a1f" font-style="italic" font-family="JetBrains Mono, monospace">CDP cascade</text>
+      <text x="660" y="260" font-size="10.5" fill="#8b3a1f" font-style="italic" font-family="JetBrains Mono, monospace">Agentforce cascade</text>
+
+      <!-- Left branch: Tier accuracy -->
+      <g>
+        <rect x="40" y="282" width="320" height="62" rx="2" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+        <text x="200" y="304" text-anchor="middle" font-size="10.5" font-weight="600" fill="#b45309" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">CDP — TIER ACCURACY (CONDITIONAL)</text>
+        <text x="200" y="324" text-anchor="middle" font-size="14" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">ca-nto01-002 + DT-NTO01-002</text>
+        <text x="200" y="338" text-anchor="middle" font-size="11" fill="#57534e" font-style="italic">Bounded above by 7</text>
+      </g>
+
+      <!-- Right branch: Agentforce confidence -->
+      <g>
+        <rect x="620" y="282" width="320" height="62" rx="2" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+        <text x="780" y="304" text-anchor="middle" font-size="10.5" font-weight="600" fill="#b45309" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">AGENTFORCE — CONFIDENCE GATE (CONDITIONAL)</text>
+        <text x="780" y="324" text-anchor="middle" font-size="14" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">DT-NTO01-004 (threshold 0.85)</text>
+        <text x="780" y="338" text-anchor="middle" font-size="11" fill="#57534e" font-style="italic">Bounded above by 7</text>
+      </g>
+
+      <!-- Down arrows to activation -->
+      <line x1="200" y1="344" x2="200" y2="394" stroke="#8b3a1f" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="780" y1="344" x2="780" y2="394" stroke="#8b3a1f" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Activation paths -->
+      <g>
+        <rect x="40" y="396" width="320" height="58" rx="2" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+        <text x="200" y="418" text-anchor="middle" font-size="10.5" font-weight="600" fill="#b45309" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">DIMENSION 09 · ACTIVATION PATH</text>
+        <text x="200" y="438" text-anchor="middle" font-size="14" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">CDP — gated by 5 (consent)</text>
+      </g>
+      <g>
+        <rect x="620" y="396" width="320" height="58" rx="2" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+        <text x="780" y="418" text-anchor="middle" font-size="10.5" font-weight="600" fill="#b45309" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">DIMENSION 10 · POV FEASIBILITY</text>
+        <text x="780" y="438" text-anchor="middle" font-size="14" font-weight="600" fill="#1c1917" font-family="Fraunces, serif">Curated-subset constraint</text>
+      </g>
+
+      <!-- Cross-cutting note -->
+      <g>
+        <rect x="40" y="478" width="900" height="44" rx="2" fill="#ebe5d8" stroke="#d6d3d1" stroke-width="1"/>
+        <text x="60" y="498" font-size="11" font-weight="600" fill="#1c1917" font-family="JetBrains Mono, monospace" letter-spacing="0.06em">CROSS-CUTTING</text>
+        <text x="60" y="514" font-size="12.5" fill="#57534e" font-family="Inter, sans-serif">
+          Dim. 04 (permission model) gates production cutover for both branches and is the largest blind spot.
+          Dim. 06 depends on 7 (volume threshold per ADR-001). Dim. 11 is the derived view, populated by §gap-list.
+        </text>
+      </g>
+    </svg>
+  </div>
+
+  <p>
+    Reading the map: <strong>Data quality (3) is the upstream root</strong>; <strong>Identity
+    resolution (7) is the choke point</strong> that bounds both downstream actions; <strong>Consent
+    (5) gates CDP activation</strong>; <strong>Permission model (4) is the cross-cutting blind
+    spot</strong> that must be closed before any production cutover. One root cause produces the
+    whole readiness story.
+  </p>
+</section>
+
+<span class="anchor" id="gaps"></span>
+<section>
+  <div class="section-eyebrow">Phase 3 · Production-Readiness Gaps</div>
+  <h2>Six items, <em>each with an owner shape</em>.</h2>
+
+  <p class="lede">
+    The eleven-dimension verdict closes with an explicit gap list — what is required to move
+    from POV to production. Each item carries a cost band, an owner shape (who needs to do the
+    work), and which actions it blocks. <strong>POV scope is feasible without G-3, G-4, G-5,
+    G-6</strong> (with curated-subset constraint); <strong>POV is NOT feasible without G-1 and
+    G-2</strong> — these are the table-stakes for any defensible NTO engagement.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">#</th>
+        <th style="width: 36%">Gap</th>
+        <th style="width: 16%">Owner shape</th>
+        <th style="width: 10%">Cost</th>
+        <th>Blocks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: rgba(139, 58, 31, 0.04);">
+        <td class="dim-num">G-1</td>
+        <td><strong>Run live Cuneiform / equivalent scan</strong>; close fq-dq-001..003</td>
+        <td>implementer + practitioner</td>
+        <td><span class="pill pill-met">Low</span></td>
+        <td>CDP + Agentforce</td>
+      </tr>
+      <tr style="background: rgba(139, 58, 31, 0.04);">
+        <td class="dim-num">G-2</td>
+        <td><strong>Refine and validate CL-042 identity rule set</strong>; produce held-out Pass@k</td>
+        <td>implementer</td>
+        <td><span class="pill pill-cond">Medium</span></td>
+        <td>CDP + Agentforce</td>
+      </tr>
+      <tr>
+        <td class="dim-num">G-3</td>
+        <td>Inventory per-channel consent state; close fq-ac-002</td>
+        <td>practitioner + legal review</td>
+        <td><span class="pill pill-cond">Medium</span></td>
+        <td>CDP only</td>
+      </tr>
+      <tr>
+        <td class="dim-num">G-4</td>
+        <td>Permission-model archaeology (profiles, perm sets, sharing, FLS)</td>
+        <td>implementer</td>
+        <td><span class="pill pill-cond">Medium</span></td>
+        <td>CDP + Agentforce</td>
+      </tr>
+      <tr>
+        <td class="dim-num">G-5</td>
+        <td>Snowflake disposition: schema, refresh, authority; close fq-ds-003</td>
+        <td>implementer</td>
+        <td><span class="pill pill-met">Low</span></td>
+        <td>CDP only</td>
+      </tr>
+      <tr>
+        <td class="dim-num">G-6</td>
+        <td>Agentforce action-surface inventory; close fq-ac-003</td>
+        <td>implementer</td>
+        <td><span class="pill pill-met">Low</span></td>
+        <td>Agentforce only</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<span class="anchor" id="phase4"></span>
+<section>
+  <div class="section-eyebrow">Phase 4 · Preservation</div>
+  <h2>Three of six promoted. <em>Three correctly held back.</em></h2>
+
+  <p class="lede">
+    Phase 4 assesses each Phase 3 DecisionTrace for promotion potential. A trace is a
+    PromotionCandidate if its discovery generalizes beyond NTO-01. The plugin's discipline
+    contract is on display here: of six DecisionTraces, three were promoted and three were
+    explicitly held back with disposition rationale citing the existing canonical patterns
+    that already cover their underlying principle.
+  </p>
+
+  <h3 style="margin-top: 24px;">Three PromotionCandidates — awaiting Gate 3</h3>
+
+  <div class="promo-grid">
+    <div class="promo-card">
+      <div class="promo-card-id">DT-NTO01-001</div>
+      <div class="promo-card-title">Hybrid-commerce identity resolution with Cuneiform-gated dual-key</div>
+      <div class="promo-card-target">→ salesforce-fde · awaiting_certification</div>
+      <div class="promo-card-body">
+        Partner-portable across the FDE retail / consumer-goods portfolio. The shape (Salesforce CRM +
+        B2C commerce + in-store + partial-coverage loyalty) is common; the doctrinal claim that
+        contact-point reliability must be measured before defaults are accepted is partner-portable.
+      </div>
+    </div>
+
+    <div class="promo-card">
+      <div class="promo-card-id">DT-NTO01-002</div>
+      <div class="promo-card-title">Tier readiness gate — bounded above by upstream identity</div>
+      <div class="promo-card-target">→ salesforce:rosetta-core · awaiting_certification</div>
+      <div class="promo-card-body">
+        Doctrine-shaped, cross-cutting. The principle ("never bind tier-based journeys to production
+        until identity-resolution validation passes") applies to any segmentation-driven engagement,
+        not just retail. Targets the canonical core domain rather than the FDE practice domain.
+      </div>
+    </div>
+
+    <div class="promo-card">
+      <div class="promo-card-id">DT-NTO01-003</div>
+      <div class="promo-card-title">Warehouse authority disposition (corroboration source, not SoR)</div>
+      <div class="promo-card-target">→ salesforce-fde · awaiting_certification</div>
+      <div class="promo-card-body">
+        Partner-portable across enterprise engagements with a Snowflake / BigQuery / Redshift
+        present. The discipline of treating warehouses as corroboration source rather than system
+        of record is a recurring failure mode that justifies a partner-domain pattern.
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 56px;">Three correctly held back</h3>
+  <p>
+    These three DecisionTraces are <em>not</em> promoted — explicitly, with disposition rationale.
+    Promoting them would violate Manual Chapter 7 ("must not promote engagement-specific workaround
+    as universal"). Each <code>promotionDispositionReason</code> is recorded on the DecisionTrace
+    node so a future re-investigation can see <em>why</em> a trace was held back.
+  </p>
+
+  <div class="promo-grid">
+    <div class="promo-card held">
+      <div class="promo-card-id">DT-NTO01-004</div>
+      <div class="promo-card-title">Agentforce identity-confidence gate (0.85 threshold)</div>
+      <div class="promo-card-target">held — engagement-internal calibration</div>
+      <div class="promo-card-body">
+        Engagement-internal threshold calibration. The general principle (gate Agentforce on identity
+        confidence) is already canonical via ADR-009. Promoting NTO-specific number 0.85 would
+        violate Chapter 7.
+      </div>
+    </div>
+
+    <div class="promo-card held">
+      <div class="promo-card-id">DT-NTO01-005</div>
+      <div class="promo-card-title">Per-channel consent posture</div>
+      <div class="promo-card-target">held — pending forensic anchor</div>
+      <div class="promo-card-body">
+        Principle is already addressed by CL-050 canon. NTO-specific consent supplements have not yet
+        been forensically anchored — fq-ac-002 / gq-005 are unrun. A PromotionCandidate may emerge
+        in a follow-on excavation once the consent inventory completes.
+      </div>
+    </div>
+
+    <div class="promo-card held">
+      <div class="promo-card-id">DT-NTO01-006</div>
+      <div class="promo-card-title">Batch ingestion baseline</div>
+      <div class="promo-card-target">held — engagement sizing</div>
+      <div class="promo-card-body">
+        Engagement-internal sizing dependent on record volume. ADR-001 already governs the
+        batch-vs-streaming threshold under 500K records. No novel doctrine in this trace.
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 56px;">Four ADR-match candidates flagged for human confirmation</h3>
+  <p>
+    Phase 3 surfaced behavioral matches between NTO DecisionTraces and existing canonical ADRs
+    where the vocabulary differs but the underlying pattern may be the same. Per the methodology,
+    <strong>these are flagged as candidates, not auto-linked</strong>. False positives at this
+    layer corrupt the graph silently — a senior architect must confirm or reject each before
+    any <code>GOVERNS</code> edge is created.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%">Candidate</th>
+        <th style="width: 16%">NTO Trace</th>
+        <th style="width: 16%">Existing ADR</th>
+        <th>Why a human must confirm</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">C-1</td>
+        <td class="mono">DT-NTO01-001</td>
+        <td class="mono">ADR-001</td>
+        <td>Both decisions select a CL-042 refinement under volume + quality constraints. NTO record volume is unmeasured; the 500K threshold may or may not apply.</td>
+      </tr>
+      <tr>
+        <td class="mono">C-2</td>
+        <td class="mono">DT-NTO01-004</td>
+        <td class="mono">ADR-009</td>
+        <td>Both decisions impose a confidence-based escalation gate on agentic action. Vocabulary aligns ("confidence-based fallback") but ADR-009 may have a different domain scope.</td>
+      </tr>
+      <tr>
+        <td class="mono">C-3</td>
+        <td class="mono">DT-NTO01-006</td>
+        <td class="mono">ADR-001</td>
+        <td>Selects batch over streaming under volume threshold. Same caveat as C-1.</td>
+      </tr>
+      <tr>
+        <td class="mono">C-4</td>
+        <td class="mono">DT-NTO01-005</td>
+        <td><span class="pill pill-gray">No match</span></td>
+        <td>CL-050 is the canonical inherited pattern; no existing ADR was found that governs per-channel consent specifically for retail / NA. Surfaced for human assessment of whether to author a partner-domain ADR.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<span class="anchor" id="cert"></span>
+<section>
+  <div class="section-eyebrow">Phase 4 · The Gate 3 Hand-off</div>
+  <h2>What the partner architect <em>actually receives</em>.</h2>
+
+  <p class="lede">
+    Gate 3 (Partner Validation) is the methodological gate the plugin cannot perform — only a
+    senior partner architect with field experience can certify whether a candidate "matches how
+    decisions actually got made in the field." The plugin's job is to produce a usable handoff:
+    a concise reviewer brief and a structured way to file the verdict.
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">PARTNER-CERTIFICATION-REQUEST.md (excerpt)</div>
+    <p style="font-family: var(--serif); font-size: 16.5px; line-height: 1.55;">
+      <em>The reviewer must be a senior architect inside the target partner domain for the candidate
+      under review. For two of the three candidates that target domain is salesforce-fde, the
+      Salesforce Forward-Deployed Engineer practice. For one candidate the target domain is
+      salesforce:rosetta-core and the reviewer must be a member of the Rosetta core engineering
+      team or an architect with explicit core-domain authoring rights.</em>
+    </p>
+    <p style="font-family: var(--serif); font-size: 16.5px; line-height: 1.55;">
+      <em>The reviewer must have personal field experience with the kind of engagement the candidate
+      abstracts from. For DT-NTO01-001 and DT-NTO01-003 that means hybrid-commerce or warehouse-
+      present customer-data-unification engagements. For DT-NTO01-002 that means tier or segment
+      or scoring-driven engagements where downstream activation depends on upstream identity
+      resolution.</em>
+    </p>
+    <p style="font-family: var(--serif); font-size: 16.5px; line-height: 1.55;">
+      <em>The reviewer must disclose any conflict of interest before recording a verdict. Conflicts
+      include direct authorship of the originating engagement, financial interest in a vendor whose
+      product appears in the candidate, or a prior promotion of an inconsistent pattern that this
+      candidate would supersede.</em>
+    </p>
+  </div>
+
+  <h3>The three verdict states</h3>
+  <p>The reviewer files one of three verdicts per candidate, each with a deterministic downstream consequence:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Verdict</th>
+        <th>Meaning</th>
+        <th style="width: 28%">Consequence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-met">Faithful</span></td>
+        <td>The reviewer has direct field experience with the decision the candidate captures, and the externalized DecisionTrace matches how that decision actually got made in the field.</td>
+        <td>Proceeds to Gate 4 (governance approval) with partner certification appended to the provenance trail.</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-cond">Partial-faithful</span></td>
+        <td>The reviewer recognizes the underlying decision but the externalized DecisionTrace omits, mischaracterizes, or wrongly emphasizes a material element.</td>
+        <td>Returns to engagement for amendment. Reviewer must enumerate the specific amendments required.</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-not">Not-faithful</span></td>
+        <td>The reviewer cannot confirm the trace from direct experience and judges the decision either did not happen as captured or is not generalizable.</td>
+        <td>Returns to engagement for re-investigation. Trace remains valid for the original engagement but does not promote.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Without partner certification, no candidate proceeds past Gate 3 to governance review. This is
+    the v1.3 gate that prevents unfalsifiable reconstructions from rubber-stamping into ADRs.
+    The methodological discipline transfer the Manual demands lives in the architect's willingness
+    to certify against personal experience, not against the documented evidence.
+  </p>
+</section>
+
+<span class="anchor" id="archi"></span>
+<section>
+  <div class="section-eyebrow">Architectural Decisions Ahead</div>
+  <h2>The questions <em>this demo surfaces</em>.</h2>
+
+  <p class="lede">
+    The most valuable artifact in the bundle is the Phase 4 VALIDATION-CHECKLIST, because it does
+    not just hand the user a list of make commands — it surfaces the architectural decisions
+    Salesforce engineering needs to make before NTO-02 happens. These are real questions, not
+    plugin bugs.
+  </p>
+
+  <div class="archi-decisions">
+    <ol>
+      <li>
+        <strong>How does engagement-scoped content enter the canonical build pipeline?</strong>
+        The <code>db/engagements/&lt;engagementKey&gt;/</code> path is a v1.3 convention introduced
+        by this plugin. As of <code>rosetta-platform-0.1.1</code>, the existing <code>make seed-compile</code>
+        and <code>make db-seed</code> targets do not scan it. Three options: manual cypher-shell
+        load (lowest effort), extend <code>SEED_FILES</code> in <code>scripts/lib/env.sh</code>
+        (commingles canonical and engagement content), or add a parallel
+        <code>db-engagement-load</code> target (recommended for v1.3, supports the supersession
+        path). Pick one before NTO-02.
+      </li>
+      <li>
+        <strong>Inline maps vs. child nodes for alternativesConsidered and provenanceSources?</strong>
+        The plugin template specified separate <code>Alternative</code> and <code>ProvenanceEntry</code>
+        child nodes. Phase 3 produced a hybrid: child nodes for provenance, inline properties for
+        alternatives. Both are queryable, but pick one and pin it for cross-plugin consistency
+        with rosetta-research.
+      </li>
+      <li>
+        <strong>What is the partner-domain projectId convention?</strong>
+        Phase 1 set <code>partner.projectId = 'salesforce-fde'</code> (mirroring the partner key).
+        Should this be <code>'SYSTEM'</code> instead, since the partner-level domain is canonical
+        inheritable content rather than engagement-scoped? A small architectural question with
+        downstream implications for invariant 13.3 grep queries.
+      </li>
+      <li>
+        <strong>Do partner-level KnowledgeDomain nodes carry <code>overrideMode</code>?</strong>
+        Manual Chapter 12 specifies five-field identity on every inheritable node. The leaf
+        engagement domain takes <code>overrideMode = 'base'</code> as a novel node. The convention
+        for partner-level domains (<code>salesforce-fde</code> as a child of
+        <code>salesforce:rosetta-core</code>) needs explicit pinning.
+      </li>
+    </ol>
+  </div>
+
+  <p>
+    None of these questions block NTO-01 from being a valid demonstration of the methodology. All
+    of them block NTO-02 from being a smooth replication. The right time to resolve them is
+    now — between this NTO-01 steel thread and the next engagement.
+  </p>
+</section>
+
+<span class="anchor" id="whatittook"></span>
+<section>
+  <div class="section-eyebrow">What this took</div>
+  <h2>The operational story.</h2>
+
+  <p class="lede">
+    Project Archaeology v1.3 is not a tool. It is a discipline contract operationalized as a
+    Cowork plugin. The numbers below are the result of one end-to-end pass against the NTO-01
+    discovery dossier, with no manual editing of plugin-generated artifacts.
+  </p>
+
+  <div class="meta-grid">
+    <div class="meta-cell">
+      <strong><em>4,419</em></strong>
+      <span>lines of generated Cypher across four files</span>
+    </div>
+    <div class="meta-cell">
+      <strong><em>47</em></strong>
+      <span>files in the final cumulative bundle</span>
+    </div>
+    <div class="meta-cell">
+      <strong><em>4</em></strong>
+      <span>phases, one Cowork chat each, ~10 min Claude work per phase</span>
+    </div>
+    <div class="meta-cell">
+      <strong>11/11</strong>
+      <span>readiness dimensions addressed; 11/11 in static analysis</span>
+    </div>
+    <div class="meta-cell">
+      <strong>20/20</strong>
+      <span>provenance entries with both sourceType and evidenceClass</span>
+    </div>
+    <div class="meta-cell">
+      <strong>0</strong>
+      <span>DecisionTraces with empty negative criteria (Manual Ch. 7 hard fail)</span>
+    </div>
+  </div>
+
+  <h3>Plugin readiness</h3>
+  <p>
+    rosetta-archaeology v0.1.6 is the version that produced this bundle. It has a v0.1.7 backlog
+    of nine items spanning four phase reviews — three methodologically real (overrideMode, projectId
+    casing, marker-kind spelling normalization), four architectural calls (the items above), two
+    soft refinements (Phase 3 SKILL.md tightening). None block the demo.
+  </p>
+
+  <h3>What's next</h3>
+  <p>
+    Run rosetta-research v0.3.2 against a second product family (after Heroku Connect proved out
+    the canonical-content plugin against Salesforce DevOps Center), then either iterate v0.1.7 of
+    rosetta-archaeology with the second-engagement learnings, or run rosetta-archaeology against
+    a real engagement dossier (Slalom, Deloitte, or Accenture-led) to test the methodology
+    against non-worked-example evidence.
+  </p>
+
+  <p>
+    The harder, more interesting question is the v0.2.0 question: when live forensic connectors
+    (Elements.cloud, PeerNova Cuneiform, Hubbl) become available as Phase 2 evidence sources, the
+    "What's NOT here" gap list shrinks dramatically and the readiness verdict gets sharper. That
+    is the version that scales the FDE practice past hand-crafted onboarding. The v0.1.6 demo
+    proves the methodology; v0.2.0 proves the scale.
+  </p>
+</section>
+
+<footer>
+  <div class="foot-eye">Single CTA</div>
+  <h2>Resolve the four architectural decisions, then run rosetta-archaeology against a real partner-led engagement.</h2>
+  <p>
+    Vernon Keenan and Mehmet Orun should align on items 1–4 in the architectural decisions section
+    above. Then schedule a real engagement dossier (Slalom or Deloitte) through the four-phase
+    pipeline and validate that the methodology survives non-worked-example evidence.
+  </p>
+  <p>The plugin is ready. The demo lands. The next conversation is about scale.</p>
+  <div class="credit">
+    NTO-01 Steel Thread · rosetta-archaeology v0.1.6 · Project Archaeology Manual v1.3<br>
+    Generated 2026-04-27 · Keenan Vision LLC for Salesforce Data Foundations
+  </div>
+</footer>
+
+</body>
+</html>
