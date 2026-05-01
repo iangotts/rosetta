@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTO Discovery Report | Rosetta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ROSETTA DESIGN SYSTEM — STYLE GUIDE
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:        #1040b8;
+  --blue-deep:   #0a2080;
+  --blue-bright: #1a4bc4;
+  --blue-light:  #e8eef8;
+  --blue-pale:   #f0f4fc;
+  --gold:        #d4920a;
+  --gold-bright: #f0b429;
+  --gold-pale:   #fef9ec;
+  --gold-border: rgba(212,146,10,.2);
+  --text:        #1a1a2e;
+  --muted:       #5a6072;
+  --light-muted: #8b91a1;
+  --bg:          #f7f8fc;
+  --surface:     #ffffff;
+  --border:      #e2e6f0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(10,32,128,.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.nav-badge {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--gold-bright);
+}
+
+/* ── DISCOVERY SECTIONS ────────────────────────────────────── */
+.page { max-width: 1000px; margin: 0 auto; }
+
+section {
+  padding: 3rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+section:nth-child(even) { background: var(--bg); }
+
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1.5rem;
+}
+
+.discovery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.output-block {
+    margin-bottom: 1rem;
+}
+
+.output-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--light-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+}
+
+.output-content {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+/* ── CONCERTINA / JSON ───────────────────────────────────── */
+details {
+    background: var(--blue-pale);
+    border: 1px solid #ccd6f0;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+summary {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--blue-deep);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+summary::after {
+    content: 'SHOW SCHEMA';
+    font-size: 0.65rem;
+    background: var(--blue-bright);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+details[open] summary::after {
+    content: 'HIDE SCHEMA';
+}
+
+pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    padding: 0 1.2rem 1.2rem;
+    color: var(--blue-deep);
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+    .discovery-grid { grid-template-columns: 1fr; }
+    .nav, .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="logo">
+    <img class="logo-icon" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADuAOgDASIAAhEBAxEB/8QAHAABAQACAwEBAAAAAAAAAAAAAAECCAQGBwMF/8QASxAAAQMDAQMGCQgGCAcBAAAAAAECAwQFEQYHEiExQVGBkdETFBZSVWFxk5QIFRciMlShwSNCVpKjsUVTYoKEosLwM0RjZHODsuH/xAAcAQACAQUBAAAAAAAAAAAAAAAAAQMEBQYHCAL/xAA+EQABAgQDBAUJBwQDAQAAAAABAAIDBAURBiExBxJBURNhcYGRFBYXIjJTVKHRFSNSkrHB4QiTovEkQoLS/9oADAMBAAIRAxEAPwDwwIpAdBLX6pTEuVGhUEyUEIABoQAAlZUZIBoWQMSghUpjkoJKghcjuiyoIASVyUgGhUEyUEIABpIVCAELIGIBJccIoyCJTKggBCyBMgElclyQAhUECAhUADQgABKyoIBoWWQYlBJZAxKijQqCFBCFJkDSVRSkAIVBMlGhAACS4wAIVMmSkOZZLdU3e7U1so2709TIkbEXkyvOvqI40aHBhuixDZrQSSeAGpTYxz3BrRclcQGyVp2P6TprWynrYZqupViJJOsitXe591E5E7Tx/aToWt0tfvFqWOeropkV9PIjFVcc7XY50/E1/hzajQcQTzpGWc5rhcjeAAcBru599jY271fahhudkIIjRACONs7dq6aXJyfm64fcar3Tu4nzfX/cqn3Tu4z7yqB+MeIVj6N3JfAH38QrvudT7p3cPEq3no6j3aj8pg/jHiEujdyXwGT7+JVn3Sf3ajxOr+6z+7UflEL8Q8Utx3JfHlB9fFKr7tN7tR4rVfd5v3FH00P8Q8UbruS+QPr4tU/d5f3FHi9R/US/uKPpmfiCW6eS+QPr4vUf1Ev7ijxef+pk/dUfSs5hG4eS+ZTJYZkTKxSJ/dUw5OU9B4OhSLSFQQZPa8rIERRkEKgZAIVBCjSRAACFxkABCplTvuwJkLtpVGsuN5sMqx587dX8snQT9PS93nsOoKK706b0lNKj93P2k5FTrTKFkxLT4tSo81JwTZ8RjmjtINvFVlPjtl5uHFfo1wJ7itxiKjV5URfadXs+v9J3G0tuCXuipk3cvinmayRi86K1VyvVy8x4ttV2jVd9vbY7DXVdJbqZFax0Ujo1mdzuXC8nRn8zjHDOzmt1yfdKdGYW5fec8EAHl1k8h26LblSxBJycARd4PvoARmtkNxnmt7BuM81vYafeUmofTtz+Lf3k8o9Q+nLn8W/vNiegKq/GM8HLH/PiW9yfELcLcZ5jewm5H5jew0+8o9Q+nbn8W/vHlJqH05c/i394egKrfGM8HJefEt7k+IW4O5H5jewbkfmN7DT/AMo9QL/Ttz+Lf3jyi1B6cufxcneHoCq3xjPByPPiW9yfELcDcj8xvYNyPzG9hp/5R6g9OXP4uTvHlFqD05c/i4O8foDq/wAYzwcjz4lvcnxC3A3I/Mb2Dcj8xvYageUeoPTt0+Lk7x5R6g9O3T4uTvD0B1f4xng5HnxLe5PiFt/uR+Y3sHg4/MZ2GoKaj1Cn9PXT4uTvMk1NqROS/wB1T/GSd4vQHWPjGf5JjHEr7k/JbduhhcmHRRuReZWofh6g0Zpq+QLHX2mn3l5JYmIx6f3k4mssertUxrlmo7smP+7f3natLbXdS2uVjLlI26U2frJKmJET1OT88kEbYviiljyqQmWuiNzAa5zXdxNhftIUjMX0yZ+6jwiGnmAQuRtC2T3GxxyXCzPfcKFqK57N39LEnsT7SetOw80NtNG6ss+q6Bai2z5e3hLA/hJGvrTo9acDy7bds9jpWS6mskG7FnNZAxODc/rtTo6e0y/AG1Gc8tFDxGN2Nfda4ixvwa8czwdx463VpruGoPQ+W083ZqQM8uY/cLxxC8TEp0CsFsqUxyUaSvAEKCEAAIXGBMlIVKhckA0KlMS5BCoIfVkE74nSshkdG37TkaqonWeXPawXcbJ2J0XzAB7uvNkAA0KooIAQqUxyVFBCyBiXI0rKgmS5BKy/S03e7hp+7w3O2zLHNGvJzPTnaqc6KbSaOv1Bq/TMdfHGxWStWOogd9ZGOx9Zq9KcetDUk9C2FalfZdWst00ipRXJUicnM2T9R3bw6zT+1zBMOtUx1Rlm2mIIvcauaMyD1jVvXlxWWYVrDpOYEvEP3b8uw8D+xX4+1DTLtLasnomNXxSX9NSuXnYq8nUuU6jqxsV8oKwNuekEusbU8Ytr99VxxWN2Ecnbur1Ka6ZMh2Z4ndiOgQo8U3is9R/4f6" alt="Rosetta Logo">
+    <div class="logo-wordmark">
+      <strong>Rosetta</strong>
+      <span>NTO Forensic Analysis</span>
+    </div>
+  </a>
+  <div class="nav-meta">
+    <span>Northern Trail Outfitters</span>
+    <div class="nav-badge">Confidential</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Forensic Analysis</div>
+    <div class="hero-title">Elements.cloud Steel Thread for NTO</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <section id="q1">
+    <div class="sec-label">Question 01</div>
+    <div class="section-headline">"Show me every object in this org that holds customer identity data..."</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Identifier Map)</div>
+            <div class="output-content">
+                Complete identifier map. Every field across every object that holds identity data. For each: object name, field API name, field type, whether it's populated or empty, and where the same data point exists on multiple objects.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Deduplication)</div>
+            <div class="output-content">
+                Surfaces where email lives on Contact versus Account versus a custom object, where phone is stored in multiple places, where name fields are duplicated across standard and custom objects. Input to Data 360's matching and deduplication design.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Schema</summary>
+      <pre>
+{
+  "reportType": "Identifier Map",
+  "organization": "NTO",
+  "discoveryDate": "2026-04-30",
+  "identityFields": [
+    {
+      "objectName": "Contact",
+      "fieldApiName": "Email",
+      "fieldType": "Email",
+      "populationStatus": "98%",
+      "duplicatesFoundOn": ["Account.Email_Address__c", "VIP_Member__c.Member_Email__p"]
+    },
+    {
+      "objectName": "Account",
+      "fieldApiName": "Phone",
+      "fieldType": "Phone",
+      "populationStatus": "65%",
+      "duplicatesFoundOn": ["Contact.Phone"]
+    },
+    {
+      "objectName": "Loyalty_Program__c",
+      "fieldApiName": "Loyalty_ID__c",
+      "fieldType": "Text(50)",
+      "populationStatus": "100%",
+      "duplicatesFoundOn": ["Account.Loyalty_ID_Internal__c"]
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q2">
+    <div class="sec-label">Question 02</div>
+    <div class="section-headline">"What are the key objects related to Order? Show me how they connect."</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (ERD)</div>
+            <div class="output-content">
+                ERD generated from actual org configuration. Every object related to Order through lookups, master-detail, and junction objects. Every field on each related object with population status.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Traces)</div>
+            <div class="output-content">
+                Traces from Order through Cart, Cart Item, Product, Account, Payment Method, Order Delivery Method, and every custom object connected to them. Exportable as JSON describing the ERD or rendered as a visual diagram.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Diagram Schema</summary>
+      <pre>
+{
+  "diagramType": "ERD",
+  "rootObject": "Order",
+  "connections": [
+    {
+      "from": "Order",
+      "to": "Account",
+      "relationship": "Lookup",
+      "cardinality": "Many-to-One"
+    },
+    {
+      "from": "Order",
+      "to": "OrderDeliveryMethod",
+      "relationship": "Lookup",
+      "cardinality": "Many-to-One"
+    },
+    {
+      "from": "Order",
+      "to": "OrderItem",
+      "relationship": "Master-Detail",
+      "cardinality": "One-to-Many",
+      "fields": ["Product2Id", "Quantity", "UnitPrice", "TotalAmount"]
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q3">
+    <div class="sec-label">Question 03</div>
+    <div class="section-headline">"Trace the full order lifecycle. What fires... when an Order is created?"</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Mining)</div>
+            <div class="output-content">
+                Validated process diagram generated by Configuration Mining. Every flow, trigger, Apex class that fires on Order, in execution order, with dependencies traced.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Execution)</div>
+            <div class="output-content">
+                Maps from cart conversion through payment capture (step 5), transaction recording (step 6), inventory update (step 8), shipping notification (step 7), and backend update (step 9). A mapped chain showing what fires when and why.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Diagram Schema</summary>
+      <pre>
+{
+  "processTrace": "Order Lifecycle",
+  "event": "Order Creation",
+  "executionChain": [
+    { "step": 1, "component": "OrderTrigger", "type": "Apex Trigger", "action": "beforeInsert" },
+    { "step": 5, "component": "Capture_Payment_Flow", "type": "Flow", "status": "Validated" },
+    { "step": 8, "component": "Inventory_Update_Class", "type": "Apex Class", "dependency": "Step 6" },
+    { "step": 9, "component": "ERP_Backend_Sync", "type": "Outbound Message", "target": "NetSuite" }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q4">
+    <div class="sec-label">Question 04</div>
+    <div class="section-headline">"Which fields on customer objects are populated and which are empty?"</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Usage)</div>
+            <div class="output-content">
+                Field-level usage report. For every customer-related object: which fields are populated, empty, referenced in automation, or referenced in reports. Flags dead weight: fields that are empty and unreferenced.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Dead Weight)</div>
+            <div class="output-content">
+                Across Account, Contact, Order, Case, and custom objects. Directly answers "which fields should we care about" and removes dead weight before Data 360 design begins.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Table Schema</summary>
+      <pre>
+{
+  "usageReport": "Customer-Related Objects",
+  "objects": [
+    {
+      "object": "Account",
+      "fieldAnalysis": [
+        { "field": "Middle_Name__c", "populated": "2%", "referencedInAutomation": false, "recommendation": "Remove" },
+        { "field": "Preferred_Store__c", "populated": "85%", "referencedInAutomation": true, "recommendation": "Keep for Personalization" }
+      ]
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q5">
+    <div class="sec-label">Question 05</div>
+    <div class="section-headline">"How does data currently flow into this org from Commerce Cloud and POS?"</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Landing Zone)</div>
+            <div class="output-content">
+                Validated process diagram generated from Configuration Mining. Traces what an external system writes into the core org via connectors. The graph traces the landing zone, not source internals.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Connectors)</div>
+            <div class="output-content">
+                POS systems, Snowflake, Commerce Cloud: which fields they write to in core Salesforce, which objects they touch, and which automations fire on inbound data.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Diagram Schema</summary>
+      <pre>
+{
+  "integrationMap": "NTO Inbound Data",
+  "sources": [
+    {
+      "system": "Commerce Cloud",
+      "connector": "B2C Commerce Connector",
+      "targetObjects": ["Account", "Order", "Product2"],
+      "automationsTriggered": ["OrderSummary_Generation_Flow"]
+    },
+    {
+      "system": "Snowflake",
+      "connector": "Data Cloud / Zero Copy",
+      "fieldsWritten": ["Churn_Risk_Score__c", "LTV_Segment__c"],
+      "targetObject": "Account"
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q6">
+    <div class="sec-label">Question 06</div>
+    <div class="section-headline">"What needs to be cleaned up before Data 360 can build reliably?"</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Tech Debt)</div>
+            <div class="output-content">
+                Tech debt backlog. Prioritized list: what it is, impact, and which Data 360 workstream it blocks. Covers deprecated fields, conflicting automations, unused objects, and permission gaps.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Priorities)</div>
+            <div class="output-content">
+                Targets blocking Phase 1 foundation work. Lists critical conflicts in phone update triggers and noise from deprecated objects.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Schema</summary>
+      <pre>
+{
+  "backlogType": "Tech Debt",
+  "items": [
+    {
+      "priority": "Critical",
+      "issue": "Conflicting Phone Update Triggers",
+      "impact": "Data 360 Identity Resolution",
+      "workstream": "Phase 1 - Data Foundation",
+      "action": "Consolidate into single Flow/Trigger"
+    },
+    {
+      "priority": "High",
+      "issue": "Deprecated Retail_Old__c Object",
+      "impact": "Metadata Noise",
+      "workstream": "Phase 1 - Data Foundation",
+      "action": "Archive and Delete"
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+  <section id="q7">
+    <div class="sec-label">Question 07</div>
+    <div class="section-headline">"Show me the full process for how a customer order is handled... as configured."</div>
+    <div class="discovery-grid">
+        <div class="output-block">
+            <div class="output-label">What (Actual vs Intended)</div>
+            <div class="output-content">
+                Validated process diagram. Not drawn from interviews; generated from metadata. Shows the actual process as built, not as designed.
+            </div>
+        </div>
+        <div class="output-block">
+            <div class="output-label">For NTO (Drift Analysis)</div>
+            <div class="output-content">
+                Maps against your As-Is process diagram (steps 1 through 9) and flags where configuration matches intended design and where it has drifted.
+            </div>
+        </div>
+    </div>
+    <details>
+      <summary>Output Format: JSON Diagram Schema</summary>
+      <pre>
+{
+  "alignmentReport": "Browse to Fulfillment",
+  "steps": [
+    {
+      "stage": "Cart Conversion",
+      "intendedDesign": "Step 4",
+      "actualConfig": "Matches metadata",
+      "driftDetected": false
+    },
+    {
+      "stage": "Shipping Notification",
+      "intendedDesign": "Step 7",
+      "actualConfig": "Fires after Step 9 (Backend Update)",
+      "driftDetected": true,
+      "severity": "Medium"
+    }
+  ]
+}
+      </pre>
+    </details>
+  </section>
+
+</div>
+
+<footer class="doc-footer">
+  <span>Northern Trail Outfitters · Discovery Analysis · 2026</span>
+  <span>Rosetta by KeenanVision.net</span>
+</footer>
+
+</body>
+</html>

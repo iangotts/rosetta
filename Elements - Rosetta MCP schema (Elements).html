@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTO Discovery Report | Elements.cloud</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ELEMENTS.CLOUD DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --el-blue:       #3AA2DD; /* Elements Light Blue */
+  --el-navy:       #0F264C; /* Elements Deep Navy */
+  --el-purple:     #734EA0; /* Elements Purple */
+  --el-green:      #559D82; /* Elements Teal/Green */
+  --el-slate:      #8D99A9; /* Elements Slate Gray */
+  --bg-white:      #FFFFFF;
+  --bg-off:        #F9FAFB;
+  --text-dark:     #1D1D1D;
+  --text-muted:    #4F5E71;
+  --border:        #E2E8F0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-white);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4rem;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img { height: 40px; width: auto; }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.btn-cta {
+  background: var(--el-purple);
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.btn-outline {
+  border: 1.5px solid var(--el-purple);
+  color: var(--el-purple);
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  padding: 5rem 2rem;
+  text-align: center;
+  background: var(--bg-white);
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--el-navy);
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+}
+
+.highlight-blue {
+  background: #D7EBF8;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+}
+
+.hero-subtitle {
+  color: var(--el-purple);
+  font-weight: 700;
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+/* ── CONTENT SECTIONS ─────────────────────────────────────── */
+.page { max-width: 1100px; margin: 0 auto; padding-bottom: 5rem; }
+
+.discovery-card {
+  margin: 2rem;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(15, 38, 76, 0.05);
+}
+
+.card-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--el-green);
+}
+
+.card-question {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--el-navy);
+  margin-top: 0.5rem;
+}
+
+.card-content {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.output-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--el-purple);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.output-body { font-size: 1rem; color: var(--text-muted); }
+
+/* ── JSON DRAWER ─────────────────────────────────────────── */
+details { border-top: 1px solid var(--border); background: var(--bg-off); }
+
+summary {
+  padding: 1rem 2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--el-navy);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+summary::after {
+  content: '→ view metadata schema';
+  font-weight: 500;
+  color: var(--el-purple);
+}
+
+pre {
+  padding: 1.5rem 2rem;
+  font-family: 'Inter', monospace;
+  font-size: 0.85rem;
+  background: #0F264C;
+  color: #A5B4FC;
+  overflow-x: auto;
+}
+
+.footer {
+  padding: 3rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--el-slate);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 800px) { .card-content { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo-container">
+    <img class="logo-img" src="Elements-TCIP-Logo-Colour.png" alt="Elements.cloud Logo">
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">See. Track. <span class="highlight-blue">Understand</span> Your Org.</h1>
+    <p class="hero-subtitle">Northern Trail Outfitters: Comprehensive Forensic Analysis</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Identity Mapping</div>
+      <h2 class="card-question">"Show me every object holding customer identity data."</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Complete Identifier Map</span>
+        <p class="output-body">Every field across every object holding identity data (email, phone, name, ID). Includes field API name, type, and population status.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Surfaces where email lives on Contact vs Account. Critical input for Data 360 matching and deduplication design.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "reportType": "Identifier Map",
+  "identityFields": [
+    { "object": "Contact", "field": "Email", "status": "98%", "duplicates": ["Account.Email_Address__c"] },
+    { "object": "Account", "field": "Phone", "status": "65%", "duplicates": ["Contact.Phone"] }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">ERD Generation</div>
+      <h2 class="card-question">"What are the key objects related to Order? Show me how they connect."</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Automated ERD</span>
+        <p class="output-body">ERD generated from actual configuration. Every object related to Order through lookups, master-detail, and junction objects.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Traces from Order through Cart, Product, and Payment Method. Visualizes the exact connection path for data unification.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "diagramType": "ERD",
+  "root": "Order",
+  "connections": [
+    { "to": "Account", "type": "Lookup" },
+    { "to": "OrderItem", "type": "Master-Detail" }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Execution Mining</div>
+      <h2 class="card-question">"Trace the full order lifecycle. What fires during creation and fulfillment?"</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Process Diagram</span>
+        <p class="output-body">Mining of every flow, trigger, and Apex class that fires on Order, in execution order, with full dependency tracing.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Maps from cart conversion to payment capture (step 5) and inventory updates (step 8). Shows intended design vs. actual build.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "processTrace": "Order Lifecycle",
+  "executionChain": [
+    { "step": 5, "component": "Capture_Payment_Flow", "type": "Flow" },
+    { "step": 8, "component": "Inventory_Update_Class", "type": "Apex" }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Field Analysis</div>
+      <h2 class="card-question">"Which fields are populated and which should we care about for Data 360?"</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Field-level Usage Report</span>
+        <p class="output-body">Report on populated vs. empty fields. Identifies fields referenced in automation or reports to distinguish value from "dead weight."</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Analyzes Account, Contact, and Case. Removes empty, unreferenced fields before the Data 360 design begins.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "usageReport": "Customer Objects",
+  "analysis": [
+    { "field": "Middle_Name__c", "populated": "2%", "recommendation": "Remove" },
+    { "field": "Preferred_Store__c", "populated": "85%", "recommendation": "Keep" }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Integration Mining</div>
+      <h2 class="card-question">"How does data currently flow from Commerce Cloud and POS systems?"</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Integration Point Map</span>
+        <p class="output-body">Validated diagram of landing zones. Shows every field written by external systems and automations triggered on inbound data.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Maps POS and Snowflake write-zones. Traces the landing zone and object interaction to identify gaps in data synchronization.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "integrationMap": "Inbound Flows",
+  "sources": [
+    { "system": "Commerce Cloud", "target": ["Account", "Order"] },
+    { "system": "Snowflake", "target": "Account", "fields": ["Churn_Risk__c"] }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Tech Debt Backlog</div>
+      <h2 class="card-question">"What needs to be cleaned up before building reliably on this org?"</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Debt Backlog</span>
+        <p class="output-body">Prioritized list of technical debt issues, sitting location, and impacts. Links debt to specific Data 360 workstream blockers.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Targets critical Phase 1 foundation blockers: conflicting triggers and metadata noise from deprecated legacy objects.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "backlog": "Tech Debt",
+  "items": [
+    { "priority": "Critical", "issue": "Conflicting Phone Triggers", "impact": "Identity" },
+    { "priority": "High", "issue": "Retail_Old__c Noise", "impact": "Metadata" }
+  ]
+}</pre>
+    </details>
+  </div>
+
+  <div class="discovery-card">
+    <div class="card-header">
+      <div class="card-tag">Drift Analysis</div>
+      <h2 class="card-question">"Show me the customer order process as it is actually configured."</h2>
+    </div>
+    <div class="card-content">
+      <div>
+        <span class="output-label">What: Actual Process Diagram</span>
+        <p class="output-body">Validated diagram generated from metadata. Shows the actual build vs. design to identify drifted configurations.</p>
+      </div>
+      <div>
+        <span class="output-label">NTO Specific</span>
+        <p class="output-body">Maps against your As-Is diagram (steps 1–9). Flags where the actual org configuration matches or deviates from the intended design.</p>
+      </div>
+    </div>
+    <details>
+      <summary>JSON CONFIGURATION</summary>
+      <pre>
+{
+  "alignment": "Drift Analysis",
+  "steps": [
+    { "stage": "Cart", "status": "Matched" },
+    { "stage": "Notification", "status": "Drifted", "severity": "Medium" }
+  ]
+}</pre>
+    </details>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>© 2026 Elements.cloud · The Change Intelligence Platform · Built for NTO</p>
+</div>
+
+</body>
+</html>
