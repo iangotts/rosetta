@@ -333,7 +333,6 @@ tr.cat td { font-size: .58rem; font-weight: 700; text-transform: uppercase; lett
 .tag.s { background: #FEE2E2; color: #BA0517; }
 .tag.n { background: var(--blue-pale); color: var(--blue-bright); }
 .tag.dep { background: #FEE2E2; color: #BA0517; text-decoration: line-through; }
-.tag.v7 { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
 
 /* Group badges */
 .gb { display: inline-block; padding: 2px 7px; border-radius: 12px; font-size: .58rem; font-weight: 700; white-space: nowrap; }
@@ -397,7 +396,7 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
   </a>
   <div class="nav-meta">
     <span>Salesforce Product Reference</span>
-    <span>Naming Matrix · v7 · Apr 2026</span>
+    <span>Naming Matrix · v8.1 · 2026</span>
     <div class="nav-badge">Internal Use</div>
     <div class="nav-badge badge-blue">Cross-Source</div>
   </div>
@@ -408,7 +407,7 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
   <div class="hero-inner">
     <div class="eyebrow">Product Intelligence</div>
     <div class="hero-title">Salesforce Product Reference</div>
-    <div class="hero-subtitle">Cross-Source Naming Matrix v7 — Each site column shows the exact name used on that property · Updated April 2026</div>
+    <div class="hero-subtitle">Cross-Source Naming Matrix v8.1 — Each site column shows the exact name used on that property</div>
     <div class="hero-meta">
       <div class="meta-item">Legend<strong>✓ Matches canonical</strong></div>
       <div class="meta-item">Divergence<strong>≠ Different name</strong></div>
@@ -420,14 +419,17 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 </div>
 
 <div class="findings">
-  <strong>🆕 v7 · April 2026 — Live site verification across all columns</strong>
+  <strong>🆕 Updated v8.1 — May 1, 2026 · Agentforce Operations rename + Sales sub-product changes</strong>
   <div class="fg">
-    <div class="fi ok"><b>salesforce.com nav confirmed ✓</b>Main nav uses "Sales", "Service", "Marketing", "Commerce", "Analytics" — drops both "Agentforce" prefix and "Cloud" suffix. "Agentforce Supply Chain" now visible as Agentforce sub-nav item.</div>
-    <div class="fi"><b>Pricing tier rename: "Agentforce 1 Sales"</b>Top Sales tier is now named "Agentforce 1 Sales" (was "Agentforce Sales"). Comparison table still titled "Compare Sales Cloud editions." CPQ + Sales Dialer both end-of-sale as of Spring '26.</div>
-    <div class="fi"><b>Contact Center → "Agentforce Contact Center"</b>Officially relaunched March 2026 as "Agentforce Contact Center" — unifies voice, digital channels, CRM data, and AI agents. Resolves prior 4-name conflict.</div>
-    <div class="fi amber"><b>architect.salesforce.com still stale</b>Well-Architected docs explicitly reference "Sales Cloud, Service Cloud, Industries Cloud" — pre-Agentforce branding confirmed still in use on architect site.</div>
-    <div class="fi"><b>Data 360 vs Data Cloud: dual usage persists</b>developer.salesforce.com blog posts reference "Data 360" as brand umbrella; pricing page still shows "Data Cloud" as purchasable product. Both terms actively in use.</div>
-    <div class="fi"><b>Stale/deprecated products still in PLC</b>Vaccine Cloud · Work.com · Safety Cloud · Social Studio · Audience Studio · Digital 360 · Einstein 1 · Essentials — PLC dropdowns still reference retired products</div>
+    <div class="fi"><b>🔴 NEW: Agentforce Supply Chain → Agentforce Operations (Apr 29, 2026)</b>Officially renamed on April 29, 2026 with GA on that date. Scope extended beyond supply chain to broader back-office process automation. Trailhead "Agentforce 360 Basics" module still shows old name "Agentforce Supply Chain" — flagged ⚠OLD.</div>
+    <div class="fi"><b>🔴 NEW: Agentforce SDR renamed to "Engagement"</b>Sales release notes (Spring '26) confirm "Agentforce SDR" is now "Agentforce Engagement" — automatically qualifies leads based on conversation context and ICP fit. Flagged in Sales sub-products row.</div>
+    <div class="fi amber"><b>Sales Cloud now formally uses "(formerly Sales Cloud)"</b>Spring '26 Sales release notes reference "Agentforce Sales (formerly Sales Cloud)" — useful official data point for matrix stale naming entries.</div>
+    <div class="fi"><b>Stale/deprecated products still in PLC</b>Vaccine Cloud · Work.com · Safety Cloud · Social Studio · Audience Studio · Digital 360 · Einstein 1 · Essentials — these appear in PLC dropdowns suggesting training content still references retired products</div>
+    <div class="fi"><b>New products only in PLC</b>Philanthropy Cloud · Rebate Management · Salesforce CMS · GTM (not a product) · Sales Enablement · Advertising · Salesforce CMS — never seen in any other source</div>
+    <div class="fi ok"><b>PLC List 1 uses OLD cloud names ✓</b>"Sales Cloud", "Service Cloud", "Marketing Cloud" — PLC's primary dropdown hasn't adopted the "Agentforce" rebrand. Data Cloud ✓, Tableau ✓, Slack ✓</div>
+    <div class="fi amber"><b>Industry: 2 dropdown lists, different cuts</b>List 1 = 14 broad categories · List 2 = 40+ granular sub-industries · Neither matches the 17 industries in the salesforce.com nav exactly</div>
+    <div class="fi"><b>PLC List 2 reveals hidden products</b>Quip ✓ (finally visible!) · Partner Cloud · Government Cloud · Tableau Cloud/Tableau Server (deployment options) · Salesforce Scheduler · Safety Cloud · Work.com</div>
+    <div class="fi"><b>Revenue Cloud appears in BOTH PLC lists</b>List 1 AND List 2 both have "Revenue Cloud" at different levels — unclear if same product or different scoping</div>
   </div>
 </div>
 
@@ -442,6 +444,7 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
   <button class="fb" onclick="f('ms',this)">MuleSoft</button>
   <button class="fb" onclick="f('ta',this)">Analytics</button>
   <button class="fb" onclick="f('ind',this)">Industry</button>
+  <button class="fb" onclick="f('supply',this)">Operations</button>
   <button class="fb" onclick="f('leg',this)">⚠ Stale/Legacy</button>
   <button class="fb" onclick="f('naming',this)">⚠ Naming conflicts</button>
   <div class="sw"><input type="text" placeholder="Search…" oninput="sr(this.value)"></div>
@@ -494,14 +497,14 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="sales naming">
   <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
   <td class="s1"><span class="pname">Agentforce Sales</span><span class="psub">Core sales pipeline CRM</span></td>
-  <td class="s2 note">5 active names across sources. Pricing page top tier renamed to "Agentforce 1 Sales" (Spring '26). Nav confirmed as "Sales" — drops both "Cloud" and "Agentforce". Pricing comparison table still titled "Compare Sales Cloud editions."</td>
-  <td class="site"><span class="sn diff">"Sales"<span class="tag d">≠</span></span><span class="se">Drops both "Cloud" and "Agentforce" — confirmed Apr 2026</span></td>
-  <td class="site"><span class="sn diff">"Agentforce 1 Sales"<span class="tag d">≠</span></span><span class="se">Top tier renamed from "Agentforce Sales". Table header: "Compare Sales Cloud editions."</span></td>
+  <td class="s2 note">5 active names across sources. Spring '26 release notes now formally use "Agentforce Sales (formerly Sales Cloud)" — useful official data point. Pricing page reflects intended rebrand direction but nav and many properties still use old names.</td>
+  <td class="site"><span class="sn diff">"Sales"<span class="tag d">≠</span></span><span class="se">Drops both "Cloud" and "Agentforce"</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Sales"<span class="tag m">≈</span></span><span class="se">Matches canonical. From $25/user/mo</span></td>
   <td class="site"><span class="sn absent">— Not listed</span></td>
   <td class="site"><span class="sn unconf">◌ Unconfirmed</span><span class="se">JS SPA</span></td>
-  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Uses old name in Dev Centers — confirmed Apr 2026</span></td>
+  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Uses old name in Dev Centers</span></td>
   <td class="site"><span class="sn absent">— Not listed</span><span class="se">Admin uses functional categories not product names</span></td>
-  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Well-Architected explicitly references "Sales Cloud, Service Cloud" — confirmed stale Apr 2026</span></td>
+  <td class="site"><span class="sn diff">"Sales Cloud"<span class="tag d">≠</span></span><span class="se">Uses old name in Well-Architected docs</span></td>
   <td class="site"><span class="sn diff">"Agentforce Sales"<span class="tag m">≈</span></span><span class="se">Under "Agentforce Revenue Management" parent category</span></td>
   <td class="site"><span class="sn diff">"Sales" or "Agentforce Sales"<span class="tag d">≠</span></span><span class="se">Two names used in image</span></td>
   <td class="site plc"><span class="sn diff">"Sales Cloud"<span class="tag s">⚠OLD</span></span><span class="se">PLC List 1 hasn't adopted Agentforce rebrand</span></td>
@@ -513,7 +516,7 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="sales naming">
   <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
   <td class="s1"><span class="pname">Agentforce Revenue Operations</span><span class="psub">CPQ, billing, quote-to-cash</span></td>
-  <td class="s2 note">4+ names across sources. CPQ entered end-of-sale in 2025 — new customers can no longer purchase (confirmed in Spring '26 release notes). Existing customers can renew. Revenue Cloud is the industry-standard name. Sales Dialer also end-of-sale as of Spring '26.</td>
+  <td class="s2 note">4+ names across sources. "CPQ" still in nav despite entering end-of-sale. Revenue Cloud is the industry-standard name.</td>
   <td class="site"><span class="sn diff">"Revenue Lifecycle Management" + "CPQ" (separate)<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn diff">Add-on under Sales; no standalone line<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn absent">—</span></td>
@@ -548,14 +551,33 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
   <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
+<tr data-g="sales">
+  <td class="s0"><span class="gb g-sales">Agentforce Sales</span></td>
+  <td class="s1"><span class="pname">Agentforce Engagement</span><span class="psub">Formerly Agentforce SDR — confirmed Spring '26</span></td>
+  <td class="s2 note">Spring '26 Sales release notes confirm "Agentforce SDR" is now renamed "Agentforce Engagement." Automatically qualifies leads based on conversation context and ICP fit. Sub-product of Agentforce Sales. No separate pricing line found.</td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn unconf">◌</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn stale">"Agentforce SDR"<span class="tag s">⚠OLD</span></span><span class="se">PLC likely still uses old name — unverified</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+  <td class="site plc"><span class="sn absent">—</span></td>
+</tr>
+
 <!-- ═══════════════════════════ AGENTFORCE SERVICE ═══════════════════════════ -->
 <tr class="cat gh-service" data-g="service"><td colspan="16">Agentforce Service</td></tr>
 
 <tr data-g="service naming">
   <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
   <td class="s1"><span class="pname">Agentforce Service</span><span class="psub">Customer service management</span></td>
-  <td class="s2 note">4 names + internal nav split confirmed: main nav uses "Service" (drops both prefixes). Pricing uses "Agentforce Service". Architect and Developer sites still use "Service Cloud".</td>
-  <td class="site"><span class="sn diff">"Service"<span class="tag d">≠</span></span><span class="se">Confirmed Apr 2026 — drops both "Cloud" and "Agentforce"</span></td>
+  <td class="s2 note">4 names + internal nav split: main products page and Agentforce 360 page show DIFFERENT Service sub-menus on the same domain.</td>
+  <td class="site"><span class="sn diff">"Service"<span class="tag d">≠</span></span><span class="se">Also: sub-menu differs across 2 page variants on same domain</span></td>
   <td class="site"><span class="sn diff">"Agentforce Service"<span class="tag m">≈</span></span><span class="se">From $25/user/mo</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
@@ -573,9 +595,9 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="service naming">
   <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
   <td class="s1"><span class="pname">Contact Center</span><span class="psub">Cloud contact center platform</span></td>
-  <td class="s2 note">Officially relaunched as "Agentforce Contact Center" in March 2026 — unifies voice, digital channels, CRM data and AI agents natively. Resolves prior 4-name conflict (CCaaS / Contact Center / Agentforce Contact Center Digital / Service Contact Center).</td>
-  <td class="site"><span class="sn diff">"Contact Center"<span class="tag d">≠</span></span><span class="se">Sub-item under Service — confirmed Apr 2026</span></td>
-  <td class="site"><span class="sn diff">"Agentforce Contact Center Digital"<span class="tag d">≠</span></span><span class="se">$75/user/mo — pricing not yet updated to match March 2026 rebrand</span></td>
+  <td class="s2 note">4 different names across sources. "CCaaS" (image), "Contact Center" (nav), "Agentforce Contact Center Digital" (pricing), "Service Contact Center" (Partner Learning Camp).</td>
+  <td class="site"><span class="sn diff">"Contact Center"<span class="tag d">≠</span></span><span class="se">Sub-item under Service</span></td>
+  <td class="site"><span class="sn diff">"Agentforce Contact Center Digital"<span class="tag d">≠</span></span><span class="se">$75/user/mo</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
   <td class="site"><span class="sn absent">—</span></td>
@@ -592,8 +614,8 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="service naming">
   <td class="s0"><span class="gb g-service">Agentforce Service</span></td>
   <td class="s1"><span class="pname">Agentforce Field Service</span><span class="psub">On-site mobile workforce</span></td>
-  <td class="s2 note">Nav now shows "Field Service and Operations" consistently on the pricing page nav (resolved prior split). Main nav still shows "Field Service" (shorter form). Trailhead aligns with canonical "Agentforce Field Service".</td>
-  <td class="site"><span class="sn diff">"Field Service" (main nav)<br>"Field Service and Operations" (pricing nav)<span class="tag d">≠</span></span><span class="se">Confirmed Apr 2026 — still inconsistent across page variants</span></td>
+  <td class="s2 note">4 names on 4 different pages. Main nav and Agentforce 360 page use different names within the same domain.</td>
+  <td class="site"><span class="sn diff">"Field Service" (main nav)<br>"Field Service and Operations" (Agentforce 360 page)<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn diff">Standalone line<span class="tag m">≈</span></span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
@@ -671,8 +693,8 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="mktg naming">
   <td class="s0"><span class="gb g-mktg">Agentforce Marketing</span></td>
   <td class="s1"><span class="pname">Agentforce Marketing</span><span class="psub">Marketing platform umbrella</span></td>
-  <td class="s2 note">Nav confirmed as "Marketing" (drops both "Agentforce" and "Cloud"). Pricing/Trailhead use "Agentforce Marketing". PLC List 1 still says "Marketing Cloud". Image says "Mktg".</td>
-  <td class="site"><span class="sn diff">"Marketing"<span class="tag d">≠</span></span><span class="se">Confirmed Apr 2026</span></td>
+  <td class="s2 note">Nav drops both "Agentforce" and "Cloud". Pricing/Trailhead use "Agentforce Marketing". PLC List 1 still says "Marketing Cloud". Image says "Mktg".</td>
+  <td class="site"><span class="sn diff">"Marketing"<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn diff">"Agentforce Marketing"<span class="tag m">≈</span></span><span class="se">Growth $1,500/org/mo</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
@@ -826,8 +848,8 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="comm naming">
   <td class="s0"><span class="gb g-comm">Agentforce Commerce</span></td>
   <td class="s1"><span class="pname">Agentforce Commerce</span><span class="psub">B2C &amp; B2B ecommerce</span></td>
-  <td class="s2 note">Nav confirmed as "Commerce" (drops both "Agentforce" and "Cloud"). Pricing/dev use "Commerce Cloud". Trailhead uses "Agentforce Commerce". PLC uses "Commerce Cloud". Commerce nav also now includes "Point of Sale" sub-item (new Apr 2026).</td>
-  <td class="site"><span class="sn diff">"Commerce"<span class="tag d">≠</span></span><span class="se">Confirmed Apr 2026. New sub-item: "Point of Sale"</span></td>
+  <td class="s2 note">Nav uses "Commerce" (drops both "Agentforce" and "Cloud"). Pricing/dev use "Commerce Cloud". Trailhead uses "Agentforce Commerce". PLC uses "Commerce Cloud".</td>
+  <td class="site"><span class="sn diff">"Commerce"<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn diff">"Commerce Cloud"<span class="tag d">≠</span></span><span class="se">From $25/user or 1% GMV</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
@@ -861,22 +883,22 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
   <td class="site plc"><span class="sn absent">—</span></td>
 </tr>
 
-<!-- ═══════════════════════════ AGENTFORCE SUPPLY CHAIN ═══════════════════════════ -->
-<tr class="cat gh-supply" data-g="supply"><td colspan="16">Agentforce Supply Chain</td></tr>
+<!-- ═══════════════════════════ AGENTFORCE OPERATIONS ═══════════════════════════ -->
+<tr class="cat gh-supply" data-g="supply"><td colspan="16">Agentforce Operations <span style="font-size:.55rem;font-weight:400;opacity:.7">(formerly Agentforce Supply Chain · renamed Apr 29, 2026)</span></td></tr>
 
-<tr data-g="supply">
-  <td class="s0"><span class="gb g-supply">Supply Chain</span></td>
-  <td class="s1"><span class="pname">Agentforce Supply Chain</span><span class="psub">Formerly Regrello (acq. Oct 2025)</span></td>
-  <td class="s2 note">Now visible in the Agentforce nav sub-menu on salesforce.com (confirmed on both main site and pricing page nav as "Agentforce Supply Chain"). Still absent from main Products nav and pricing page body. Was the mysterious "Supply Chain" tile in the homepage image.</td>
-  <td class="site"><span class="sn diff">"Agentforce Supply Chain"<span class="tag m">≈</span></span><span class="se">Now in Agentforce sub-nav (confirmed Apr 2026) — still absent from Products nav</span></td>
+<tr data-g="supply naming">
+  <td class="s0"><span class="gb g-supply">Operations</span></td>
+  <td class="s1"><span class="pname">Agentforce Operations</span><span class="psub">Formerly Agentforce Supply Chain (Regrello, acq. Oct 2025) · renamed Apr 29, 2026</span></td>
+  <td class="s2 note">Officially renamed "Agentforce Operations" on April 29, 2026 (GA that date). Scope expanded beyond supply chain to broader back-office process automation. Trailhead "Agentforce 360 Basics" module still uses old name "Agentforce Supply Chain" — stale. Ecosystem integration features (auto-sync with Salesforce Flows) in Beta from May 2026. No pricing line on salesforce.com/pricing yet.</td>
+  <td class="site"><span class="sn diff">Sub-item on Agentforce 360 page ONLY<span class="tag d">≠</span></span><span class="se">Absent from main products nav</span></td>
   <td class="site"><span class="sn absent">— Not on pricing page</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn absent">—</span></td>
-  <td class="site"><span class="sn absent">— Not in Trailhead dropdown</span></td>
-  <td class="site"><span class="sn diff">"Supply Chain" tile<span class="tag m">≈</span></span></td>
+  <td class="site"><span class="sn stale">"Agentforce Supply Chain"<span class="tag s">⚠OLD</span></span><span class="se">Trailhead "Agentforce 360 Basics" module not yet updated to new name</span></td>
+  <td class="site"><span class="sn diff">"Operations" tile<span class="tag m">≈</span></span></td>
   <td class="site plc"><span class="sn absent">—</span></td>
   <td class="site plc"><span class="sn absent">—</span></td>
   <td class="site plc"><span class="sn absent">—</span></td>
@@ -908,14 +930,14 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="plat naming">
   <td class="s0"><span class="gb g-plat">Platform 360</span></td>
   <td class="s1"><span class="pname">Agentforce 360 Platform</span><span class="psub">The underlying PaaS / app dev platform</span></td>
-  <td class="s2 note">5 different names across sources. Architect site confirmed still uses "Customer 360 Platform" (pre-Agentforce branding, verified Apr 2026). Pricing page still says "Salesforce Platform". Developer blog now refers to it as "Agentforce 360 Platform" consistently.</td>
+  <td class="s2 note">5 different names across sources. Architect site still uses stale pre-Agentforce name "Customer 360 Platform". PLC List 1 uses "Salesforce Platform" which is the pricing page name.</td>
   <td class="site"><span class="sn diff">"Agentforce 360 Platform"<span class="tag m">≈</span></span><span class="se">Top-level nav label</span></td>
   <td class="site"><span class="sn diff">"Salesforce Platform"<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn absent">—</span></td>
   <td class="site"><span class="sn unconf">◌</span></td>
   <td class="site"><span class="sn diff">"Platform"<span class="tag d">≠</span></span></td>
   <td class="site"><span class="sn diff">"App Building"<span class="tag d">≠</span></span></td>
-  <td class="site"><span class="sn diff">"Customer 360 Platform"<span class="tag s">⚠STALE</span></span><span class="se">Pre-Agentforce branding — confirmed still in use Apr 2026</span></td>
+  <td class="site"><span class="sn diff">"Customer 360 Platform"<span class="tag s">⚠STALE</span></span><span class="se">Pre-Agentforce branding</span></td>
   <td class="site"><span class="sn diff">"Agentforce 360 Platform"<span class="tag m">≈</span></span></td>
   <td class="site"><span class="sn diff">"Platform"<span class="tag m">≈</span></span></td>
   <td class="site plc"><span class="sn diff">"Salesforce Platform"<span class="tag d">≠</span></span></td>
@@ -1006,9 +1028,9 @@ th.plc-h { background: rgba(26,64,183,.35) !important; border-bottom-color: var(
 <tr data-g="data naming">
   <td class="s0"><span class="gb g-data">Data 360</span></td>
   <td class="s1"><span class="pname">Data 360</span><span class="psub">Purchasable product: Data Cloud</span></td>
-  <td class="s2 note">Confirmed Apr 2026: "Data" in main nav label; /data/ page header says "Data 360". Purchasing product is still "Data Cloud" on pricing. Developer blog posts now actively use "Data 360" as umbrella brand. Dual usage of both terms persists across all properties.</td>
-  <td class="site"><span class="sn diff">"Data" (nav label)<span class="tag d">≠</span></span><span class="se">Confirmed Apr 2026 — /data/ page header says "Data 360"</span></td>
-  <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span><span class="se">Credits-based pricing — purchasable product name unchanged</span></td>
+  <td class="s2 note">Critical confusion: Agentforce 360 page presents Data 360 as containing Informatica, Tableau, and MuleSoft — but clicking through goes only to Data Cloud. The homepage image uses "Data 360" as a label; most technical properties use "Data Cloud". PLC aligns with technical sources using "Data Cloud".</td>
+  <td class="site"><span class="sn diff">"Data" (nav label)<span class="tag d">≠</span></span><span class="se">/data/ page header says "Data 360"</span></td>
+  <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span><span class="se">Credits-based pricing</span></td>
   <td class="site"><span class="sn diff">"Data Cloud" referenced<span class="tag m">≈</span></span></td>
   <td class="site"><span class="sn unconf">◌</span><span class="se">2 docs only in help</span></td>
   <td class="site"><span class="sn diff">"Data Cloud"<span class="tag m">≈</span></span></td>
@@ -1898,7 +1920,7 @@ function sr(v){
 
 <!-- FOOTER -->
 <footer class="doc-footer">
-  <span>Salesforce Product Reference · Cross-Source Naming Matrix v7 · April 2026</span>
+  <span>Salesforce Product Reference · Cross-Source Naming Matrix v8.1 · 2026</span>
   <span>Rosetta by KeenanVision.net · For Internal Use</span>
 </footer>
 
