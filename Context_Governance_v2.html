@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Context Governance Curation | Rosetta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ROSETTA DESIGN SYSTEM — STYLE GUIDE
+   Copy this <style> block (everything between the ═══ lines)
+   into any new HTML page to get the full Rosetta look.
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── COLOR TOKENS ─────────────────────────────────────────── */
+:root {
+  /* Blues */
+  --blue:        #1040b8;
+  --blue-deep:   #0a2080;
+  --blue-bright: #1a4bc4;
+  --blue-light:  #e8eef8;
+  --blue-pale:   #f0f4fc;
+
+  /* Golds */
+  --gold:        #d4920a;
+  --gold-bright: #f0b429;
+  --gold-pale:   #fef9ec;
+  --gold-border: rgba(212,146,10,.2);
+
+  /* Neutrals */
+  --text:        #1a1a2e;
+  --muted:       #5a6072;
+  --light-muted: #8b91a1;
+  --bg:          #f7f8fc;
+  --surface:     #ffffff;
+  --border:      #e2e6f0;
+
+  /* Accent dots */
+  --dot-sky:   #00a1e0;
+  --dot-amber: #e8a000;
+
+  /* ── PHASE / SWIMLANE TOKENS ──────────────────────────────
+     Derived from the Rosetta blue + gold DNA.
+     Four semantic roles, each with: bg · border · text
+     -------------------------------------------------------- */
+
+  /* Prepare / foundation — muted blue-lavender */
+  --phase-prepare-bg:     #eceef8;
+  --phase-prepare-border: #b8c0e0;
+  --phase-prepare-text:   #2a3678;
+
+  /* Implement / group wrapper — gold (matches brand gold) */
+  --phase-implement-bg:     var(--gold-pale);
+  --phase-implement-border: var(--gold-bright);
+  --phase-implement-text:   #7a5000;
+
+  /* Define / Design / build — teal derived from dot-sky */
+  --phase-build-bg:     #e4f6f9;
+  --phase-build-border: #5abdd4;
+  --phase-build-text:   #1a5f6e;
+
+  /* Deploy / Run — deep rose anchored to blue-deep complement */
+  --phase-deploy-bg:     #fce8ee;
+  --phase-deploy-border: #e0728e;
+  --phase-deploy-text:   #7a1f36;
+
+  /* Operate / steady-state — neutral warm grey */
+  --phase-operate-bg:     #edeef2;
+  --phase-operate-border: #b0b8cc;
+  --phase-operate-text:   var(--muted);
+}
+
+/* ── BASE ─────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────── */
+/* Display / Serif — use for hero titles & section headlines */
+.font-display { font-family: 'DM Serif Display', Georgia, serif; }
+
+/* Hero title */
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 2.5rem;
+}
+
+/* Section headline */
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+}
+
+/* Eyebrow label (hero) */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--gold-bright);
+}
+
+/* Section label (body sections) */
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+/* Body text */
+p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-weight: 300;
+}
+p + p { margin-top: .8rem; }
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(10,32,128,.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* Badges */
+.nav-badge {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.nav-badge.badge-blue {
+  background: var(--blue-pale);
+  border-color: #ccd6f0;
+  color: var(--blue-bright);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+/* Grid overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+/* Gold glow bottom-right */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,180,41,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero meta strip */
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.4);
+}
+.meta-item strong {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: .25rem;
+}
+
+/* ── PAGE BODY ────────────────────────────────────────────── */
+.page { max-width: 1000px; margin: 0 auto; }
+
+section {
+  padding: 3rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+section:nth-child(even) { background: var(--bg); }
+section:last-child { border-bottom: none; }
+
+/* ── DECORATIVE RULE ──────────────────────────────────────── */
+.horizon {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-bright) 0%, var(--blue-bright) 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: .3;
+}
+
+/* ── PULL QUOTE / IMPERATIVE ──────────────────────────────── */
+.imperative {
+  background: var(--gold-pale);
+  border-left: 3px solid var(--gold-bright);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.imperative p {
+  font-size: .95rem;
+  font-style: italic;
+  color: #6b4c00;
+  font-weight: 400;
+}
+
+/* ── KPI CARDS ────────────────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  background: var(--blue-pale);
+  border: 1px solid #ccd6f0;
+  border-radius: 10px;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  border-top: 3px solid var(--blue-bright);
+}
+.kpi-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.kpi-label {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ── USE-CASE CARDS ───────────────────────────────────────── */
+.use-cases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.uc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-top: 3px solid var(--gold-bright);
+  transition: box-shadow .2s, border-color .2s;
+}
+.uc:hover {
+  box-shadow: 0 4px 20px rgba(10,32,128,.08);
+  border-color: var(--gold);
+}
+.uc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+.uc-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: .55rem;
+  line-height: 1.3;
+}
+.uc-desc {
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 300;
+}
+.uc-pill {
+  display: inline-block;
+  margin-top: .8rem;
+  background: var(--blue-pale);
+  color: var(--blue-bright);
+  font-size: .63rem;
+  font-weight: 700;
+  padding: .22rem .65rem;
+  border-radius: 4px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid #ccd6f0;
+}
+
+/* ── TECH / LIST GRID ─────────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+.tech-item {
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .9rem 1rem;
+}
+.tech-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .38rem;
+}
+.dot-gold  { background: var(--gold-bright); }
+.dot-sky   { background: var(--dot-sky); }
+.dot-amber { background: var(--dot-amber); }
+.dot-light { background: #b0b8cc; }
+.tech-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--blue-deep);
+  line-height: 1.15;
+}
+.tech-role {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: .2rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── PROOF / STAT CARDS ───────────────────────────────────── */
+.proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.proof-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-left: 4px solid var(--blue-bright);
+}
+.proof-logo {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--light-muted);
+  margin-bottom: .6rem;
+}
+.proof-stat {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.2rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.proof-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── INVESTMENT / DARK CTA BLOCK ──────────────────────────── */
+.invest-box {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 100%);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem;
+  margin-top: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.invest-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.invest-box .sec-label {
+  color: rgba(240,180,41,.8);
+  border-color: rgba(240,180,41,.2);
+}
+.invest-box .sec-label::after { background: rgba(240,180,41,.15); }
+.invest-box .section-headline { color: #ffffff; }
+.invest-box p { color: rgba(255,255,255,.7); }
+
+.ask-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+.ask-item {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  border-top: 2px solid var(--gold-bright);
+}
+.ask-item-phase {
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  color: rgba(240,180,41,.75);
+  margin-bottom: .4rem;
+}
+.ask-item-val {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .nav { padding: 1rem 1.2rem; }
+  section { padding: 2.2rem 1.2rem; }
+  .hero { padding: 3rem 1.2rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .use-cases { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .proof { grid-template-columns: 1fr; }
+  .ask-row { grid-template-columns: 1fr; }
+  .hero-meta { gap: 1.2rem; }
+  .doc-footer { flex-direction: column; gap: .5rem; text-align: center; }
+  .nav-meta { display: none; }
+}
+
+/* ── SWIMLANE / PHASE DIAGRAM ─────────────────────────────
+   Use .swimlane-table to wrap rows.
+   Each .swimlane-row has a .swimlane-label on the left and
+   .swimlane-stages on the right.
+   Phase boxes use modifier classes: .phase--prepare,
+   .phase--implement, .phase--build, .phase--deploy,
+   .phase--operate.
+   -------------------------------------------------------- */
+
+/* Outer wrapper */
+.swimlane-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 .75rem;
+}
+
+/* One horizontal lane */
+.swimlane-row {
+  display: flex;
+  align-items: stretch;
+  gap: .75rem;
+  margin-bottom: .75rem;
+}
+
+/* Left label column */
+.swimlane-label {
+  min-width: 140px;
+  max-width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.swimlane-label-name {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: 1.2;
+}
+.swimlane-label-sub {
+  font-size: .65rem;
+  font-weight: 400;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: .15rem;
+}
+
+/* Stage boxes container */
+.swimlane-stages {
+  flex: 1;
+  display: flex;
+  gap: .5rem;
+  align-items: stretch;
+}
+
+/* Individual phase box */
+.phase {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1.5px solid;
+  padding: .65rem .75rem;
+  font-size: .78rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: .01em;
+}
+
+/* Group wrapper (e.g. "Implement" spanning multiple sub-phases) */
+.phase-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.phase-group-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: .2rem .5rem;
+  border-radius: 6px 6px 0 0;
+  border: 1.5px solid;
+  border-bottom: none;
+  line-height: 1.4;
+}
+.phase-group-stages {
+  display: flex;
+  gap: .4rem;
+}
+.phase-group-stages .phase {
+  border-radius: 0 0 6px 6px;
+}
+
+/* ── Phase colour modifiers ── */
+.phase--prepare,
+.phase-group--prepare .phase-group-label,
+.phase-group--prepare .phase {
+  background: var(--phase-prepare-bg);
+  border-color: var(--phase-prepare-border);
+  color: var(--phase-prepare-text);
+}
+
+.phase--implement,
+.phase-group--implement .phase-group-label {
+  background: var(--phase-implement-bg);
+  border-color: var(--phase-implement-border);
+  color: var(--phase-implement-text);
+}
+.phase-group--implement .phase {
+  background: var(--phase-implement-bg);
+  border-color: var(--phase-implement-border);
+  color: var(--phase-implement-text);
+  opacity: .85;
+}
+
+.phase--build,
+.phase-group--build .phase-group-label,
+.phase-group--build .phase {
+  background: var(--phase-build-bg);
+  border-color: var(--phase-build-border);
+  color: var(--phase-build-text);
+}
+
+.phase--deploy,
+.phase-group--deploy .phase-group-label,
+.phase-group--deploy .phase {
+  background: var(--phase-deploy-bg);
+  border-color: var(--phase-deploy-border);
+  color: var(--phase-deploy-text);
+}
+
+.phase--operate,
+.phase-group--operate .phase-group-label,
+.phase-group--operate .phase {
+  background: var(--phase-operate-bg);
+  border-color: var(--phase-operate-border);
+  color: var(--phase-operate-text);
+}
+
+/* ══════════════════════════════════════════════════
+   END OF ROSETTA DESIGN SYSTEM — STYLE BLOCK
+   ══════════════════════════════════════════════════ */
+
+/* ── STYLE GUIDE UTILITY (not for production pages) ── */
+.sg-page { max-width: 1100px; margin: 0 auto; }
+.sg-section {
+  padding: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.sg-section:nth-child(even) { background: var(--bg); }
+.sg-section:last-child { border: none; }
+.sg-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.4rem;
+  color: var(--blue-deep);
+  margin-bottom: 1.6rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--gold-bright);
+  display: inline-block;
+}
+.sg-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; margin-bottom: 1rem; }
+.sg-chip {
+  display: inline-block;
+  padding: .4rem 1rem;
+  border-radius: 6px;
+  font-size: .8rem;
+  font-weight: 600;
+}
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: .75rem; }
+.swatch {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.swatch-color { height: 60px; }
+.swatch-label {
+  padding: .4rem .5rem;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  background: var(--surface);
+  color: var(--muted);
+  line-height: 1.5;
+}
+.swatch-label strong { display: block; color: var(--text); font-size: .7rem; }
+.sg-code {
+  font-family: 'Courier New', monospace;
+  font-size: .78rem;
+  background: var(--blue-pale);
+  border: 1px solid #ccd6f0;
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  color: var(--blue-deep);
+  margin-top: .5rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;
+}
+.sg-note {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="logo">
+    <img class="logo-icon" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADuAOgDASIAAhEBAxEB/8QAHAABAQACAwEBAAAAAAAAAAAAAAECCAQGBwMF/8QASxAAAQMDAQMGCQgGCAcBAAAAAAECAwQFEQYHEiExQVGBkdETFBZSVWFxk5QIFRciMlShwSNCVpKjsUVTYoKEosLwM0RjZHODsuH/xAAcAQACAQUBAAAAAAAAAAAAAAAAAQMEBQYHCAL/xAA+EQABAgQDBAUJBwQDAQAAAAABAAIDBAURBiExBxJBURNhcYGRFBYXIjJTVKHRFSNSkrHB4QiTovEkQoLS/9oADAMBAAIRAxEAPwDwwIpAdBLX6pTEuVGhUEyUEIABoQAAlZUZIBoWQMSghUpjkoJKghcjuiyoIASVyUgGhUEyUEIABpIVCAELIGIBJccIoyCJTKggBCyBMgElclyQAhUECAhUADQgABKyoIBoWWQYlBJZAxKijQqCFBCFJkDSVRSkAIVBMlGhAACS4wAIVMmSkOZZLdU3e7U1so2709TIkbEXkyvOvqI40aHBhuixDZrQSSeAGpTYxz3BrRclcQGyVp2P6TprWynrYZqupViJJOsitXe591E5E7Tx/aToWt0tfvFqWOeropkV9PIjFVcc7XY50/E1/hzajQcQTzpGWc5rhcjeAAcBru599jY271fahhudkIIjRACONs7dq6aXJyfm64fcar3Tu4nzfX/cqn3Tu4z7yqB+MeIVj6N3JfAH38QrvudT7p3cPEq3no6j3aj8pg/jHiEujdyXwGT7+JVn3Sf3ajxOr+6z+7UflEL8Q8Utx3JfHlB9fFKr7tN7tR4rVfd5v3FH00P8Q8UbruS+QPr4tU/d5f3FHi9R/US/uKPpmfiCW6eS+QPr4vUf1Ev7ijxef+pk/dUfSs5hG4eS+ZTJYZkTKxSJ/dUw5OU9B4OhSLSFQQZPa8rIERRkEKgZAIVBCjSRAACFxkABCplTvuwJkLtpVGsuN5sMqx587dX8snQT9PS93nsOoKK706b0lNKj93P2k5FTrTKFkxLT4tSo81JwTZ8RjmjtINvFVlPjtl5uHFfo1wJ7itxiKjV5URfadXs+v9J3G0tuCXuipk3cvinmayRi86K1VyvVy8x4ttV2jVd9vbY7DXVdJbqZFax0Ujo1mdzuXC8nRn8zjHDOzmt1yfdKdGYW5fec8EAHl1k8h26LblSxBJycARd4PvoARmtkNxnmt7BuM81vYafeUmofTtz+Lf3k8o9Q+nLn8W/vNiegKq/GM8HLH/PiW9yfELcLcZ5jewm5H5jew0+8o9Q+nbn8W/vHlJqH05c/i394egKrfGM8HJefEt7k+IW4O5H5jewbkfmN7DT/AMo9QL/Ttz+Lf3jyi1B6cufxcneHoCq3xjPByPPiW9yfELcDcj8xvYNyPzG9hp/5R6g9OXP4uTvHlFqD05c/i5O8foDq/wAYzwcjz4lvcnxC3A3I/Mb2Dcj8xvYageUeoPTt0+Lk7x5R6g9O3T4uTvD0B1f4xng5HnxLe5PiFt/uR+Y3sHg4/MZ2GoKaj1Cn9PXT4uTvMk1NqROS/wB1T/GSd4vQHWPjGf5JjHEr7k/JbduhhcmHRRuReZWofh6g0Zpq+QLHX2mn3l5JYmIx6f3k4mssertUxrlmo7smP+7f3natLbXdS2uVjLlI26U2frJKmJET1OT88kEbYviiljyqQmWuiNzAa5zXdxNhftIUjMX0yZ+6jwiGnmAQuRtC2T3GxxyXCzPfcKFqK57N39LEnsT7SetOw80NtNG6ss+q6Bai2z5e3hLA/hJGvrTo9acDy7bds9jpWS6mskG7FnNZAxODc/rtTo6e0y/AG1Gc8tFDxGN2Nfda4ixvwa8czwdx463VpruGoPQ+W083ZqQM8uY/cLxxC8TEp0CsFsqUxyUaSvAEKCEAAIXGBMlIVKhckA0KlMS5BCoIfVkE74nSshkdG37TkaqonWeXPawXcbJ2J0XzAB7uvNkAA0KooIAQqUxyVFBCyBiXI0rKgmS5BKy/S03e7hp+7w3O2zLHNGvJzPTnaqc6KbSaOv1Bq/TMdfHGxWStWOogd9ZGOx9Zq9KcetDUk9C2FalfZdWst00ipRXJUicnM2T9R3bw6zT+1zBMOtUx1Rlm2mIIvcauaMyD1jVvXlxWWYVrDpOYEvEP3b8uw8D+xX4+1DTLtLasnomNXxSX9NSuXnYq8nUuU6jqxsV8oKwNuekEusbU8Ytr99VxxWN2Ecnbur1Ka6ZMh2Z4ndiOgQo8U3is9R/a3j3gg9pKt+IqaKfPOhtHqnMdh+hyVKQGwFYlclMS5GhUAAkuKUmQQXVQqUgGvJVyCBAQv3tB2J2pNWUFo3lbHM/Mrk5UY1Mu68IbX220Wy3W5lvo6GCKmY3dSNGJhU9fT1muGwOpig2k0TZVRPCxSxtVendVU/kbOnKW3mpzZrECT3iIbWBwHAuJIJ7cgOrvWzMEy0Iyr4pF3F1u4ALwnafsorn37x3SlE11LUIrpIUejUifnjuov6q9HNx5sHU/or1v6JT3re82QvF9s9ndG26XKlo3S5ViSyI1XY5cZOB5baS/aG3e/Qt1H2sYvlpKHBhQhFa0WDixziQOZBztpfxzU83hilRIznOfuk8AQLdy1++ivW/on+K3vH0V639E/wAVvebA+W2kv2ht3vkHltpL9obd75C5el/Gfwrf7b/qqbzVpHvv8gtfvor1v6J/it7x9FetvRP8VvebA+W2kv2ht3vkHltpL9obf75B+mDGfwrf7b/ql5q0j3x/M1a/fRXrf0T/ABW95F2Wa39Dr71vebBeW2kv2ht3vkKmtNJryagt3v2jG2HGQ1lG/wBt/wBUealI98fzN+i18XZbrj0M73rO84V30Dq+1Ub6utslQ2BiZe9io9Gp0ruquENlGau0u7k1BbfiWp+Z+hb7lbbk1y0FfS1aN4O8DK1+PbhT0Nt2JpdwfMyjN3j6r2/MuIHgUeZtOiC0KMb9oP7LTUHpu3rR0FiusV5t0SRUVc5UfG1MNjl5eHQipx6lPMEU6Qw5X5XEFOhVCV9l404gjIg9YP1Wv5+RiSMw6BE1Hz61mZRSPikZLG5WvYqOa5FwqKnIp88lyXpwDgQRkqQXGYW21sqItU6CimciKy4UOHp0OVuHJ1Lk1OqInwVEkEjd18b1Y5OhUXCmyGwCsWq2dQROVF8WnkhT2ZR3+o8I2hwNptc3uFqYalbKqJ7XKv5nP+yBjqZX6tSB7LHXH/lzm/MELOcVnymRlZo6kZ94B+q/CKQZOg1giuQCAhUAAhccEGSnuplUGSFHdCZKQDBSsuRQVVRQ1sFbSyLHPBIkkbk5Uci5Q9wte3SgS1N+crRUrXNbhUhVvg3u6cquU7FPB8lyYribBdHxMIf2jD3izQgkG3EXHA/6Vxp9Xm6dvdA619eK/e1vqiv1ZfX3Su3WcNyGJvJGxORE6eXlPwiFMhkZKXkJdktLMDWMFgBoAFQxoz40QxIhuTqVQcyxW2ovF4pLXSJmaplSNvqzzr6kTibK2PZdpC32llHUWyKumVv6WebKvcvOqeansMOxntCpmEujZNBz3vzDW2vbmbkC3LmrtSKFM1TeMKwA4nnyWrxcnoG1TZ7U6cvjfmemqqq3VKK+LdYr1iXnYqp+C9HsOnfMl59EV/w7u4v1JxNS6rJw5yXjN3Xi4uQCOoi+RByKoJqQmJaK6FEabhcDIOf8yXr0RX/Dv7h8yXr0RX/Dv7i4/acl75v5h9VT9DE/CfBcA/e0Be6iw6tt9fDM5jEmayZEXg6NVRHIvTw/kcFLFe15LPXr/hn9x2zZfoW83bVNJLV26opqGlmbLPJPErEVGrndTKcc8hYsTVmjw6TMeVxWFhY4EXBvkcgOJPDrVdTpWafMw+iab3HA816/t4hin2Z1sj2oqxSRSMXoXfRP5OU1kNlPlBV8NJs8lpXr+kq544o09i7yr/l/E1rMD2Ese3DTy4ZGK63ZZo/W6veNS01EAa7ov4lUEGTdCxFbCfJqVV0bXJzJXu/+GHlW2JjY9pd6a3kWZrutWNVf5nr/AMnOmWHQMkyoqeHrJHplOVEa1v5KeL7UZ1qNoV8kVc4q3M/d+r+RoPAbhF2g1iIzQBw799o/YrOK2N2hSjTrl+hXWymJcm/VgyoABJAANC44MS5KdT2VAAITJSAaSoIMjQqMjIGku87C1j+k61+ExyS7uenwbjaM0wslxqLRd6W50rsTU0rZGevC8i+peQ2Usm1XR9fam1dTcmUMyMzLTyou81edE4fW6jmnbfhapz1QgVCUhOiM3Nw7oJIIcTmBwO9keYWwsHVOWgQHwIrg03vnlfIfRd6XHOTLelDWXaptDqtSXpEtNRVUlup0VkSNerFl6XORPwQ6al3uiclyrEz/ANd3eWak7CapOScOPMTAhOcLlhaSW9Rz1tqOGiqprGsvCiuZDh7wHG9r/JbmZb0oMt6UNM0utzTilyrE/wDe7vItzuS/8/Ve+d3l0H9P01xnh+Q//SpvPqH7j5/wtzst6UONcrjQ22kfVV9VDTwsarnOkciJg05W5XFUwtfVKn/ld3nzmqqmdESaollROTfeq/zJ4X9Pj98dLPZcbMz7vWXh+OsvUg59v8LuO13Wfldf2rSq5LbSIrKdF4b2ftPVPXhOpEOlEyDoSjUmVo8jDkZRtmMFh+5PWTmetYLNzMSajOjRTdzlQQ7Zsp06upNZ0dI+PfpYV8PU5ThuN5l9q4TrPdWqUGlyUWdjmzIbS49w07ToEpaWfMxmwWauNlsToG3rYNAW2kn+q6Cl8JLleRy5c7sVVNVr3WOr7zW1zlVVqJ3yrn+05VNm9sd6ZY9AVzmvRk1U3xWFOlXcvY3eU1ZNI7DpONMierUfWM+w+bnHxcPArMMZxWQzBk2aMH8D9FUBBk38sHVKTJcjQgABKy4wAKdT2VyMkAXQqhTEo0WVAA0rIABpIMgDSVyCHdbBsv1febWlxp6KOGF7d6JJ5Nx0iepO/BbKpWZCkwxFnozYbSbAuNrnqU8vKxpl27BaXHqC6WVDkXSgrLXXzUFwp309TC7dfG9OKKcYuEKKyKwPYbg5gjMEcwoXNLTYjNZAmRkkXmyoATiqINFl9KeKWonjggjdJLI5GsY1Mq5VXCIhtDsi0emk9OI2pY35yqsSVLk47vQzPq/nk/M2V7NLfp1kN3rZI665OYjmPRMxxZ83pXHOcrbHriPS1lWko5U+dqtqpCicsTed6/l6/YcuY9xnHxvPQ8O0MEwy71jpvEfoxupvrrbILY9EpLKNAdUJ3JwGQ5fydF5j8oDVCXfUrbNTOzS21Va5UXg6VftdnBO08zEkj5JHSSOVz3LlyquVVekmTonDdCgUGmQafA0YLX5nUnvNysDn5x87MPjv1cf9BUEBe1R2VCZABJUEA0L4AmRkpgp1QTIyCFQAO6FcggGiypTEuQSsqCZGRpWXZ9ltogvmvbXb6lu9A6XwkjfOaxFcqexcY6zbZrUa1GtREREwiJzGpOy28QWPXlruNS7dgbL4OR3mteitVfYmc9Rts1Uc1HNVFReKKhyrt98p+1pbev0fR5ct7eO9323fktlYI6PyaJb2r59lsv3XQtp+zel1nVUtbHWJQVcLVY+RIt/wjeVEXinJx7TpD9g1Un2NRRL7aZU/1HpWtNfae0nWQ0l0llWeVm+jImbytbnGV6M8ew/A+mnRvTXe4/8A0seHavtDl6bCh0tkQwAPVtDDha50JaTa/X2KrqEtQYkw4zBAfxzIXUV2D1+6u7qCnVeZFgXvPJbrQ1NsuVRb6xng6inkWORvQqLg2i0htF03qi6LbbdNM2p3Fe1sse7vInLjpU8/+UfpTddDqujj+0qQ1iJ/kf8AkvUbCwJtAr0OuikYlu0xANzeaGkO4aAZO07bdasVZock6S8qp+Yac7G+X8fovFEKY5Lk6HWCrY/YDqlt40ylmqZM1ttRGpleL4v1V6vs9SdJ0n5R9hqabUcN/RXvpaxiRKvKkb2pyerKcepTomgtRTaY1RSXaNXLGx27OxF+3GvBydnFPWiGzmqbTQ6y0bNSMkY+KrhSSmmxlGuxljv982TmXEMD0f42h1eG3/jTF97q3vbA7DZ46slsORf9u0d0q4/eQ9Ou2n0+a1GB97jR1Fvr56GqjWOeCRY5GrzKinwOmIUVkVgew3BFwRxBWvHNLSQdULkgJF5WQMS5BCAoBC4xTHIyUynVKTIyNCoJkoJIMgDTVyCAaSoJkuQQqd1sO1HV9mtLbbTV0ckLG7sSzRo90adCKvN7cnSQW6pUiQqsMQp2C2I0G4DgDY8xdTQJmNLu3oLi09RsuZdrjW3W4TV9wqH1FTM7efI9eKr/AL5jikKV8KEyCwQ4YAaMgBkABwAUDnFxLnG5K51hulVZbxS3SierJ6aRHt9eOVF9S8htjRT2vW2jGyYSSiuNOrXtzxYqphU9qL+KGoB6/wDJz1Z4ncpNMVkmIKpVkpVcvBsiJxb1p+Kes09tjws+oU5tWlBaPLZ3GpZqe9p9Ycs1lWFKkIEcysX2ImXf/OngvNNV2Wp0/qCstFUn6SnkVqO5nN5UcntTB+WbA/KK0n4/aY9S0ceaiiTcqETldEq8F/uqvYq9Br8ZngLFLMTUaHN3+8HqvHJw17jqO1Wit0006bdC/wCuo7D9NFT3z5OWqvG7fNpirlzNSostLleLo8/Wb1KqdS+o8CPRPk9zRx7SKdr3I1ZKeVjc867ucfgpQbUqRBqeGJnfHrQxvtPItz+YuD2qfDc2+WqMPdOTjunsK2JqrJZqp0zqm1UUzplzKr4Wqr+GOOU4muW2vR0GldQxyW9u7b65qviZn/huRfrN9nFFT2mzp4x8qCSLxGyRLjwqySuT1JhufyOddjtbnpXEkGUY8mHF3g5t8smkg25i2vK4WeYskoD6e+KWgObYg9psvDAAdnLUqAAaEAAJLjggyUt1PZUEyXI0IAB3QhckAIWQMSjQqCFGhEKikAJLIEyUEIfaiqZ6Sriq6aR0U8L0fG9q8WuRcop8QJ7GvaWuFwdUgSDcLbrRV8o9ZaOirHMY5J41hqouVGvxhzV7c+xUNaNommp9LaqqrW9HOhz4Snf50a8nZyL60U7b8nnUsts1V8xybzqW5cETP2JGoqovWiKnYbD1NHSVSotTSwTKiYTwkaO4dZyq+rR9leJpiAyH0kvFAcG3tkSbEGxzad5vWFslsqzEtPhvc7diNyJtft8citKTmWW5VVou1Lc6J+5UU0iSMVeTKcy+peQ9I2+6JorBV016tMLYKOrescsLfsskxnLehFTPD1HlZ0dQa1JYnpTJyCLw4gIIPg5p/TrWAzspFp0yYT/aadR4ghbHWzbVpWW2NmrmVdNVo368DYt9Fd/ZdyY9uDxnaTq6o1hqJ1wfGsNNG3wdNCq53WZzlfWq8V6ug6uCxYb2b0PDk66dk2HfNwN43DQdQ3L5m5tldVtQxBOz8EQYxFhyFr9qyyUxKZ8rIqCFGhAAF0lxgQFKp1QQoIQELkaFQANJCkA0LIEyBoVBCjQqCAElclMSjQu37HKiKm2l2WSdURqzKzK9LmOan4qhtgaSU00tPURzwvVksbkexycqKi5RT3rT+3Gz/NUTb3QVra5jUSRadjXMevSmXJjPQc+bZsE1SszcCfp8IxLN3HAaixJBtyNyOqyzjCdYlpSG+BHdu3Nwfkv0PlKTRM0JTwvRFkkrmbnqw1yqv++k1zO47U9cT6zu0cjYlp6CmRW08KrlePK53rX8DpxsXZlh2Zw/h+FKzYtEJLiOV9B4Wv13VgxDPQ56edFhezkB12QAGwFY1UUEA0lkCZLkEKggGhcUpC5KRToABoQADSVGSFBCoIU9IQAAkqUiFGhAANCpAMgkhQBoVBC5GkqAASQADSQIANCoGACS4wAKVVCAAAhCgDSKAAaSpTEo0KgAEkCADQqUxKg0KgEGhUpiUElQACEKQDSssgTJRpIABoQADXlf/9k=" alt="Rosetta Logo">
+    <div class="logo-wordmark">
+      <strong>Rosetta</strong>
+      <span>Context Governance</span>
+    </div>
+  </a>
+  <div class="nav-meta">
+    <span>Office of the CEO</span>
+    <span>v2 · 2026</span>
+    <div class="nav-badge">Confidential</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Rosetta · Context Governance · KeenanVision.net</div>
+    <div class="hero-title">Context Governance Curation</div>
+    <div class="hero-subtitle">A six-workstream plan to give Rosetta the trusted, current, narrowly-scoped knowledge base it needs to earn the confidence of SIs, FDEs, and customers.</div>
+    <div class="hero-meta">
+      <div class="meta-item">Owner <strong>Context Governance Authority</strong></div>
+      <div class="meta-item">Reports to <strong>Office of the CEO</strong></div>
+      <div class="meta-item">Status <strong>Draft for Review</strong></div>
+      <div class="meta-item">Year <strong>2026</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── FUNDAMENTAL ISSUE ── -->
+  <section>
+    <div class="sec-label">The fundamental issue</div>
+    <div class="section-headline">A Michelin-starred restaurant with no idea where the ingredients are.</div>
+    <div class="imperative">
+      <p>Rosetta today is a Michelin 1-star restaurant with top chefs — but no idea where the ingredients are, what their quality is, or whether they are past their expiration date.</p>
+    </div>
+    <p>Rosetta is the strategic content engine that unifies fragmented Salesforce documentation, product naming, and methodologies into a single source of truth for SIs, FDEs, partners, and customers. Its job is to address the cognitive cliff caused by inconsistent content across help docs, the Architect site, Trailhead, the Partner Learning Camp, the Trailblazer Community, blogs, GitHub, and a dozen other destinations.</p>
+    <p>The recipes are written. The chefs are talented. What is missing is governance of the pantry: an authoritative, deduplicated, validated, current, ICP-targeted set of source documents that Rosetta can serve into a Claude conversation with confidence. Without that, every recommendation Rosetta gives is one bad ingredient away from being wrong — and one wrong recommendation early in the methodology lifecycle compounds through every downstream activity.</p>
+  </section>
+
+  <!-- ── ROSETTA AT A GLANCE ── -->
+  <section>
+    <div class="sec-label">Rosetta · context</div>
+    <div class="section-headline">What Rosetta is, and why governance is the long pole in the tent.</div>
+    <p>Rosetta is a graph database of governed help content, served into Claude conversations running inside the Cowork desktop app via a Retrieval-Augmented Generation (RAG) middleware. It is the source of truth — Claude is the surface. The architecture deliberately keeps the graph thin and the governance thick: every node has provenance, every edge is typed, every document is versioned. Hallucination is prevented not by a clever prompt but by the discipline of what is allowed to enter the graph in the first place.</p>
+    <p>The audiences Rosetta serves are not interchangeable. An SI working a Fortune-500 retail Marketing Customer 360 use case needs a fundamentally different set of artefacts than an FDE shipping SDR Agents for a mid-market Life Sciences customer. The flywheel spans four agent personas — Seller (L1), Implementer (L2), Practitioner (L3), and Enablement — and each draws on a different slice of the same underlying content. Governance is therefore not a clean-up project. It is the operating system that decides what content exists, who owns it, when it expires, and who is allowed to publish it.</p>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num">62</div>
+        <div class="kpi-label">Content assets audited across Salesforce ecosystem</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">34</div>
+        <div class="kpi-label">Flagged "Consider for Rosetta" — the rest fail the bar</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">16+</div>
+        <div class="kpi-label">Publication destinations, each with its own naming &amp; filters</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GUIDING PRINCIPLES ── -->
+  <section>
+    <div class="sec-label">Guiding principles</div>
+    <div class="section-headline">Five non-negotiables that frame every workstream.</div>
+
+    <div class="use-cases">
+      <div class="uc">
+        <div class="uc-num">Principle 01</div>
+        <div class="uc-title">No content is better than incorrect content</div>
+        <div class="uc-desc">Only content that meets the highest bar of accuracy and relevance enters Rosetta. Three reasons drive this: (1) the confidence gap with SIs and customers needs bridging, (2) bad recommendations early in the methodology compound downstream, (3) the help.salesforce.com success rate is not a valid benchmark — it answers narrow factual questions, Rosetta has to guide complex use cases. Incomplete content gives flawed advice.</div>
+        <div class="uc-pill">Accuracy gate</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">Principle 02</div>
+        <div class="uc-title">Start narrow and deep</div>
+        <div class="uc-desc">Scope by ICP, product, geography, and industry so the content is genuinely complete. The Marketing Customer 360 / F500 retail use case is not the same shape as SDR Agents / mid-market Life Sciences. During the early honeymoon period, releases and feedback must flow into Rosetta instantly — manual until automated, phased by market.</div>
+        <div class="uc-pill">Phased scope</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">Principle 03</div>
+        <div class="uc-title">Corporate-funded, department-authored</div>
+        <div class="uc-desc">Content is sourced from product, product marketing, architecture, training, and customer success — but restructured and written with Rosetta in mind. Conflicts and gaps only surface when the whole is examined end-to-end. Rosetta's quality bar overrides team agendas. The bar to enter Rosetta is higher than the bar to present at Dreamforce or post a blog.</div>
+        <div class="uc-pill">Cross-functional</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">Principle 04</div>
+        <div class="uc-title">No content should be partner-only</div>
+        <div class="uc-desc">Much of the implementation content lives behind PLC or partners.salesforce.com today, with partners filling gaps left by Salesforce. Some is proprietary, some shared. The needs of Salesforce teams, partners, and customers are not really competitive — they overlap heavily. Locking content to one audience is a waste of internal resource that Rosetta is built to undo.</div>
+        <div class="uc-pill">One audience</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">Principle 05</div>
+        <div class="uc-title">Currency at scale needs agentic automation</div>
+        <div class="uc-desc">The cadence of product change, AI-driven shifts in implementation approach, and the sheer volume of content makes manual maintenance unsustainable. A simple feature rename ripples through screenshots, code samples, decision guides, and training. At launch this is hand-curated to keep the feedback loop tight; as soon as the process is stable it is agentified.</div>
+        <div class="uc-pill">Agent-led</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DOCUMENT GOVERNANCE PROCESS ── -->
+  <section>
+    <div class="sec-label">The governance process</div>
+    <div class="section-headline">Four stages, 36 activities, one trusted master.</div>
+    <p>The workstreams below sit on top of an underlying business process, mapped as a hierarchical UPN diagram (`1` Rosetta Document Governance, with four sub-processes `1.1` through `1.4`). Documents flow from a range of sources through validation, mastering, and ingestion into the context database — at each stage measured against accuracy, currency, and relevance criteria, then matched against the implementation methodology so that gaps and overlaps surface before the content is approved and versioned.</p>
+
+    <div class="swimlane-row" style="margin-top:1.5rem;">
+      <div class="swimlane-label">
+        <div class="swimlane-label-name">Doc Governance</div>
+        <div class="swimlane-label-sub">Process 1</div>
+      </div>
+      <div class="swimlane-stages">
+        <div class="phase phase--prepare">1.1 Collect</div>
+        <div class="phase phase--build">1.2 Validate</div>
+        <div class="phase phase--implement">1.3 Master</div>
+        <div class="phase phase--deploy">1.4 Ingest</div>
+      </div>
+    </div>
+
+    <div class="tech-grid" style="margin-top:1.5rem;">
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">1.1 Collect documents from sources</div>
+          <div class="tech-role">9 activities — define scope of practice, define document types, identify sources, contact teams, set upload principles, upload to folder, match to methodology, identify gaps and overlaps, build reference table.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">1.2 Validate documents</div>
+          <div class="tech-role">9 activities — establish content authority, maintain validation criteria, validate against criteria, resolve conflicts, identify gaps, match to methodology, remove unvalidated content from public sites, generate new documents, update reference table.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">1.3 Master documents</div>
+          <div class="tech-role">3 activities — update existing documents for AI consumption, approve master documents, version master documents.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">1.4 Ingest master documents</div>
+          <div class="tech-role">11 activities — upload repository snapshot, initiate research intake, gather sources &amp; gap analysis, extract metamodel-aligned nodes &amp; edges, allocate UIDs &amp; author Cypher seeds, author context-pattern seeds, emit ProvenanceEvents, run static analysis, review bundle, maintain semantic linking, generate dependencies.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:1.4rem;">Ten distinct roles touch this flow — Document Owner, Content Governance, Content Authority, Researcher, Reviewer, Tagging System, Cowork Plugin, AI Agent (System), Agent / Skill, and Rosetta itself. The six workstreams that follow translate this process into the organisational and operational moves needed to make it real.</p>
+  </section>
+
+  <!-- ── WORKSTREAM 1: STOP THE BLEEDING ── -->
+  <section>
+    <div class="sec-label">Workstream 1 · Immediate</div>
+    <div class="section-headline">"Stop the bleeding" — quick wins before anything else.</div>
+    <p>The clock starts now. While the governance authority and curation pipeline are being established, the existing public-facing footprint is actively damaging Rosetta's launch credibility. Every stale blog, mis-named feature, or orphan implementation guide that an SI hits in the wild is a vote against trusting Rosetta on day one. This workstream is purely defensive: stop publishing more of the problem, and triage what is already out there. It maps directly to Activity 7 of process 1.2 — "Remove unvalidated content from public-facing sites" — and to the upload-principles activities in 1.1.</p>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">1.1 Product naming &amp; filter consistency across all sites</div>
+          <div class="tech-role">A single canonical name per product, per feature, per agent. Audit and reconcile naming across Help Docs, Architect site, Trailhead, PLC, the Trailblazer Community, the SF Blog, GitHub, AppExchange/Agentexchange, Salesforce+, Trailhead Academy, and YouTube/Vidyard. Filters and taxonomy aligned to that single canonical list. Treat any divergence as a P1 content defect.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">1.2 Anything older than 12 months — REMOVED</div>
+          <div class="tech-role">Hard rule, no exceptions for "still useful" or "the only version we have." If it has not been reviewed in the last twelve months it cannot be relied on, and an unreliable document is worse than a missing one. The 62-asset content inventory is the working list; the 28 not flagged "Consider for Rosetta" are first off the shelf.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">1.3 Date · Owner · Feedback email — mandatory on every live asset</div>
+          <div class="tech-role">No live document without a publish date, a named human owner, and a feedback channel. Naming must match the canonical product list from 1.1. Anything that fails these checks comes down — it does not get queued for later. This is the minimum metadata surface that makes triage and validation possible.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">1.4 Publication freeze until governance is live</div>
+          <div class="tech-role">No new content is published into Rosetta-relevant destinations until Workstreams 2–6 are in place. This will be unpopular with product marketing, partner marketing, and individual evangelists with launch-tied posts in flight. The freeze is the price of getting the bar right; every exception erodes it. All effort goes into the three quick wins above.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORKSTREAM 2: GET CONTROL ── -->
+  <section>
+    <div class="sec-label">Workstream 2 · Authority</div>
+    <div class="section-headline">"Get control" — establish the Context Governance Authority.</div>
+    <p>The existing model has every team optimising for its own publication channel, with no entity that can override Dreamforce-driven or campaign-driven publishing decisions when they conflict with Rosetta's bar. The Context Governance Authority is the corrective. It reports into the Office of the CEO precisely so that it can call the question across product, partner, marketing, and customer success. It is not advisory; it is a gate. This workstream stands up that gate and the rules it enforces.</p>
+    <p>The Authority is also where the activities at the top of the governance process sit — process 1.1 Activity 1 ("Define scope of practice"), 1.1 Activity 5 ("Define upload principles"), and process 1.2 Activities 1–2 ("Establish content authority", "Maintain validation criteria"). Without a single owner, those activities have no home and the whole pipeline downstream is informal.</p>
+
+    <div class="use-cases">
+      <div class="uc">
+        <div class="uc-num">2.1 · Mandate</div>
+        <div class="uc-title">Reporting line into the Office of the CEO</div>
+        <div class="uc-desc">Authority to overrule team-level publication decisions, call publication freezes, and enforce a single canonical naming standard. Without this reporting line the Authority is a committee; with it, it is a function.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.2 · Strategy</div>
+        <div class="uc-title">Content strategy</div>
+        <div class="uc-desc">What content exists, for which agent persona (Seller / Implementer / Practitioner / Enablement), at which methodology stage, for which ICP. The strategy is the master matrix that the roadmap (Workstream 5) is built from.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.3 · Process</div>
+        <div class="uc-title">Content creation process</div>
+        <div class="uc-desc">A single end-to-end flow from request through draft, validation, mastering, versioning, ingestion, and feedback — the four stages of the governance process map made operational, with explicit handoffs and SLAs at each gate.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.4 · Principles</div>
+        <div class="uc-title">Naming &amp; terminology</div>
+        <div class="uc-desc">One canonical name per product, feature, agent, and methodology stage. Synonym map maintained for legacy variants. All filters and taxonomy across public sites derive from this list.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.5 · Principles</div>
+        <div class="uc-title">Validation rules</div>
+        <div class="uc-desc">Explicit, testable criteria for accuracy, currency, completeness, and relevance — encoded so that the AI Agent in process 1.2 Activity 3 can apply them at scale alongside the human Content Authority.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.6 · Principles</div>
+        <div class="uc-title">Categorisation</div>
+        <div class="uc-desc">A controlled vocabulary for content type, format, audience, methodology stage, ICP, industry, and product. Tags are not free-text. Categorisation is the bridge between the source document and the graph node.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.7 · Principles</div>
+        <div class="uc-title">Publication &amp; removal</div>
+        <div class="uc-desc">Rules for when content can go public, when it must be retired, and what triggers a re-validation pass. Twelve-month freshness clock, owner sign-off, validation pass-required-before-publish.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.8 · Principles</div>
+        <div class="uc-title">Conflict resolution</div>
+        <div class="uc-desc">Two valid documents that disagree are a defect, not a feature. Process 1.2 Activity 4 ("Resolve conflicts and update master") is where this lands; the Authority owns the escalation path when teams cannot resolve.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.9 · Principles</div>
+        <div class="uc-title">Certifications</div>
+        <div class="uc-desc">Master-document certification by Document Owner and Content Authority before mastering and versioning (1.3). Certified status is a graph property, not a document footer.</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">2.10 · Allocation</div>
+        <div class="uc-title">Ownership &amp; prioritisation</div>
+        <div class="uc-desc">Every document type has a named accountable owner. Priority is set against the roadmap (Workstream 5), not against team-level launch calendars or individual evangelist agendas.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORKSTREAM 3: AGENTIC AUTOMATION ── -->
+  <section>
+    <div class="sec-label">Workstream 3 · Automation</div>
+    <div class="section-headline">"Agentic automation" — establish the curation pipeline.</div>
+    <p>The pace of product change makes a manual-only curation model unworkable past the launch phase. A feature rename touches help docs, decision guides, training, code samples, screenshots, and architect diagrams — multiplied by every ICP and industry slice. Process 1.4 ("Ingest master documents") is already structured around eleven activities that lend themselves to automation: repository snapshot, intake, gap analysis, metamodel extraction, UID allocation, Cypher seed authoring, provenance, static analysis, validation, semantic linking, dependency generation. The pipeline is built so each step can be hand-curated first and agentified once stable, with the human Reviewer kept in the loop on the cumulative bundle.</p>
+    <p>The pipeline lives behind the RAG middleware that serves Rosetta into Claude inside Cowork. Every node has provenance; every edge is typed; every change emits a ProvenanceEvent. Hallucination is prevented by what is allowed in, not by what the model is asked to do.</p>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.1 Owned by the Context Governance Authority</div>
+          <div class="tech-role">The pipeline does not belong to product, marketing, or partner. It is operated by the Authority on behalf of all consumers. Operating it is its own function — Researcher, Reviewer, Tagging System owners — not a side hustle for an evangelist.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.2 Aggressively policed</div>
+          <div class="tech-role">Validation against documented criteria (process 1.2 Activity 3) is not optional. Bundles that fail static analysis or review are rejected, not patched in flight. The bar costs throughput in the short term and earns trust in the long term.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.3 Hand-curated until it can be automated</div>
+          <div class="tech-role">Launch phase is human-led: Researcher + Cowork Plugin + Reviewer drive the eleven steps in 1.4 by hand. The rule is "stabilise the step, then agentify it" — never the reverse. Automating an unstable step locks in the bug.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.4 Automate with agents where possible</div>
+          <div class="tech-role">Validation, gap detection, dependency generation, and tagging are early candidates — they are already pattern-matching tasks the AI Agent system handles in 1.2 and 1.4. Mastering and versioning (1.3) stay human-supervised. Cypher seed authoring is assisted, not autonomous.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.5 Continuous-improvement feedback loop</div>
+          <div class="tech-role">Every Rosetta query in Cowork produces signal: was the served context useful, accurate, complete? That signal flows back as gap notices into 1.1 Activity 8 ("Identify gaps and overlaps"), which kicks off 1.2 Activity 8 ("Generate new documents"). The loop tightens the content and the process simultaneously.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">3.6 Decision log alongside the content log</div>
+          <div class="tech-role">Every architectural decision in the rollout is captured — rationale, alternatives, people involved — so the Salesforce team inheriting the system has the persistent memory needed to maintain it. The decision log feeds the eventual Rosetta retrospective.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORKSTREAM 4: DEMOCRATISE CONTENT ── -->
+  <section>
+    <div class="sec-label">Workstream 4 · Democratise</div>
+    <div class="section-headline">"Democratise content" — break the partner-only walls.</div>
+    <p>The most valuable implementation content in the Salesforce ecosystem today is either inside the Partner Learning Camp, behind partners.salesforce.com, or in the heads of partner architects who have written it themselves to fill internal gaps. The Rosetta content inventory makes this concrete: SF: Alliances/Partners implementation guides, SF PLC training, and Ecosystem:SI blogs/help docs/training are repeatedly flagged "Consider for Rosetta" — which means they are needed, and means they are not currently reaching the audiences who need them. The needs of partners, customers, and Salesforce field teams are far more aligned than they are competitive. Walls that exist for legacy IP-protection reasons have outlived their purpose for the launch scope.</p>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">4.1 Surface the partner-locked content</div>
+          <div class="tech-role">Audit PLC and partners.salesforce.com against the content inventory. Identify implementation guides, decision frameworks, accelerators, and training currently locked behind partner credentials that have no IP-protection reason to stay there. This is the immediate inflow into the 1.1 Collect process.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">4.2 Challenge the partner-only default</div>
+          <div class="tech-role">The default question becomes "is there a real reason this is partner-only?" rather than "is there a reason to make it public?" Most enablement content is generic: a decision guide for designing a service cloud agentic flow does not become less true when a customer reads it. The exceptions narrow to genuine certification material and truly proprietary partner playbooks.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">4.3 Refocus partner enablement onto what is actually partner-only</div>
+          <div class="tech-role">Partner certification, deal-specific co-sell motions, partner pricing/commercial mechanics, internal partner operations — these stay partner-scoped. The implementation know-how does not. The partner enablement team is freed up to deepen what only they can do.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">4.4 Reallocate ownership of liberated content</div>
+          <div class="tech-role">Content that comes out of the partner walls needs a new accountable owner inside the Authority's allocation map (Workstream 2.10). Architecture, product, customer success, or training picks it up — based on the content type, not based on who wrote the original.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORKSTREAM 5: PLAN FOR SUCCESS ── -->
+  <section>
+    <div class="sec-label">Workstream 5 · Roadmap</div>
+    <div class="section-headline">"Plan for success" — sequence the curation by ICP, product, and industry.</div>
+    <p>Rosetta cannot be everything for everyone on day one and stay accurate. The launch sequence is therefore by use case slice — narrow and deep — with each slice fully curated end-to-end before the next begins. This is the operational expression of Principle 02. The two reference slices already in flight (F500 retail Marketing Customer 360, mid-market Life Sciences SDR Agents) anchor the early roadmap; the rest sequence behind them based on the volume of qualified pipeline they unlock and the readiness of the underlying content. Process 1.1 Activity 1 ("Define scope of practice") and Activity 2 ("Define types of documents") are the formal entry points into each new slice.</p>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">5.1 Authority-driven, not product- or partner-driven</div>
+          <div class="tech-role">The roadmap is not the union of every product team's launch wishlist. It is set by the Context Governance Authority against the strategy from Workstream 2.2, balancing audience demand, content readiness, and methodology coverage.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">5.2 Phased, not big-bang</div>
+          <div class="tech-role">One use case slice at a time, fully end-to-end across the methodology before the next is added. The honeymoon-period principle: ship a small thing that is provably accurate, build trust, expand. Big-bang launches against incomplete content are how confidence gaps form.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">5.3 Plan by product · ICP · industry</div>
+          <div class="tech-role">Each slice is a triple — e.g. "Agentforce SDR · mid-market · Life Sciences" — not a single axis. The triple defines what content has to exist, who the agent personas are, and which methodology stages need depth. The four agent personas (Seller / Implementer / Practitioner / Enablement) cut across every triple.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">5.4 Content plans owned at the slice level</div>
+          <div class="tech-role">Each slice has a named content plan, a named owner inside the Authority's allocation map, defined SLAs for validation and ingestion, and a clear "ready for launch" definition tied to the four governance stages. The plan, not a launch date, determines when the slice goes live.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORKSTREAM 6: REDUCE CONFUSION ── -->
+  <section>
+    <div class="sec-label">Workstream 6 · Methodology</div>
+    <div class="section-headline">"Reduce confusion" — one methodology vocabulary across the company.</div>
+    <p>A separate but tightly related problem: every Salesforce delivery motion uses different stage names for the same underlying activity. D360 Partner runs Prepare → Plan / Architect / Construct / Validate / Deploy → Run &amp; Operate. Professional Services runs Discover → Define → Design → Deploy. FDE runs Prepare → Design → Deliver → Deploy. Top-tier SI methodologies (Accenture MyConcerto, IBM SDLC, PwC Accelerate, Deloitte CloudSuite) and SaaS/ERP comparators (SAP Activate, Oracle OUM, Microsoft Dynamics 365, ServiceNow Now Create, Workday Launch) each carry their own vocabulary. The Rosetta methodology comparison work has already mapped these against a seven-column lifecycle. This workstream commits Salesforce to one of those columns as the canonical phrase used internally — and converges every team's collateral onto it.</p>
+
+    <div style="margin: 1.5rem 0;">
+      <div class="swimlane-row">
+        <div class="swimlane-label">
+          <div class="swimlane-label-name">Recommended</div>
+          <div class="swimlane-label-sub">Canonical lifecycle</div>
+        </div>
+        <div class="swimlane-stages">
+          <div class="phase phase--prepare">Discover / Plan</div>
+          <div class="phase phase--build">Analyze / Define</div>
+          <div class="phase phase--build">Design / Architect</div>
+          <div class="phase phase--implement">Build / Construct</div>
+          <div class="phase phase--implement">Test / Validate</div>
+          <div class="phase phase--deploy">Deploy / Go-live</div>
+          <div class="phase phase--operate">Run / Monitor</div>
+        </div>
+      </div>
+
+      <div class="swimlane-row">
+        <div class="swimlane-label">
+          <div class="swimlane-label-name">D360 Partner</div>
+          <div class="swimlane-label-sub">Salesforce</div>
+        </div>
+        <div class="swimlane-stages">
+          <div class="phase phase--prepare" style="flex:.8;">Prepare</div>
+          <div class="phase-group phase-group--implement" style="flex:3;">
+            <div class="phase-group-label">Implement</div>
+            <div class="phase-group-stages">
+              <div class="phase">Plan</div>
+              <div class="phase">Architect</div>
+              <div class="phase">Construct</div>
+              <div class="phase">Validate</div>
+              <div class="phase">Deploy</div>
+            </div>
+          </div>
+          <div class="phase phase--operate" style="flex:.9;">Run &amp; Operate</div>
+        </div>
+      </div>
+
+      <div class="swimlane-row">
+        <div class="swimlane-label">
+          <div class="swimlane-label-name">Professional Services</div>
+          <div class="swimlane-label-sub">Salesforce</div>
+        </div>
+        <div class="swimlane-stages">
+          <div class="phase phase--prepare" style="flex:.8;">Discover</div>
+          <div class="phase phase--build" style="flex:.7;">Define</div>
+          <div class="phase phase--build" style="flex:.7;">Design</div>
+          <div class="phase phase--deploy" style="flex:2;">Deploy</div>
+        </div>
+      </div>
+
+      <div class="swimlane-row">
+        <div class="swimlane-label">
+          <div class="swimlane-label-name">FDE</div>
+          <div class="swimlane-label-sub">Salesforce</div>
+        </div>
+        <div class="swimlane-stages">
+          <div class="phase phase--prepare" style="flex:1.1;">Prepare</div>
+          <div class="phase phase--build" style="flex:1;">Design</div>
+          <div class="phase phase--implement" style="flex:1.2;">Deliver</div>
+          <div class="phase phase--deploy" style="flex:1;">Deploy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">6.1 Agree the canonical seven stages</div>
+          <div class="tech-role">Discover/Plan, Analyze/Define, Design/Architect, Build/Construct, Test/Validate, Deploy/Go-live, Run/Monitor — already published as the reference row in the Rosetta methodology comparison. The Authority signs this off as the company-wide vocabulary.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">6.2 Migrate every team methodology to this terminology</div>
+          <div class="tech-role">D360 Partner, Professional Services, and FDE assets are re-tagged onto the canonical seven stages. Internal training, Trailhead modules, and architect site content adopt the same phrasing. Rosetta surfaces guidance against the canonical names — and only those.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">6.3 Map external methodologies for translation, not adoption</div>
+          <div class="tech-role">SI methodologies (Accenture, IBM, PwC, Deloitte) and SaaS comparators (SAP, Oracle, Microsoft, ServiceNow, Workday) keep their own names — Rosetta carries a translation layer so that an Accenture-fluent SI sees the right phase regardless. Internal vocabulary stays one.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-gold"></div>
+        <div>
+          <div class="tech-name">6.4 Stage-tag every Rosetta document</div>
+          <div class="tech-role">As each document moves through process 1.2 ("Match documents to implementation methodology") and 1.4 (metamodel extraction), the methodology stage becomes a graph property. Every retrieval into Cowork is filterable by stage — the practical payoff of the vocabulary work.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE ASK ── -->
+  <section>
+    <div class="invest-box">
+      <div class="sec-label">The ask</div>
+      <div class="section-headline">Six workstreams. Sequenced. Sponsored from the Office of the CEO.</div>
+      <p>The workstreams above are not independent. Workstream 1 buys time. Workstream 2 sets up the authority that owns Workstreams 3–6. None of them succeed without the reporting line into the Office of the CEO, because each one requires overruling teams whose KPIs run against Rosetta's bar.</p>
+
+      <div class="ask-row">
+        <div class="ask-item">
+          <div class="ask-item-phase">Now · 0–30 days</div>
+          <div class="ask-item-val">Workstream 1 quick wins. Stand up Authority. Publication freeze in effect.</div>
+        </div>
+        <div class="ask-item">
+          <div class="ask-item-phase">Next · 30–90 days</div>
+          <div class="ask-item-val">Workstreams 2 + 6 live. Pipeline (3) hand-curated for first slice. Partner-content audit (4) underway.</div>
+        </div>
+        <div class="ask-item">
+          <div class="ask-item-phase">Then · 90+ days</div>
+          <div class="ask-item-val">Roadmap (5) executing slice-by-slice. Pipeline progressively agentified. Feedback loop closing on every Cowork query.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="doc-footer">
+  <span>Rosetta · Context Governance Curation · v2 · 2026</span>
+  <span>Rosetta by KeenanVision.net</span>
+</footer>
+
+</body>
+</html>
