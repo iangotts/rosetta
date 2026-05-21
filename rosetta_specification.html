@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosetta — Comprehensive Specification — FINAL (V2.0)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ═══════════════════════════════════════════════════════════
+   ROSETTA DESIGN SYSTEM — full block, copied from style guide
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:        #1040b8;
+  --blue-deep:   #0a2080;
+  --blue-bright: #1a4bc4;
+  --blue-light:  #e8eef8;
+  --blue-pale:   #f0f4fc;
+
+  --gold:        #d4920a;
+  --gold-bright: #f0b429;
+  --gold-pale:   #fef9ec;
+  --gold-border: rgba(212,146,10,.2);
+
+  --text:        #1a1a2e;
+  --muted:       #5a6072;
+  --light-muted: #8b91a1;
+  --bg:          #f7f8fc;
+  --surface:     #ffffff;
+  --border:      #e2e6f0;
+
+  --dot-sky:   #00a1e0;
+  --dot-amber: #e8a000;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.font-display { font-family: 'DM Serif Display', Georgia, serif; }
+
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 2.5rem;
+}
+
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--gold-bright);
+}
+
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-border);
+}
+
+p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-weight: 300;
+}
+p + p { margin-top: .8rem; }
+
+/* sub-headings inside a section */
+h3.sub-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--blue-deep);
+  margin: 1.6rem 0 .6rem;
+  font-weight: 400;
+}
+h4.sub-sub {
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 1.3rem 0 .5rem;
+}
+
+ul, ol { margin: .5rem 0 .8rem 1.4rem; font-size: .95rem; line-height: 1.8; color: var(--muted); font-weight: 300; }
+ul li, ol li { margin-bottom: .25rem; }
+ul li::marker { color: var(--gold-bright); }
+
+strong, b { color: var(--text); font-weight: 600; }
+
+a { color: var(--blue-bright); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(10,32,128,.06);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.nav-badge {
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.nav-badge.badge-blue {
+  background: var(--blue-pale);
+  border-color: #ccd6f0;
+  color: var(--blue-bright);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 60%, #2060d8 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,180,41,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.4);
+}
+.meta-item strong {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: .25rem;
+}
+
+/* ── PAGE BODY ────────────────────────────────────────────── */
+.page { max-width: 1000px; margin: 0 auto; }
+
+section {
+  padding: 3rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+section:nth-child(even) { background: var(--bg); }
+section:last-child { border-bottom: none; }
+
+.horizon {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-bright) 0%, var(--blue-bright) 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: .3;
+}
+
+/* ── PULL QUOTE / IMPERATIVE ──────────────────────────────── */
+.imperative {
+  background: var(--gold-pale);
+  border-left: 3px solid var(--gold-bright);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.imperative p {
+  font-size: .95rem;
+  font-style: italic;
+  color: #6b4c00;
+  font-weight: 400;
+}
+.imperative strong { color: #6b4c00; }
+.imperative .imp-label {
+  display: block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .35rem;
+  font-style: normal;
+}
+
+/* ── KPI CARDS ────────────────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  background: var(--blue-pale);
+  border: 1px solid #ccd6f0;
+  border-radius: 10px;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  border-top: 3px solid var(--blue-bright);
+}
+.kpi-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.kpi-label {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ── USE-CASE CARDS ───────────────────────────────────────── */
+.use-cases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.uc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-top: 3px solid var(--gold-bright);
+  transition: box-shadow .2s, border-color .2s;
+}
+.uc:hover {
+  box-shadow: 0 4px 20px rgba(10,32,128,.08);
+  border-color: var(--gold);
+}
+.uc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+.uc-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: .55rem;
+  line-height: 1.3;
+}
+.uc-desc {
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 300;
+}
+.uc-desc strong { color: var(--text); }
+.uc-pill {
+  display: inline-block;
+  margin-top: .8rem;
+  background: var(--blue-pale);
+  color: var(--blue-bright);
+  font-size: .63rem;
+  font-weight: 700;
+  padding: .22rem .65rem;
+  border-radius: 4px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid #ccd6f0;
+}
+
+/* ── TECH / LIST GRID ─────────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+.tech-item {
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .9rem 1rem;
+}
+.tech-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .38rem;
+}
+.dot-gold  { background: var(--gold-bright); }
+.dot-sky   { background: var(--dot-sky); }
+.dot-amber { background: var(--dot-amber); }
+.dot-light { background: #b0b8cc; }
+.tech-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--blue-deep);
+  line-height: 1.15;
+}
+.tech-role {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: .2rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── PROOF / STAT CARDS ───────────────────────────────────── */
+.proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.proof-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-left: 4px solid var(--blue-bright);
+}
+.proof-logo {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--light-muted);
+  margin-bottom: .6rem;
+}
+.proof-stat {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.2rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.proof-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── INVESTMENT / DARK CTA BLOCK ──────────────────────────── */
+.invest-box {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-bright) 100%);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem;
+  margin-top: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.invest-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.invest-box .sec-label {
+  color: rgba(240,180,41,.8);
+  border-color: rgba(240,180,41,.2);
+}
+.invest-box .sec-label::after { background: rgba(240,180,41,.15); }
+.invest-box .section-headline { color: #ffffff; }
+.invest-box p { color: rgba(255,255,255,.7); }
+
+.ask-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+.ask-item {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  border-top: 2px solid var(--gold-bright);
+}
+.ask-item-phase {
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  color: rgba(240,180,41,.75);
+  margin-bottom: .4rem;
+}
+.ask-item-val {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .nav { padding: 1rem 1.2rem; }
+  section { padding: 2.2rem 1.2rem; }
+  .hero { padding: 3rem 1.2rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .use-cases { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .proof { grid-template-columns: 1fr; }
+  .ask-row { grid-template-columns: 1fr; }
+  .hero-meta { gap: 1.2rem; }
+  .doc-footer { flex-direction: column; gap: .5rem; text-align: center; }
+  .nav-meta { display: none; }
+}
+
+/* ══════════════════════════════════════════════════
+   END OF ROSETTA STYLE BLOCK
+   ══════════════════════════════════════════════════ */
+
+/* ── ROSETTA SPEC PAGE — production additions ─────────────── */
+
+/* Inline code */
+code {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background: var(--blue-pale);
+  color: var(--blue-deep);
+  padding: .12em .42em;
+  border-radius: 4px;
+  font-size: .85em;
+  font-weight: 500;
+  border: 1px solid #dbe2f4;
+}
+strong code { color: var(--blue-deep); font-weight: 600; }
+
+/* Code blocks */
+pre.code-block {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: .78rem;
+  background: #0f1a40;
+  color: #d8e1f5;
+  padding: 1.1rem 1.3rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--gold-bright);
+  overflow-x: auto;
+  line-height: 1.65;
+  margin: 1rem 0 1.2rem;
+  white-space: pre;
+}
+pre.code-block code { background: transparent; color: inherit; padding: 0; border: none; }
+
+/* Tables — production-grade, consistent with brand */
+.tbl-wrap { margin: 1.2rem 0 1.6rem; overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+  line-height: 1.55;
+}
+table thead {
+  background: var(--blue-pale);
+  border-bottom: 2px solid var(--blue-bright);
+}
+table th {
+  padding: .85rem 1rem;
+  text-align: left;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue-deep);
+  white-space: nowrap;
+}
+table td {
+  padding: .8rem 1rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-weight: 300;
+}
+table tr:last-child td { border-bottom: none; }
+table tr:nth-child(even) td { background: rgba(247,248,252,.5); }
+table td strong { color: var(--text); font-weight: 600; }
+table td code { font-size: .8em; }
+
+/* Table of contents card */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.6rem 1.8rem;
+  margin: 1.5rem 0;
+  border-top: 3px solid var(--blue-bright);
+}
+.toc-title {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem 2rem;
+}
+.toc-item {
+  display: flex;
+  gap: .7rem;
+  align-items: baseline;
+  font-size: .85rem;
+  padding: .35rem 0;
+  color: var(--muted);
+  border-bottom: 1px dashed var(--border);
+}
+.toc-item:hover { color: var(--blue-bright); }
+.toc-item .toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem;
+  color: var(--gold);
+  font-weight: 600;
+  min-width: 30px;
+}
+.toc-item a { color: inherit; }
+
+/* Status pill — for ADR statuses, [OPEN] markers, etc. */
+.pill {
+  display: inline-block;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .2rem .55rem;
+  border-radius: 4px;
+  border: 1px solid;
+  vertical-align: middle;
+}
+.pill-open      { background: var(--gold-pale); color: var(--gold); border-color: var(--gold-border); }
+.pill-accepted  { background: #e7f6ed; color: #156a3d; border-color: #b8e0c8; }
+.pill-proposed  { background: var(--blue-pale); color: var(--blue-bright); border-color: #ccd6f0; }
+.pill-superseded{ background: #fbe9e6; color: #a8331f; border-color: #f0c5be; }
+.pill-new       { background: #fef9ec; color: var(--gold); border-color: var(--gold-bright); }
+
+/* Inline OPEN marker */
+.open-marker {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--gold);
+  background: var(--gold-pale);
+  padding: .12rem .42rem;
+  border-radius: 3px;
+  border: 1px solid var(--gold-border);
+  margin-right: .35rem;
+}
+
+/* Architecture-options visual block */
+.arch-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue-bright);
+  border-radius: 10px;
+  padding: 1.3rem 1.5rem;
+  margin: .8rem 0;
+}
+.arch-step .step-num {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.arch-step .step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: .4rem;
+}
+.arch-step .step-desc {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.arch-step.option-1 { border-left-color: var(--gold-bright); }
+.arch-step.option-2 { border-left-color: var(--blue-bright); }
+
+/* Pro/con grid */
+.proCon {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0 1.2rem;
+}
+.proCon .col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+}
+.proCon .col.pros { border-top: 3px solid #4caf7c; }
+.proCon .col.cons { border-top: 3px solid #d96e5a; }
+.proCon .col-label {
+  font-size: .66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  margin-bottom: .8rem;
+}
+.proCon .col.pros .col-label { color: #2c8a5e; }
+.proCon .col.cons .col-label { color: #b04830; }
+.proCon ul { list-style: none; margin: 0; padding: 0; }
+.proCon li {
+  font-size: .82rem;
+  color: var(--muted);
+  padding-left: 1.4rem;
+  position: relative;
+  margin-bottom: .55rem;
+  line-height: 1.55;
+  font-weight: 300;
+}
+.proCon .pros li::before { content: '✓'; position: absolute; left: 0; color: #2c8a5e; font-weight: 700; }
+.proCon .cons li::before { content: '✗'; position: absolute; left: 0; color: #b04830; font-weight: 700; }
+
+/* SVG diagram container */
+.diagram-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.6rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.diagram-wrap svg { max-width: 100%; height: auto; }
+.diagram-cap {
+  font-size: .72rem;
+  color: var(--light-muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-top: .8rem;
+}
+
+/* Change-log list — small */
+.changelog {
+  background: var(--blue-pale);
+  border: 1px solid #ccd6f0;
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem;
+  margin: 1.2rem 0;
+}
+.changelog ol { margin: .4rem 0 0 1.4rem; }
+.changelog li { font-size: .88rem; margin-bottom: .4rem; }
+
+/* Small spacing helper */
+.spacer-sm { height: 1.2rem; }
+.spacer-md { height: 2rem; }
+
+/* lead paragraph — slightly larger intro under section-headline */
+p.lead {
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.75;
+  margin-bottom: 1.2rem;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="logo">
+    <img class="logo-icon"
+      src="data:image/jpeg;base64,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"
+      alt="Rosetta Logo">
+    <div class="logo-wordmark">
+      <strong>Rosetta</strong>
+      <span>KeenanVision.net</span>
+    </div>
+  </a>
+  <div class="nav-meta">
+    <span>Specification</span>
+    <span>FINAL (V2.0) · May 2026</span>
+    <div class="nav-badge">Confidential</div>
+    <div class="nav-badge badge-blue">Final</div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Rosetta · Knowledge Enablement Platform · Keenan Vision LLC</div>
+    <div class="hero-title">Comprehensive Specification</div>
+    <div class="hero-subtitle">Business · Architecture · Technical — the canonical reference for Phase 1 of the Rosetta program, folding in the May 2026 review by Vernon Keenan and Ian Gotts.</div>
+    <div class="hero-meta">
+      <div class="meta-item">Owner <strong>Keenan Vision LLC</strong></div>
+      <div class="meta-item">Version <strong>FINAL (V2.0) (supersedes v1.6.1)</strong></div>
+      <div class="meta-item">Metamodel <strong>v1.6.0</strong></div>
+      <div class="meta-item">Date <strong>May 2026</strong></div>
+      <div class="meta-item">Status <strong>FINAL</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PAGE BODY ── -->
+<div class="page">
+
+<!-- ── TABLE OF CONTENTS ── -->
+<section id="contents">
+  <div class="sec-label">Contents</div>
+  <div class="section-headline">Document map</div>
+  <div class="toc">
+    <div class="toc-title">Part 1 — Business Specification</div>
+    <div class="toc-grid">
+      <div class="toc-item"><span class="toc-num">1.1</span><a href="#s11">Executive Summary</a></div>
+      <div class="toc-item"><span class="toc-num">1.2</span><a href="#s12">Business Problem</a></div>
+      <div class="toc-item"><span class="toc-num">1.3</span><a href="#s13">Business Goals</a></div>
+      <div class="toc-item"><span class="toc-num">1.4</span><a href="#s14">Target Users</a></div>
+      <div class="toc-item"><span class="toc-num">1.5</span><a href="#s15">Domain Scope</a></div>
+      <div class="toc-item"><span class="toc-num">1.6</span><a href="#s16">Conversation Lifecycle &amp; Skills</a></div>
+      <div class="toc-item"><span class="toc-num">1.7</span><a href="#s17">Knowledge Content Model</a></div>
+      <div class="toc-item"><span class="toc-num">1.8</span><a href="#s18">How Rosetta Actually Works</a></div>
+    </div>
+    <div class="toc-title" style="margin-top:1.4rem;">Part 2 — Architectural Specification</div>
+    <div class="toc-grid">
+      <div class="toc-item"><span class="toc-num">2.1</span><a href="#s21">Repository &amp; Monorepo</a></div>
+      <div class="toc-item"><span class="toc-num">2.2</span><a href="#s22">Three-Layer Inheritance</a></div>
+      <div class="toc-item"><span class="toc-num">2.3</span><a href="#s23">Three-Layer Context Artifact Model</a></div>
+      <div class="toc-item"><span class="toc-num">2.4</span><a href="#s24">Graph Schema &amp; Storage-by-Owner</a></div>
+      <div class="toc-item"><span class="toc-num">2.5</span><a href="#s25">Five-Field Identity &amp; Multi-Tenancy</a></div>
+      <div class="toc-item"><span class="toc-num">2.6</span><a href="#s26">Relational Database</a></div>
+      <div class="toc-item"><span class="toc-num">2.7</span><a href="#s27">Producer/Consumer Contract</a></div>
+      <div class="toc-item"><span class="toc-num">2.8</span><a href="#s28">AWS Deployment Topology</a></div>
+      <div class="toc-item"><span class="toc-num">2.9</span><a href="#s29">Observability</a></div>
+    </div>
+    <div class="toc-title" style="margin-top:1.4rem;">Part 3 — Technical Specification</div>
+    <div class="toc-grid">
+      <div class="toc-item"><span class="toc-num">3.1</span><a href="#s31">platform package</a></div>
+      <div class="toc-item"><span class="toc-num">3.2</span><a href="#s32">app-server package</a></div>
+      <div class="toc-item"><span class="toc-num">3.3</span><a href="#s33">agent package (Next.js)</a></div>
+      <div class="toc-item"><span class="toc-num">3.4</span><a href="#s34">Slack — Primary Interaction Plane</a></div>
+      <div class="toc-item"><span class="toc-num">3.5</span><a href="#s35">mcp package</a></div>
+      <div class="toc-item"><span class="toc-num">3.6</span><a href="#s36">CI/CD</a></div>
+      <div class="toc-item"><span class="toc-num">3.7</span><a href="#s37">Security</a></div>
+    </div>
+    <div class="toc-title" style="margin-top:1.4rem;">Parts 4–6</div>
+    <div class="toc-grid">
+      <div class="toc-item"><span class="toc-num">P4</span><a href="#part4">Key Architecture Decision Records</a></div>
+      <div class="toc-item"><span class="toc-num">P5</span><a href="#part5">Glossary of Key Terms</a></div>
+      <div class="toc-item"><span class="toc-num">P6</span><a href="#part6">Infrastructure &amp; Technology Inventory</a></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!--   PART 1 — BUSINESS SPECIFICATION                -->
+<!-- ════════════════════════════════════════════════ -->
+
+<section id="s11">
+  <div class="sec-label">Part 1 · §1.1</div>
+  <div class="section-headline">Executive Summary</div>
+  <p class="lead">Rosetta is an AI-powered knowledge enablement platform built for the Salesforce ecosystem. It serves as a structured knowledge backbone that ingests authoritative source documents, codifies their semantic content into a graph-based knowledge model, and uses that structured knowledge to guide practitioners — called <strong>Trailblazers</strong> — through complex implementation decisions.</p>
+
+  <p><strong>Phase 1 targets Data 360 and Agentforce.</strong> The architecture is deliberately product-agnostic and is intended to scale to any Salesforce product line — and adjacent ecosystem products — over subsequent phases. This generalisation is a load-bearing design assumption, not a future enhancement: the metamodel, graph schema, and retrieval pipeline treat the product surface as data, not code.</p>
+
+  <p>The core business insight behind Rosetta is that enterprise software implementation guidance exists across thousands of documents, but accessing the right knowledge at the right moment in a project requires more than keyword search. Rosetta translates business intent into structured architectural patterns and actionable configuration guidance through a conversational AI agent grounded in a semantically-organised knowledge graph.</p>
+
+  <p>A second insight, surfaced during the May 2026 review: <strong>the most valuable context in any active engagement is not the vendor's published documentation</strong> — it is the systems integrator's project artifacts: discovery dossiers, design docs, prior decision records, internal playbooks. Rosetta is designed to ingest and index that material alongside the vendor corpus, so retrieval can reason over both at once.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Core Value Proposition</span>
+    <p>When a practitioner asks a question about configuring a Salesforce product, Rosetta does not hallucinate an answer. Instead, it traverses a structured graph of validated architectural patterns, identifies the best matching approaches for the practitioner's specific situation, and delivers guidance citing exactly which patterns and which source passages apply, and why.</p>
+  </div>
+
+  <h3 class="sub-headline">Access surface</h3>
+  <p>Rosetta is consumed through four access surfaces:</p>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name">Slack</div><div class="tech-role">Primary practitioner surface. Slack workflows and Agentforce agents invoke Rosetta via MCP — meeting Sellers, Implementors, and Engineering in the tool they already use.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-sky"></div><div><div class="tech-name">Headless via MCP</div><div class="tech-role">MCP server exposes Rosetta to Claude.ai, custom agents, and ISV tools (Cuneiform, Elements.cloud, Hubbl). Same tools, same audit ledger, same citation contract as Slack.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-amber"></div><div><div class="tech-name">REST API</div><div class="tech-role">Bearer-token authenticated for direct service-to-service integration. The substrate beneath both Slack and Headless surfaces.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name">Conversational UI <span style="opacity:.7;font-weight:400;">(for internal testing)</span></div><div class="tech-role">Next.js application at <code>rosetta-design.com</code>. Used by the Rosetta team for corpus replay, behavioural assertion, and reviewer walkthroughs.</div></div></div>
+  </div>
+</section>
+
+<section id="s12">
+  <div class="sec-label">Part 1 · §1.2</div>
+  <div class="section-headline">Business Problem</div>
+  <p class="lead">Rosetta addresses a specific set of ease-of-use problems for the Salesforce ecosystem identified through the Keenan Vision research engagement with Salesforce. The research surfaced five categories of friction affecting customer success on Data 360 and Agentforce — and a partner-focus distribution that determines who Rosetta serves first.</p>
+
+  <div class="imperative">
+    <p><strong>Partner focus from the research:</strong> 70% Systems Integrators · 15% Customers · 15% ISVs. SI practitioners are the primary user cohort by volume. Customer Trailblazers and ISV builders are second-order audiences served by the same platform.</p>
+  </div>
+
+  <h3 class="sub-headline">The five ease-of-use challenges</h3>
+  <div class="use-cases">
+    <div class="uc">
+      <div class="uc-num">Challenge — 01</div>
+      <div class="uc-title">Practitioner Scarcity</div>
+      <div class="uc-desc">Implementation expertise concentrates in the small number of specialists who have run their third or fourth Data 360. The community below that level is large but lacks the lived experience that makes routine decisions easy. Rosetta is the channel through which specialist knowledge — encoded once — reaches the broader community at the moment of need.</div>
+      <div class="uc-pill">Ease-of-use friction</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Challenge — 02</div>
+      <div class="uc-title">Cognitive Cliff</div>
+      <div class="uc-desc">Configuration decisions in Data 360 feel like one-way doors. Mapping a DLO to the wrong DMO costs a teardown, not a minor revision. Rosetta surfaces validated patterns with anti-pattern warnings and governing decision records, so the decision is made with full context rather than discovered the hard way.</div>
+      <div class="uc-pill">Ease-of-use friction</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Challenge — 03</div>
+      <div class="uc-title">Sales Cycle Friction</div>
+      <div class="uc-desc">Customers buy outcomes, not platforms. Selling Data 360 in customer language requires reframing platform capabilities as business outcomes — campaigns that convert, profiles that resolve, customer service that scales. Rosetta's Three-Layer Context Artifact Model translates business intent into platform configuration.</div>
+      <div class="uc-pill">Ease-of-use friction</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Challenge — 04</div>
+      <div class="uc-title">Starting Point Problem</div>
+      <div class="uc-desc">Even experienced consultants struggle with first-mile decisions. The decision tree at project kickoff has too many branches; the cost of starting in the wrong corner is high. Rosetta provides solution-mode-specific starting points and guided experiences that narrow the search space before configuration begins.</div>
+      <div class="uc-pill">Ease-of-use friction</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Challenge — 05</div>
+      <div class="uc-title">Community Enablement</div>
+      <div class="uc-desc">The Salesforce content corpus is enormous. The practitioner question is not "is there content?" but "is this content current, relevant, and accurate?" Rosetta answers that question by curating a structured knowledge graph in which every recommendation cites a validated pattern, a governing ADR, and a source artifact.</div>
+      <div class="uc-pill">Ease-of-use friction</div>
+    </div>
+  </div>
+</section>
+
+<section id="s13">
+  <div class="sec-label">Part 1 · §1.3</div>
+  <div class="section-headline">Business Goals</div>
+  <p class="lead">Rosetta addresses the challenges in §1.2 through five measurable business objectives.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Goal</th><th>Addresses</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td><strong>Accelerate Trailblazer enablement</strong> by providing instant, context-aware guidance on Salesforce product configuration without requiring deep specialist involvement on routine decisions.</td><td>Practitioner Scarcity, Starting Point</td></tr>
+        <tr><td><strong>2</strong></td><td><strong>Encode and preserve institutional knowledge</strong> by converting expert guidance into machine-readable semantic patterns that persist beyond individual practitioners.</td><td>Practitioner Scarcity, Community Enablement</td></tr>
+        <tr><td><strong>3</strong></td><td><strong>Improve decision quality</strong> by surfacing validated architectural patterns with evidence provenance, anti-pattern warnings, and governing decision records.</td><td>Cognitive Cliff, Sales Cycle Friction</td></tr>
+        <tr><td><strong>4</strong></td><td><strong>Create an auditable knowledge trail</strong> by recording every query, recommendation, and architectural decision in a structured governance graph.</td><td>Community Enablement, institutional knowledge</td></tr>
+        <tr><td><strong>5</strong></td><td><strong>Capture SI / implementor and project documentation</strong> as first-class context. Engagement artifacts produced during discovery and delivery (dossiers, design docs, prior ADRs, internal playbooks) are ingested into Rosetta's knowledge layer so retrieval reasons over both vendor and engagement context.</td><td>All five challenges (engagement-scoped)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s14">
+  <div class="sec-label">Part 1 · §1.4</div>
+  <div class="section-headline">Target Users</div>
+  <p class="lead">Rosetta serves three primary user cohorts within the Salesforce ecosystem.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Cohort</th><th>Roles</th><th>Primary need</th><th>Solution mode</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sellers</strong></td><td>Account Executive, Solution Engineer, Account team</td><td>Capability framing, customer-facing explanation, competitive differentiation, scoping conversations</td><td>Enablement, Architecture</td></tr>
+        <tr><td><strong>Implementors</strong></td><td>Architect, Implementation Consultant, Business Analyst</td><td>Architecture pattern selection, trade-off analysis, decision traceability, step-by-step configuration guidance</td><td>Architecture, Implementation</td></tr>
+        <tr><td><strong>Engineering</strong></td><td>Developer, Admin, Platform Engineer</td><td>Troubleshooting, diagnostic guidance, operational patterns, build/run support</td><td>Implementation, Troubleshooting</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s15">
+  <div class="sec-label">Part 1 · §1.5</div>
+  <div class="section-headline">Domain Scope</div>
+  <p class="lead">Rosetta's knowledge graph is designed to cover the full Salesforce Data Foundations product stack. Phase 1 implementation scope is narrower than the long-term target.</p>
+
+  <h3 class="sub-headline">Phase 1 scope — in scope for initial build</h3>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name">Agentforce</div><div class="tech-role">AI agent platform for autonomous customer engagement.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name">Data Cloud (Data 360)</div><div class="tech-role">Real-time customer data platform with identity resolution, segmentation, and activation.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name">Salesforce Platform</div><div class="tech-role">Core CRM objects (Contact, Account, Lead) as data sources.</div></div></div>
+  </div>
+
+  <h3 class="sub-headline">Out of Phase 1 — architecture supports, content layer deferred</h3>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name">MuleSoft</div><div class="tech-role">Integration platform for data ingestion from external systems.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name">Tableau</div><div class="tech-role">Analytics and visualisation platform connected to Data Cloud.</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name">Informatica</div><div class="tech-role">Data quality and governance tooling integrated with Data Cloud.</div></div></div>
+  </div>
+
+  <div class="imperative">
+    <p>The Phase 1 / Phase 2+ split is <strong>a content question, not an architectural one</strong>. The graph schema, retrieval pipeline, and producer/consumer contract are the same regardless of which products' patterns are populated. Adding MuleSoft to scope in Phase 2 is a content-authoring exercise, not a re-architecture.</p>
+  </div>
+
+  <h3 class="sub-headline">Solution modes</h3>
+  <p>Knowledge is organised across nine solution modes representing distinct implementation archetypes:</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Solution mode</th><th>Description</th><th>Phase 1?</th></tr></thead>
+      <tbody>
+        <tr><td><code>customer-360</code></td><td>Unified customer profile and cross-channel identity resolution</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>agentforce-first</code></td><td>AI agent deployment with structured data grounding</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>marketing-cdp</code></td><td>Customer data platform for marketing segmentation and activation</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>data-governance</code></td><td>Data quality, lineage, and compliance management</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>analytics-first</code></td><td>Data pipeline and business intelligence workflows</td><td><span class="pill pill-superseded">Deferred</span></td></tr>
+        <tr><td><code>integration-first</code></td><td>System-of-record integration and data synchronisation</td><td><span class="pill pill-superseded">Deferred</span></td></tr>
+        <tr><td><code>ai-grounding</code></td><td>Structured knowledge bases for AI model grounding</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>devops</code></td><td>Platform engineering and deployment automation</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+        <tr><td><code>data-foundations-devops</code></td><td>Operational patterns for Data Cloud infrastructure</td><td><span class="pill pill-accepted">Yes</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><span class="open-marker">[OPEN]</span> Final Phase 1 mode list pending product-marketing alignment.</p>
+</section>
+
+
+<section id="s16">
+  <div class="sec-label">Part 1 · §1.6</div>
+  <div class="section-headline">Conversation Lifecycle &amp; Skills Storage</div>
+  <p class="lead">Every Rosetta interaction follows a structured five-phase conversation lifecycle designed to move from vague business intent to specific, validated recommendations.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>Purpose</th><th>Entry condition</th><th>Exit condition</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Discovery</strong></td><td>Establish solution mode, vertical, and products in scope</td><td>Conversation start</td><td>ICP known + at least one of {vertical, products} collected</td></tr>
+        <tr><td><strong>Clarification</strong></td><td>Disambiguate conflicting signals</td><td>Discovery complete</td><td>Classifier confidence ≥ 0.60 OR diagnostic budget exhausted (3 questions)</td></tr>
+        <tr><td><strong>Pattern Matching</strong></td><td>Score and rank ContextPatterns against collected context</td><td>Classifier confident</td><td>At least one candidate pattern scored</td></tr>
+        <tr><td><strong>Recommendation</strong></td><td>Synthesise guidance from top-scoring patterns</td><td>Candidates scored, no anti-pattern</td><td>Recommendation assembled</td></tr>
+        <tr><td><strong>Validation</strong></td><td>Verify recommendation against compliance and anti-pattern constraints</td><td>Compliance constraint or anti-pattern detected</td><td>Completeness score meets threshold</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Skills storage</h3>
+  <p>The conversation lifecycle is <strong>stored as a skill</strong> — a versioned, named, parameterised procedure that the agent can invoke. Skills are first-class persistent entities, not hard-coded flow logic. The current YAML-driven flow engine (see §3.2.6) becomes the <em>runtime</em> for the lifecycle skill; the skill definition itself lives in storage so it can be edited, versioned, audited, and extended without a code release.</p>
+  <p>A <code>skills</code> table in the relational store (see §3.1.5) provides:</p>
+  <ul>
+    <li><strong>Persistence</strong> — each skill has an identifier, version, definition payload, status, and ownership.</li>
+    <li><strong>Memory</strong> — skills can reference scoped memory bindings (per-user, per-engagement, per-project) so a skill invocation can read and write durable state across turns.</li>
+    <li><strong>Extension</strong> — new skills can be added without touching server code, on the same producer/consumer publication contract as schema content.</li>
+  </ul>
+  <p>The Phase 1 skill inventory begins with the conversation-lifecycle skill itself plus a small number of analyst-authored diagnostic skills. <span class="open-marker">[OPEN]</span> Detailed skill schema and execution semantics to be drafted in a follow-up ADR.</p>
+</section>
+
+<section id="s17">
+  <div class="sec-label">Part 1 · §1.7</div>
+  <div class="section-headline">Knowledge Content Model</div>
+  <p class="lead">Rosetta's knowledge base consists of validated content across three categories. This is the "secret sauce" of the system — the material that distinguishes Rosetta from a generic RAG pipeline over Salesforce documentation.</p>
+
+  <div class="proof">
+    <div class="proof-card"><div class="proof-logo">ContextPatterns</div><div class="proof-stat">63+</div><div class="proof-desc">Validated architectural patterns organised by solution mode, phase (Discover / Design / Build / Validate / Operate), vertical, and complexity. Each pattern carries configuration hints, evidence sources, prerequisites, and governing ADRs.</div></div>
+    <div class="proof-card"><div class="proof-logo">Architecture Decision Records</div><div class="proof-stat">13+</div><div class="proof-desc">Ratified technical choices, their rationale, and the patterns they govern. ADRs provide the audit trail for why a specific configuration approach was recommended.</div></div>
+  </div>
+  <p style="margin-top:1rem;"><strong>Vocabulary Terms.</strong> A controlled glossary bridging business language (e.g., "Golden Record") to the Salesforce semantic model, enabling synonym resolution and cross-domain term disambiguation.</p>
+
+  <h3 class="sub-headline">Governance pipeline</h3>
+  <p>Every piece of content above passes through the <strong>Constitution → ADR → DecisionTrace governance hierarchy</strong>. Raw decisions are captured in conversation as <code>DecisionTrace</code> nodes; once a decision point accumulates sufficient evidence (volume, coverage, consensus), a <code>PromotionCandidate</code> is created; on governance review the candidate is promoted to an authoritative <code>ADR</code> that governs one or more <code>ContextPattern</code>s. The three-gate pipeline is the procedural backbone that lets the canonical inventory grow without losing auditability.</p>
+</section>
+
+<section id="s18">
+  <div class="sec-label">Part 1 · §1.8</div>
+  <div class="section-headline">How Rosetta Actually Works — Four Mechanisms</div>
+  <p class="lead">Rosetta is not one system doing one mysterious thing. It is four well-understood mechanisms composed in a specific order. None of the mechanisms are novel in 2026 — the novelty is the composition, the schema they operate against, and the producer-only contract. If you understand the four mechanisms separately, the system stops being magic and becomes engineering — auditable at every step.</p>
+
+  <p>A critical framing point before the mechanisms: <strong>Rosetta operates inside Salesforce.</strong> It is internal tooling, not a third-party agent operating against a customer's Salesforce org from the outside. That positioning has two consequences:</p>
+  <ol>
+    <li><strong>The knowledge Rosetta reasons over is itself governed.</strong> The canonical inventory in the graph is built from authoritative, Salesforce-published material — Trailhead modules, product documentation, partner playbooks vetted through Salesforce processes. Rosetta does not have to take a position on whether its source corpus is trustworthy; the source is governed upstream.</li>
+    <li><strong>The auditability story is about traceability, not isolation.</strong> The producer-only contract and the citation contract exist to make every recommendation traceable to a graph node and a source artifact, so a reviewer can ask "where did this come from?" and get a deterministic answer. They are not security boundaries against an untrusted customer estate.</li>
+  </ol>
+
+  <div class="use-cases">
+    <div class="uc">
+      <div class="uc-num">Mechanism — 01</div>
+      <div class="uc-title">Structured Extraction</div>
+      <div class="uc-desc">The LLM reads a source document — Trailhead module, implementation guide, engagement discovery dossier — with a fixed schema in front of it (for example, the <code>DecisionTrace</code> schema with <code>stateAtDecision</code>, <code>alternativesConsidered</code>, validation criteria). Its job is to find passages that map to those fields and emit JSON. Not "understand the document." Fill in a form. <strong>The metamodel is the schema. The LLM is the extractor.</strong> No inference about Salesforce, no judgement, no learning. A human reading the same document with the same schema printed in front of them would produce structurally the same output.</div>
+      <div class="uc-pill">Commodity capability</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Mechanism — 02</div>
+      <div class="uc-title">Constraint Checking</div>
+      <div class="uc-desc">Once candidates are extracted, Rosetta does not trust them. It runs Cypher queries against the canonical inventory to ask deterministic questions: does the proposed <code>domainKey</code> already exist? Does the <code>stableKey</code> collide? Does the <code>overrideMode</code> declaration violate the inheritance rules in §2.5? <strong>SQL-equivalent queries against a structured graph.</strong> No learning, no probability, no inference. <em>The LLM proposes. The constraint engine disposes.</em></div>
+      <div class="uc-pill">Deterministic check</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Mechanism — 03</div>
+      <div class="uc-title">Graph Retrieval (GraphRAG)</div>
+      <div class="uc-desc">On every <code>/context</code> request, Rosetta traverses from <code>BusinessIntent</code> through <code>SemanticEntity</code> to <code>PlatformObject</code> / <code>EngineFunction</code>, collecting the canonical patterns and ADRs along the path. <strong>Deterministic, inspectable, replayable.</strong> The LLM only sees what the traversal handed it. When the system reports a finding, that finding traces back to the specific Cypher query that produced it. LinkedIn published production numbers in 2025 showing ticket resolution time dropping from 40 hours to 15 hours using essentially this pattern.</div>
+      <div class="uc-pill">Measured technique</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Mechanism — 04</div>
+      <div class="uc-title">Generation Under a Citation Contract</div>
+      <div class="uc-desc">The final agent response is generated under a hard constraint: every claim points back to a node in the graph or a passage in the source corpus. The <code>provenanceSources</code> field exists for exactly this reason, with a canonical <code>sourceType</code> enum distinguishing vendor scan from metadata extract from discovery transcript from manual authoring. <strong>The citation contract is enforced at the schema level, not requested politely in a prompt.</strong></div>
+      <div class="uc-pill">Schema-enforced</div>
+    </div>
+  </div>
+
+  <h3 class="sub-headline">What the LLM is <em>not</em> doing</h3>
+  <p>This is the part worth saying out loud, because it kills the magic framing for stakeholders. The LLM is <strong>not</strong> understanding Salesforce. It is <strong>not</strong> forming architectural judgements from first principles. It is <strong>not</strong> learning from engagements — no fine-tuning, no online updating, no model drift. It is <strong>not</strong> reasoning about whether a pattern is good or bad on its merits.</p>
+  <p>The intelligence about Salesforce lives in the canonical inventory, curated by hand by the Data Foundations team and the Keenan Vision analysts working alongside them. Take the canonical inventory away and Rosetta produces nothing useful. <strong>The agent is only as smart as the graph it traverses.</strong> This is not a limitation to apologise for — it is the source of the system's auditability and the reason it can be operated against a regulated customer estate without the failure modes that plague pure-LLM agentic systems.</p>
+
+  <h3 class="sub-headline">Why the composition is novel</h3>
+  <p>Mechanisms 1–4 are commodity 2025 techniques. The novelty sits one level up. Rosetta does <strong>engagement-scoped specialisation of canonical patterns under formal override semantics</strong>, operated through a producer-only contract that never touches a customer's Salesforce org. The plugin reads a dossier and emits Cypher. The customer runs <code>make seed-compile</code>. That separation is what lets the system run inside Cowork without violating data sovereignty, and what lets an FDE run the same methodology across a Deloitte engagement, a Slalom engagement, and a direct customer engagement without the canonical inventory drifting in three directions.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Competitive positioning</span>
+    <p>When the question is "is Rosetta competitive with MeshMesh / Agentforce itself / the next AppExchange ISV?", the answer is not "Rosetta is smarter." The answer is — <strong>"Rosetta is governed."</strong> That is the durable position.</p>
+  </div>
+
+  <h3 class="sub-headline">Why this matters for the program</h3>
+  <p>Three consequences follow from the four-mechanism decomposition:</p>
+  <ol>
+    <li><strong>Correctness is bounded by the canonical inventory's quality</strong>, not by the LLM's capability. Whatever budget is spent on model evaluation should be matched by budget for canonical inventory curation. Curation is currently concentrated in a handful of people — a single point of failure that should be treated as a program risk.</li>
+    <li><strong>The producer-only contract is the architectural decision that makes Rosetta defensible to a customer's CISO.</strong> Pressure to give Rosetta direct read access to a customer's metadata API should be resisted; the moment that line is crossed, the explainability property is lost and a class of failure modes ruled out by construction is reintroduced.</li>
+    <li><strong>The four-mechanism framing is also the right answer when somebody asks whether Rosetta is competitive with MeshMesh, with the Agentforce platform itself, or with whatever the next ISV brings to the App Exchange.</strong> The answer is not "Rosetta is smarter." The answer is "Rosetta is governed."</li>
+  </ol>
+</section>
+
+
+<!-- ════════════════════════════════════════════════ -->
+<!--   PART 2 — ARCHITECTURAL SPECIFICATION           -->
+<!-- ════════════════════════════════════════════════ -->
+
+<section id="s21">
+  <div class="sec-label">Part 2 · §2.1</div>
+  <div class="section-headline">Repository Architecture — Monorepo Consolidation</div>
+
+  <p>v1.6.1 split Rosetta across three repositories — <code>rosetta-platform</code>, <code>rosetta-app-server</code>, <code>rosetta-enablement-agent</code> — with a strict producer/consumer publication contract between them. The May 2026 review concluded this split is not paying its complexity cost:</p>
+  <ul>
+    <li><strong>Repo sprawl.</strong> Forthcoming architecture work (potential migration of the Go server to serverless functions on AWS) would produce many more small repositories under the v1.6 model.</li>
+    <li><strong>Cross-repo development cost.</strong> Foundation Sprint work routinely touches all three repos at once; coordinating PRs across them slows iteration.</li>
+    <li><strong>Claude Code workflow.</strong> Practical development is faster when Claude Code can see all three packages in a single workspace; the monorepo technique was developed precisely to handle this kind of multi-package coordination.</li>
+  </ul>
+
+  <h3 class="sub-headline">Proposed V2.0 layout</h3>
+<pre class="code-block">rosetta/
+├── platform/      # former rosetta-platform — schema &amp; content producer
+├── app-server/    # former rosetta-app-server — Go API server
+├── agent/         # former rosetta-enablement-agent — Next.js UI
+├── mcp/           # new — MCP server (headless access surface)
+├── shared/        # cross-package types, OpenAPI spec, schema fixtures
+└── infra/         # Terraform — now targeting AWS (see §2.8)</pre>
+
+  <h3 class="sub-headline">Producer / consumer contract preserved</h3>
+  <p>The producer/consumer contract from v1.6 (ADR-PL-016 / C-7) is preserved at the <strong>package</strong> level, not the repo level. The <code>platform/</code> package still produces a versioned, SHA-256-pinned artifact that other packages consume; cross-package imports remain strictly one-way. The benefit is operational (one clone, one PR, one CI graph), not architectural — the constitutional invariant about producer-only publication is unchanged.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Package</th><th>Role</th><th>Primary output</th><th>Consumer</th></tr></thead>
+      <tbody>
+        <tr><td><code>platform</code></td><td>Schema &amp; content producer</td><td>Versioned tarball (<code>db/schema</code>, <code>db/seeds</code>, <code>db/mysql</code>)</td><td><code>app-server</code>, <code>mcp</code></td></tr>
+        <tr><td><code>app-server</code></td><td>Go API server</td><td>Docker image, REST API at <code>:8081</code></td><td><code>agent</code>, <code>mcp</code>, external agents</td></tr>
+        <tr><td><code>agent</code></td><td>Next.js UI consumer</td><td>Docker image, Next.js KMS UI at <code>:4002</code></td><td>End users (browsers)</td></tr>
+        <tr><td><code>mcp</code></td><td>MCP server (headless access)</td><td>MCP endpoint</td><td>Slack, Claude.ai, external agents</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="imperative">
+    <span class="imp-label">Architecture Invariant (preserved)</span>
+    <p>The <strong>platform</strong> package publishes and is published to; it never imports from <code>app-server</code>, <code>agent</code>, or <code>mcp</code>. The schema publication contract is strictly one-way regardless of the repo topology.</p>
+  </div>
+
+  <p><span class="open-marker">[OPEN]</span> Migration path from three-repo to monorepo: clean cut vs. incremental. Recommend clean cut at V2.0 release, preserving git history via <code>git subtree</code>.</p>
+</section>
+
+<section id="s22">
+  <div class="sec-label">Part 2 · §2.2</div>
+  <div class="section-headline">Three-Layer Inheritance Architecture</div>
+  <p class="lead">Rosetta's content is organised into three inheritance layers, each owned by a different party, each with its own access-control boundary. This is the structural framework that supports engagement-scoped specialisation (§1.8) and the storage-by-owner question (§2.4).</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title diag-desc">
+      <title id="diag-title">Rosetta three-layer inheritance architecture</title>
+      <desc id="diag-desc">Structural diagram showing Salesforce Core (Layer 1) served via MCP, SI layer (Layer 2) and Project layer (Layer 3) connected via Drive/SharePoint connectors, with access control boundaries</desc>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Layer 1 -->
+      <g>
+        <rect x="40" y="30" width="600" height="120" rx="14" fill="#e1f5ee" stroke="#0f6e56" stroke-width="1"/>
+        <text x="340" y="60" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="600" fill="#085041">Layer 1 — Salesforce Core</text>
+        <text x="340" y="82" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#0f6e56">platform package: 136 seed Cypher files, 32 schema files, 63+ patterns, 13+ ADRs</text>
+      </g>
+      <!-- MCP badge -->
+      <g>
+        <rect x="220" y="96" width="240" height="46" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="1"/>
+        <text x="340" y="116" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#3c3489">Served via MCP server</text>
+        <text x="340" y="132" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#534ab7">Access = ability to connect. No user auth.</text>
+      </g>
+      <!-- Arrow L1->L2 -->
+      <line x1="200" y1="152" x2="200" y2="188" stroke="rgba(31,30,29,.4)" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+      <line x1="480" y1="152" x2="480" y2="188" stroke="rgba(31,30,29,.4)" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+      <text x="340" y="175" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#3d3d3a">inherits / overrides via five-field identity</text>
+      <!-- Layer 2 -->
+      <g>
+        <rect x="40" y="190" width="600" height="130" rx="14" fill="#e6f1fb" stroke="#185fa5" stroke-width="1"/>
+        <text x="340" y="218" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="600" fill="#0c447c">Layer 2 — Systems Integrator (SI)</text>
+        <text x="340" y="240" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#185fa5">SI-specific patterns, delivery methodologies, client templates, proprietary guidance</text>
+      </g>
+      <g>
+        <rect x="68" y="252" width="170" height="54" rx="8" fill="#f1efe8" stroke="#5f5e5a" stroke-width="0.8"/>
+        <text x="153" y="273" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#444441">Google Drive</text>
+        <text x="153" y="291" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#5f5e5a">Connector → Rosetta context</text>
+      </g>
+      <g>
+        <rect x="256" y="252" width="170" height="54" rx="8" fill="#f1efe8" stroke="#5f5e5a" stroke-width="0.8"/>
+        <text x="341" y="273" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#444441">SharePoint</text>
+        <text x="341" y="291" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#5f5e5a">Connector → Rosetta context</text>
+      </g>
+      <g>
+        <rect x="444" y="252" width="180" height="54" rx="8" fill="#faeeda" stroke="#854f0b" stroke-width="0.8"/>
+        <text x="534" y="273" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#633806">Access control</text>
+        <text x="534" y="291" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#854f0b">Owned by SI (Drive/SP perms)</text>
+      </g>
+      <!-- Arrow L2->L3 -->
+      <line x1="200" y1="322" x2="200" y2="356" stroke="rgba(31,30,29,.4)" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+      <line x1="480" y1="322" x2="480" y2="356" stroke="rgba(31,30,29,.4)" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+      <text x="340" y="344" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#3d3d3a">inherits / overrides SI content</text>
+      <!-- Layer 3 -->
+      <g>
+        <rect x="40" y="358" width="600" height="130" rx="14" fill="#faece7" stroke="#993c1d" stroke-width="1"/>
+        <text x="340" y="386" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="15" font-weight="600" fill="#712b13">Layer 3 — Project</text>
+        <text x="340" y="408" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#993c1d">Client-specific decisions, engagement ADRs, project patterns, canvas state</text>
+      </g>
+      <g>
+        <rect x="68" y="420" width="170" height="54" rx="8" fill="#f1efe8" stroke="#5f5e5a" stroke-width="0.8"/>
+        <text x="153" y="441" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#444441">Google Drive</text>
+        <text x="153" y="459" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#5f5e5a">Connector → Rosetta context</text>
+      </g>
+      <g>
+        <rect x="256" y="420" width="170" height="54" rx="8" fill="#f1efe8" stroke="#5f5e5a" stroke-width="0.8"/>
+        <text x="341" y="441" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#444441">SharePoint</text>
+        <text x="341" y="459" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#5f5e5a">Connector → Rosetta context</text>
+      </g>
+      <g>
+        <rect x="444" y="420" width="180" height="54" rx="8" fill="#faeeda" stroke="#854f0b" stroke-width="0.8"/>
+        <text x="534" y="441" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#633806">Access control</text>
+        <text x="534" y="459" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#854f0b">Owned by customer (project perms)</text>
+      </g>
+      <!-- Open question -->
+      <rect x="40" y="516" width="600" height="100" rx="10" fill="none" stroke="rgba(31,30,29,.35)" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="340" y="542" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="13" font-weight="600" fill="#141413">⚠ Open architectural question — content strategy for Layers 2 &amp; 3 </text>
+      <text x="340" y="562" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#3d3d3a">Option A: Rosetta indexes drive → vector DB lives alongside the graph</text>
+      <text x="340" y="578" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#3d3d3a">Option B: Raw content passed as context at query time (no Rosetta-side storage)</text>
+      <text x="340" y="594" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#3d3d3a">Option C: Hybrid — vector index in Rosetta + raw passthrough for citations</text>
+    </svg>
+    <div class="diagram-cap">Fig. 2.2 — Three-layer inheritance with connector boundaries</div>
+  </div>
+
+  <h3 class="sub-headline">Layer mechanics</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Owner</th><th>Content</th><th>Storage</th><th>Access</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Layer 1 — Salesforce Core</strong></td><td>Salesforce</td><td>Canonical patterns, ADRs, semantic entities, platform objects, vocabulary</td><td>Neo4j on <code>platform</code> package — served via MCP</td><td>"Access = ability to connect." No user-level auth at this layer.</td></tr>
+        <tr><td><strong>Layer 2 — Systems Integrator</strong></td><td>The SI (Deloitte, Slalom, etc.)</td><td>SI-specific patterns, delivery methodologies, client templates, proprietary guidance</td><td>Google Drive / SharePoint indexed via connectors (Phase 1)</td><td>Owned by SI; enforced by Drive / SharePoint permissions</td></tr>
+        <tr><td><strong>Layer 3 — Project</strong></td><td>The end customer</td><td>Client-specific decisions, engagement ADRs, project patterns, canvas state</td><td>Google Drive / SharePoint indexed via connectors (Phase 1)</td><td>Owned by customer; enforced by project permissions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Inheritance flows downward via the five-field identity contract (§2.5): a Layer 2 SI can extend or override a Layer 1 canonical pattern; a Layer 3 project can extend or override either layer above it. Retrieval at query time resolves the effective view by walking up the inheritance chain. <strong>Critically</strong>, Rosetta itself never owns or enforces access to Layer 2 or 3 content — access is granted by the file-store owner (SI or customer) and Rosetta is a consumer of that permission grant.</p>
+</section>
+
+<section id="s23">
+  <div class="sec-label">Part 2 · §2.3</div>
+  <div class="section-headline">Three-Layer Context Artifact Model</div>
+  <p class="lead">The intellectual heart of Rosetta is the Three-Layer Context Artifact Model, unchanged from v1.6.1. It is the semantic framework that bridges business intent to platform configuration. <em>Note: this is the semantic model, not the inheritance architecture of §2.2 — the names rhyme but the concerns are different.</em></p>
+
+  <div class="use-cases">
+    <div class="uc">
+      <div class="uc-num">Layer — 01</div>
+      <div class="uc-title">Business Intent</div>
+      <div class="uc-desc">Represents <em>what</em> a Trailblazer wants to achieve, stated in business language. Example: "Unify B2B and B2C customer profiles." <code>BusinessIntent</code> nodes connect to <code>VocabularyTerm</code> via <code>USES_TERM</code> edges and express themselves as <code>SemanticEntity</code> via <code>EXPRESSES_AS</code> edges.</div>
+      <div class="uc-pill">Layer 1 of CAM</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Layer — 02</div>
+      <div class="uc-title">Semantic Structure</div>
+      <div class="uc-desc">The ontological middle layer containing <code>SemanticEntity</code> (abstract domain concepts like "Individual" or "UnifiedAccount") and <code>ContextPattern</code> (validated architectural patterns). <code>ContextPattern</code> <code>ADDRESSES</code> <code>BusinessIntent</code>, <code>REFERENCES</code> <code>SemanticEntity</code>, and <code>RECOMMENDS</code> <code>EngineFunction</code>.</div>
+      <div class="uc-pill">Layer 2 of CAM</div>
+    </div>
+    <div class="uc">
+      <div class="uc-num">Layer — 03</div>
+      <div class="uc-title">Platform Binding</div>
+      <div class="uc-desc">Concrete Salesforce metadata objects (<code>PlatformObject</code>) and engine capabilities (<code>EngineFunction</code>). <code>SemanticEntity</code> <code>MAPS_TO</code> <code>PlatformObject</code>, and <code>PlatformObject</code> <code>INVOKES</code> <code>EngineFunction</code>. Example: "Individual" maps to <code>Individual__dlm</code>, which invokes "Identity Resolution."</div>
+      <div class="uc-pill">Layer 3 of CAM</div>
+    </div>
+  </div>
+
+  <h3 class="sub-headline">Why this matters</h3>
+  <p>The three-layer model is the key architectural differentiator: Rosetta answers questions posed in business language by traversing graph edges to concrete platform configuration objects, <strong>without hallucination</strong>, because every link in the chain is an explicitly authored, evidence-backed relationship.</p>
+</section>
+
+
+<section id="s24">
+  <div class="sec-label">Part 2 · §2.4</div>
+  <div class="section-headline">Graph Schema Architecture &amp; Storage-by-Owner</div>
+  <p class="lead">The knowledge graph (Neo4j 5.x) has 28+ node types across six layers. The May 2026 review raised a structural question: should every node type live in the primary graph, or should some categories be hosted in purpose-fit stores?</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Schema layer</th><th>Key node types</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Core / Content</td><td><code>BusinessIntent</code>, <code>VocabularyTerm</code>, <code>SemanticEntity</code>, <code>ContextPattern</code>, <code>PlatformObject</code>, <code>EngineFunction</code></td><td>The Three-Layer Context Artifact Model</td></tr>
+        <tr><td>Governance</td><td><code>ADR</code>, <code>DecisionTrace</code>, <code>QueryTrace</code>, <code>PromotionCandidate</code></td><td>Architectural decisions, ratification pipeline, audit trail</td></tr>
+        <tr><td>Identity</td><td><code>Practitioner</code>, PST Node</td><td>Practitioner profiles, Phase-Stage-Task methodology nodes</td></tr>
+        <tr><td>Engagement</td><td><code>Client</code>, <code>Engagement</code>, <code>EngagementPhase</code></td><td>Client engagement tracking and portfolio intelligence</td></tr>
+        <tr><td>Delivery</td><td><code>SpecManifest</code>, <code>DeploymentTarget</code>, <code>WorkPacket</code></td><td>Project delivery artifacts and deployment targets</td></tr>
+        <tr><td>Intelligence</td><td><code>SourceArtifact</code>, <code>TagProposal</code>, <code>ConversationSession</code></td><td>Document intelligence, content tagging, session history</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Storage-by-owner separation</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Owner</th><th>Node types</th><th>Candidate store</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Canonical (Rosetta core)</strong></td><td><code>ContextPattern</code>, <code>ADR</code>, <code>SemanticEntity</code>, <code>PlatformObject</code>, <code>EngineFunction</code>, <code>VocabularyTerm</code>, <code>BusinessIntent</code></td><td>Neo4j (primary graph)</td><td>Authored, governed, low-volume, high-trust</td></tr>
+        <tr><td><strong>Engagement / project</strong></td><td><code>Engagement</code>, <code>Client</code>, <code>EngagementPhase</code>, <code>SpecManifest</code>, <code>DeploymentTarget</code>, <code>WorkPacket</code>, project-scoped <code>Practitioner</code></td><td>Per-tenant graph partition or separate graph</td><td>Tenant-isolated, higher volume, separate access controls</td></tr>
+        <tr><td><strong>Document intelligence</strong></td><td><code>SourceArtifact</code>, <code>TagProposal</code>, <code>ConversationSession</code>, raw embeddings for SI / project docs</td><td><strong>Dedicated vector store</strong></td><td>Embedding-heavy, classification workload, separable from canonical reasoning</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Separating the document-intelligence layer into a dedicated vector store is the most strongly supported of the three. The canonical reasoning graph (Layer 1–3 of the Context Artifact Model) stays in Neo4j; SI document classification and retrieval moves to a vector-native store, with cross-store references resolved at retrieval time. This aligns with Goal 5 (capture SI / implementor documentation) and is the foundation for the Layer 2 / 3 connector framework.</p>
+
+  <p><span class="open-marker">[OPEN]</span> Final decision on storage topology pending architecture re-evaluation.</p>
+  <div class="proCon">
+    <div class="col pros">
+      <div class="col-label">Option A — Unified</div>
+      <ul>
+        <li>Keep everything in Neo4j; use Neo4j's vector indexes (already in v1.6) for document intelligence</li>
+        <li>Lowest operational complexity</li>
+        <li>Single backup, single restore, single backup-test posture</li>
+        <li>Cross-store join queries trivial — everything in one Cypher</li>
+      </ul>
+    </div>
+    <div class="col cons">
+      <div class="col-label">Option B — Split (three stores)</div>
+      <ul>
+        <li>Neo4j (canonical) + per-tenant graph layer (engagement) + dedicated vector store (document intelligence)</li>
+        <li>Best fit for multi-tenant isolation and SI document classification</li>
+        <li>Higher operational complexity (three backup/monitoring stories)</li>
+        <li>Cross-store reference resolution must be designed and tested</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub-headline">Key relationships</h3>
+  <p>The 48 relationship types encode the full semantic structure. Key relationships:</p>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name"><code>USES_TERM</code></div><div class="tech-role"><code>BusinessIntent</code> → <code>VocabularyTerm</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-gold"></div><div><div class="tech-name"><code>EXPRESSES_AS</code></div><div class="tech-role"><code>BusinessIntent</code> → <code>SemanticEntity</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-sky"></div><div><div class="tech-name"><code>ADDRESSES</code></div><div class="tech-role"><code>ContextPattern</code> → <code>BusinessIntent</code> · primary retrieval edge</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-sky"></div><div><div class="tech-name"><code>REFERENCES</code></div><div class="tech-role"><code>ContextPattern</code> → <code>SemanticEntity</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-sky"></div><div><div class="tech-name"><code>RECOMMENDS</code></div><div class="tech-role"><code>ContextPattern</code> → <code>EngineFunction</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-amber"></div><div><div class="tech-name"><code>MAPS_TO</code></div><div class="tech-role"><code>SemanticEntity</code> → <code>PlatformObject</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-amber"></div><div><div class="tech-name"><code>INVOKES</code></div><div class="tech-role"><code>PlatformObject</code> → <code>EngineFunction</code></div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name"><code>GOVERNS</code></div><div class="tech-role"><code>ADR</code> → <code>ContextPattern</code> · governance binding</div></div></div>
+    <div class="tech-item"><div class="tech-dot dot-light"></div><div><div class="tech-name"><code>SYNONYM_OF</code></div><div class="tech-role"><code>VocabularyTerm</code> → <code>VocabularyTerm</code> · synonym resolution</div></div></div>
+  </div>
+</section>
+
+<section id="s25">
+  <div class="sec-label">Part 2 · §2.5</div>
+  <div class="section-headline">Five-Field Identity System &amp; Multi-Tenancy Validation</div>
+  <p class="lead">Every inheritable node in the knowledge graph carries a five-field identity tuple (metamodel v1.6.0, §5). This is a constitutional invariant across the system and is what makes engagement-scoped specialisation (§1.8) possible.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Purpose</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><code>domainKey</code></td><td>Namespace scope (root, org, project hierarchy)</td><td><code>salesforce:rosetta-core</code></td></tr>
+        <tr><td><code>stableKey</code></td><td>Immutable identifier that survives renames</td><td><code>pattern-cl-042</code></td></tr>
+        <tr><td><code>qualifiedKey</code></td><td>Fully-qualified within domain hierarchy</td><td><code>salesforce:rosetta-core:pattern-cl-042</code></td></tr>
+        <tr><td><code>displayId</code></td><td>Human-readable identifier</td><td><code>CL-042</code></td></tr>
+        <tr><td><code>overrideMode</code></td><td>How downstream domains can modify this node</td><td><code>extend</code> | <code>suppress</code> | <code>replace</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Inheritable labels subject to this invariant: <code>ContextPattern</code>, <code>ADR</code>, <code>BusinessIntent</code>, <code>VocabularyTerm</code>, <code>SemanticEntity</code>, <code>PlatformObject</code>, <code>EngineFunction</code>. Every write to a node with an inheritable label also creates a <code>ProvenanceEvent</code> recording the mutation.</p>
+
+  <h3 class="sub-headline">Multi-tenancy validation requirement</h3>
+
+  <p>The five-field identity contract was designed for the inheritance use case — engagement-scoped specialisation of canonical patterns. If Rosetta runs on a multi-tenant storage layer — whether that is a single graph with <code>domainKey</code>-based isolation or a per-tenant partition model — the contract must be <strong>explicitly validated</strong> against multi-tenant security and functionality requirements before architecture is frozen.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Concrete validations required before commit</span>
+    <p><strong>1. Cross-tenant read isolation.</strong> Verify no Cypher query authored under the standard query patterns can return a node whose <code>domainKey</code> is outside the caller's tenant scope, even via traversal.<br><br><strong>2. Override semantics under tenancy.</strong> Confirm that a Tenant B project overriding a <code>ContextPattern</code> cannot affect what Tenant A retrieves for the same pattern.<br><br><strong>3. Provenance leakage.</strong> Verify <code>ProvenanceEvent</code> writes from one tenant cannot be read by another.<br><br><strong>4. Identity uniqueness.</strong> Confirm <code>qualifiedKey</code> uniqueness holds globally — not just within tenant — to prevent identifier collision on cross-tenant publication to the shared directory.</p>
+  </div>
+
+  <p><span class="open-marker">[OPEN]</span> Multi-tenancy storage model selection. Coupled with the §2.4 storage-by-owner decision.</p>
+</section>
+
+
+<section id="s26">
+  <div class="sec-label">Part 2 · §2.6</div>
+  <div class="section-headline">Relational Database Architecture <span class="pill pill-open" style="margin-left:.5rem;">Under Re-evaluation</span></div>
+  <p class="lead">v1.6 specified <strong>MySQL 9.4</strong> as the relational tier for conversation transcripts, audit logs, telemetry, and operational state. V2.0 places this decision under formal re-evaluation as part of the AWS migration.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Open architectural question</span>
+    <p>The relational tier on AWS could be <strong>RDS for MySQL</strong> (preserves v1.6 schema and ORM), <strong>RDS for PostgreSQL</strong> (consolidates with pgvector — a single Postgres cluster serves both relational state and the Layer 2/3 vector index), or <strong>Aurora</strong> (managed compatibility for either engine with stronger HA).</p>
+  </div>
+
+  <h3 class="sub-headline">Tables in scope</h3>
+  <p>Regardless of engine, the following tables persist from v1.6 and acquire two new families introduced in V2.0:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Table family</th><th>Purpose</th><th>Origin</th></tr></thead>
+      <tbody>
+        <tr><td><code>conversations</code>, <code>messages</code>, <code>turns</code></td><td>Conversation transcripts, message-level audit trail, turn-level token accounting</td><td>v1.6</td></tr>
+        <tr><td><code>retrievals</code>, <code>citations</code></td><td>Retrieval ledger (every chunk surfaced), citation provenance contract</td><td>v1.6</td></tr>
+        <tr><td><code>tenants</code>, <code>users</code>, <code>tokens</code></td><td>Tenant registry, user identity, bearer token issuance and rotation</td><td>v1.6</td></tr>
+        <tr><td><code>telemetry_events</code>, <code>otel_spans_summary</code></td><td>Operational telemetry sink and OTEL span rollups for cost reporting</td><td>v1.6</td></tr>
+        <tr><td><code>skills</code>, <code>skill_invocations</code>, <code>skill_memory</code></td><td>Skill registry (installed packages), per-invocation log, persistent skill memory keyed by tenant + skill</td><td>V2.0</td></tr>
+        <tr><td><code>mcp_sessions</code>, <code>mcp_audit</code></td><td>MCP server session tracking and per-tool-call audit (see §3.5)</td><td>V2.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The schema migration tool (<code>goose</code>) continues to govern forward and backward migrations. The decision of MySQL-vs-Postgres affects vendor-specific column types (JSON columns, generated columns, partial indexes) but not the logical schema, which remains the producer/consumer contract.</p>
+</section>
+
+<section id="s27">
+  <div class="sec-label">Part 2 · §2.7</div>
+  <div class="section-headline">Producer / Consumer Contract</div>
+  <p class="lead">The producer/consumer contract is the foundational invariant that prevents inventory drift across engagements. The platform produces a sealed artifact; consumers replay it deterministically.</p>
+
+  <h3 class="sub-headline">Versioning and integrity</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Artifact</th><th>Version field</th><th>Integrity field</th><th>Producer</th><th>Consumer</th></tr></thead>
+      <tbody>
+        <tr><td>Canonical Cypher seed</td><td><code>seedVersion</code> (semver)</td><td>SHA-256 sidecar</td><td><code>platform</code> package</td><td><code>app-server</code> at <code>make seed-compile</code></td></tr>
+        <tr><td>Engagement Cypher seed</td><td><code>engagementSeedVersion</code></td><td>SHA-256 sidecar</td><td><code>platform</code> (plugin output)</td><td><code>app-server</code> on tenant bootstrap</td></tr>
+        <tr><td>Site Package (deployable)</td><td><code>sitePackageVersion</code></td><td>SHA-256 manifest</td><td><code>platform</code></td><td>SI deployment tooling</td></tr>
+        <tr><td>Metamodel JSON Schema</td><td><code>metamodelVersion</code> (currently 1.5.4)</td><td>Embedded <code>$id</code></td><td><code>platform</code></td><td>All packages (validation)</td></tr>
+        <tr><td>ContextPattern bundle</td><td><code>patternVersion</code></td><td>Per-pattern <code>contentHash</code></td><td><code>platform</code></td><td><code>app-server</code> retrieval layer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">SHA-256 sidecar protocol</h3>
+  <p>Every seed file <code>X.cypher</code> ships with a sibling <code>X.cypher.sha256</code> containing the hex digest of the seed contents. On consumer load, the digest is recomputed and compared. A mismatch halts the seed-compile step with a non-zero exit code; this is enforced by the Makefile target in <code>app-server</code>.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Architectural invariant</span>
+    <p>Consumers <strong>never</strong> mutate seed contents. Consumer-side state lives in MySQL/Postgres (conversation, telemetry, skills); the graph schema and canonical content are read-only from the consumer's perspective. Drift between two engagements is therefore impossible by construction — both replay the same producer artifact.</p>
+  </div>
+</section>
+
+<section id="s28">
+  <div class="sec-label">Part 2 · §2.8</div>
+  <div class="section-headline">AWS Deployment Topology</div>
+  <p class="lead">v1.6 specified a three-VM GCP deployment (<code>vm-platform</code>, <code>vm-app</code>, <code>vm-agent</code>). V2.0 supersedes this with an AWS-native topology designed for the same logical separation but using managed services where they reduce operational burden.</p>
+
+  <h3 class="sub-headline">Services mapping</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Concern</th><th>v1.6 (GCP three-VM)</th><th>V2.0 target (AWS)</th><th>Rationale</th></tr></thead>
+      <tbody>
+        <tr><td>Compute — long-running</td><td>GCE VMs (Debian)</td><td>ECS on Fargate (containers)</td><td>Eliminate OS patching; per-service scaling</td></tr>
+        <tr><td>Compute — async / batch</td><td>cron on <code>vm-platform</code></td><td>EventBridge + Lambda or Fargate task</td><td>Native scheduling; no idle VM cost</td></tr>
+        <tr><td>Edge / TLS termination</td><td>nginx on each VM + Let's Encrypt</td><td>CloudFront + ACM + WAF</td><td>Managed cert rotation; AWS WAF rules</td></tr>
+        <tr><td>Load balancer</td><td>nginx (single VM)</td><td>Application Load Balancer (ALB)</td><td>Native health checks; per-target groups</td></tr>
+        <tr><td>Container registry</td><td>Docker Hub + GHCR</td><td>ECR (private, encrypted)</td><td>VPC-private pulls; image scanning</td></tr>
+        <tr><td>Relational DB</td><td>MySQL 9.4 on VM</td><td>RDS (MySQL/PostgreSQL — see §2.8) <span class="open-marker">[OPEN]</span></td><td>Managed backups, PITR, Multi-AZ</td></tr>
+        <tr><td>Graph DB</td><td>Neo4j 5 community on VM</td><td>Neo4j on EC2 (or AuraDB) <span class="open-marker">[OPEN]</span></td><td>Neo4j has no native RDS equivalent</td></tr>
+        <tr><td>Object storage</td><td>GCS</td><td>S3 (with versioning + lifecycle)</td><td>Site Package storage, seed archives</td></tr>
+        <tr><td>Secrets</td><td>Encrypted files on VM</td><td>AWS Secrets Manager + KMS</td><td>Native rotation; IAM-scoped access</td></tr>
+        <tr><td>Logging</td><td>journald + file</td><td>CloudWatch Logs + OTEL exporter</td><td>Centralized retention; query at scale</td></tr>
+        <tr><td>VPN / admin access</td><td>SSH + bastion</td><td>AWS Client VPN + SSM Session Manager</td><td>No public SSH; centralized audit</td></tr>
+        <tr><td>DNS</td><td>External registrar</td><td>Route 53</td><td>Integrated with ACM / ALB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="imperative">
+    <span class="imp-label">Migration sequencing</span>
+    <p>The cutover is staged: (1) build AWS account and VPC with no traffic, (2) deploy <code>app-server</code> and <code>agent</code> to ECS in shadow mode, (3) replicate MySQL via DMS, (4) flip DNS in Route 53, (5) decommission GCP VMs after a two-week soak period. The producer/consumer contract is unchanged; only the runtime substrate moves.</p>
+  </div>
+</section>
+
+<section id="s29">
+  <div class="sec-label">Part 2 · §2.9</div>
+  <div class="section-headline">Observability Architecture</div>
+  <p class="lead">v1.6's OpenTelemetry-based observability stack is <strong>preserved</strong> in V2.0. The collectors and instrumentation are unchanged; only the destination of telemetry data moves to AWS-native sinks.</p>
+
+  <h3 class="sub-headline">Stack</h3>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="tech-name">OpenTelemetry Collector</div>
+      <div class="tech-desc">Sidecar to each service; receives OTLP, batches, exports. Unchanged from v1.6.</div>
+    </div>
+    <div class="tech-item">
+      <div class="tech-name">Traces</div>
+      <div class="tech-desc">v1.6: self-hosted Jaeger. V2.0 target: AWS X-Ray <span class="open-marker">[OPEN]</span> or hosted Tempo.</div>
+    </div>
+    <div class="tech-item">
+      <div class="tech-name">Metrics</div>
+      <div class="tech-desc">v1.6: Prometheus on VM. V2.0 target: Amazon Managed Prometheus (AMP) + CloudWatch.</div>
+    </div>
+    <div class="tech-item">
+      <div class="tech-name">Logs</div>
+      <div class="tech-desc">v1.6: file + journald. V2.0 target: CloudWatch Logs with structured JSON.</div>
+    </div>
+  </div>
+
+  <p>The instrumentation contract — span naming conventions, attribute schema for <code>tenantId</code>/<code>conversationId</code>/<code>retrievalId</code>, cost-tagging metadata for LLM calls — is unchanged. Dashboards are rebuilt against the new destinations but query the same logical signals.</p>
+</section>
+
+<section id="s31">
+  <div class="sec-label">Part 3 · §3.1</div>
+  <div class="section-headline">platform package</div>
+  <p class="lead">The <code>platform</code> package is Rosetta's <strong>producer</strong>. It owns the metamodel, the canonical inventory, the seed-compile pipeline, and the engagement plugin that emits engagement-scoped Cypher.</p>
+
+  <h3 class="sub-headline">Technology stack</h3>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-name">Python 3.12</div><div class="tech-desc">Core runtime; selected for graph tooling and JSON Schema ecosystem.</div></div>
+    <div class="tech-item"><div class="tech-name">Pydantic v2</div><div class="tech-desc">Schema validation against metamodel v1.5.4 JSON Schemas.</div></div>
+    <div class="tech-item"><div class="tech-name">Click + Make</div><div class="tech-desc">CLI surface for seed-compile, validate, and engagement plugin invocation.</div></div>
+    <div class="tech-item"><div class="tech-name">Neo4j Python driver</div><div class="tech-desc">For local validation runs (not for production traffic).</div></div>
+  </div>
+
+  <h3 class="sub-headline">Schema files</h3>
+  <p>Authoritative JSON Schemas live in <code>platform/schemas/metamodel/v1.5.4/</code>, one schema per node type (<code>ContextPattern</code>, <code>ADR</code>, <code>DecisionTrace</code>, <code>OverrideDeclaration</code>, <code>ProvenanceSource</code>, <code>Engagement</code>, plus the relationship schemas). The <code>five-field identity</code> contract from §2.5 is enforced as a cross-cutting validator that runs after per-schema validation.</p>
+
+  <h3 class="sub-headline">Seed pipeline</h3>
+  <pre class="code-block">platform/
+├── inventory/
+│   ├── canonical/              # hand-curated Cypher fragments
+│   │   ├── patterns/*.cypher
+│   │   ├── adrs/*.cypher
+│   │   └── relationships/*.cypher
+│   └── engagements/&lt;engagementKey&gt;/  # plugin output
+│       ├── patterns/*.cypher
+│       ├── overrides/*.cypher
+│       └── seed.cypher           # compiled, SHA-256 signed
+├── schemas/metamodel/v1.5.4/
+└── plugin/                       # engagement extractor (Mechanism 1+2)</pre>
+
+  <p>The <code>make seed-compile</code> target validates every fragment against the schemas, runs Mechanism 2 constraint checks (uniqueness of <code>domainKey</code> and <code>stableKey</code>, override-mode legality), concatenates ordered fragments, and writes <code>seed.cypher</code> together with <code>seed.cypher.sha256</code>.</p>
+
+  <h3 class="sub-headline">D360 invariants</h3>
+  <p>The Data 360 Advisory Framework invariants are encoded as constraint queries that run against the canonical inventory: identity resolution dimensions, contact-point mapping completeness, match rule coverage, activation surface declarations. These run as part of <code>make validate</code>; a failed invariant blocks promotion of a pattern from <code>proposed</code> to <code>accepted</code>.</p>
+
+  <h3 class="sub-headline">Relational schema additions (V2.0)</h3>
+  <p>Three new table families are introduced in V2.0 to support Skills (see §3.3 and §1.6):</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Table</th><th>Purpose</th><th>Key columns</th></tr></thead>
+      <tbody>
+        <tr><td><code>skills</code></td><td>Registry of installed skill packages (ZIPs) per tenant</td><td><code>skillId</code>, <code>tenantId</code>, <code>name</code>, <code>version</code>, <code>installedAt</code>, <code>manifestSha256</code></td></tr>
+        <tr><td><code>skill_invocations</code></td><td>Per-call log of skill executions for audit and cost reporting</td><td><code>invocationId</code>, <code>skillId</code>, <code>conversationId</code>, <code>requestedBy</code>, <code>startedAt</code>, <code>durationMs</code>, <code>status</code></td></tr>
+        <tr><td><code>skill_memory</code></td><td>Persistent, tenant-scoped key/value state for skills</td><td><code>skillId</code>, <code>tenantId</code>, <code>memoryKey</code>, <code>memoryValue</code>, <code>updatedAt</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s32">
+  <div class="sec-label">Part 3 · §3.2</div>
+  <div class="section-headline">app-server package</div>
+  <p class="lead">The <code>app-server</code> is Rosetta's <strong>consumer-side</strong> Go service. It loads producer artifacts, owns Neo4j and the relational DB at runtime, performs hybrid retrieval, executes the <code>/context</code> pipeline, and serves the agent and MCP layer.</p>
+
+  <h3 class="sub-headline">Technology stack</h3>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-name">Go 1.23</div><div class="tech-desc">Statically-typed, high-throughput server runtime; same as v1.6.</div></div>
+    <div class="tech-item"><div class="tech-name">chi router</div><div class="tech-desc">Idiomatic Go HTTP routing with middleware stacking.</div></div>
+    <div class="tech-item"><div class="tech-name">Neo4j Go driver</div><div class="tech-desc">All Cypher queries are file-backed (no inline strings).</div></div>
+    <div class="tech-item"><div class="tech-name">sqlx + goose</div><div class="tech-desc">Database access and forward/backward migrations.</div></div>
+    <div class="tech-item"><div class="tech-name">OpenTelemetry SDK</div><div class="tech-desc">Span instrumentation for every endpoint and external call.</div></div>
+  </div>
+
+  <h3 class="sub-headline">API surface</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>/v1/context</code></td><td>POST</td><td>Main GraphRAG entry: intent → retrieval → assembly → citation contract</td></tr>
+        <tr><td><code>/v1/pattern/{domainKey}/{stableKey}</code></td><td>GET</td><td>Fetch a single ContextPattern node with relationships</td></tr>
+        <tr><td><code>/v1/adr/{adrKey}</code></td><td>GET</td><td>Fetch a single ADR node with provenance</td></tr>
+        <tr><td><code>/v1/search</code></td><td>POST</td><td>Hybrid retrieval (vector + keyword) returning ranked chunks with metadata</td></tr>
+        <tr><td><code>/v1/conversations</code></td><td>POST, GET</td><td>Create / list conversations</td></tr>
+        <tr><td><code>/v1/conversations/{id}/messages</code></td><td>POST, GET</td><td>Append / list messages within a conversation</td></tr>
+        <tr><td><code>/v1/skills</code></td><td>GET</td><td>List installed skills for tenant</td></tr>
+        <tr><td><code>/v1/skills/{skillId}/invoke</code></td><td>POST</td><td>Invoke a registered skill; logs to <code>skill_invocations</code></td></tr>
+        <tr><td><code>/v1/skills/{skillId}/memory</code></td><td>GET, PUT</td><td>Read / write per-skill persistent memory</td></tr>
+        <tr><td><code>/v1/flow/start</code></td><td>POST</td><td>Begin a multi-step flow execution</td></tr>
+        <tr><td><code>/v1/flow/{flowId}/step</code></td><td>POST</td><td>Advance a flow to the next step</td></tr>
+        <tr><td><code>/v1/auth/tokens</code></td><td>POST</td><td>Issue / rotate <code>rsk_</code>-prefixed bearer tokens</td></tr>
+        <tr><td><code>/healthz</code>, <code>/readyz</code></td><td>GET</td><td>Liveness and readiness probes for ALB target groups</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Intent classifier</h3>
+  <p>Incoming queries pass through a lightweight intent classifier that routes the request to the right retrieval profile (pattern lookup, ADR lookup, broad knowledge, flow trigger, skill invocation). The classifier is a deterministic rule-set plus an LLM tiebreaker — never the other way around — preserving the "governed not smarter" invariant.</p>
+
+  <h3 class="sub-headline">Retrieval engine</h3>
+  <p>Hybrid retrieval combines vector similarity (against the Layer 2/3 vector index) and keyword search (BM25 against an inverted index or Postgres FTS). Results merge via <strong>Reciprocal Rank Fusion (RRF)</strong> with a configurable <code>k</code> constant (default 60). A layer-priority bonus boosts Layer 1 (Salesforce Core) over Layer 2 (SI) over Layer 3 (Project) when relevance scores are within a configurable tie threshold.</p>
+
+  <h3 class="sub-headline">/context pipeline (eight steps)</h3>
+  <ol>
+    <li><strong>Authenticate</strong> the bearer token, resolve tenant.</li>
+    <li><strong>Classify intent</strong> (pattern, ADR, broad, flow, skill).</li>
+    <li><strong>Graph traversal</strong> from Business Intent → Semantic Structure → Platform Binding (Mechanism 3).</li>
+    <li><strong>Hybrid retrieval</strong> against vector + keyword indices, RRF merge.</li>
+    <li><strong>Layer-priority re-rank</strong> using the L1/L2/L3 bonus.</li>
+    <li><strong>Constraint check</strong> (Mechanism 2) — drop candidates that violate uniqueness or override rules.</li>
+    <li><strong>Citation packaging</strong> — every chunk emitted with <code>provenanceSources</code> attribution.</li>
+    <li><strong>Telemetry emission</strong> — span + retrieval ledger entry written to relational DB.</li>
+  </ol>
+
+  <h3 class="sub-headline">Flow engine and Cypher query files</h3>
+  <p>Multi-step flows (e.g., readiness assessment, promotion candidate evaluation) live as YAML definitions under <code>app-server/flows/</code>. Each step is either a Cypher file under <code>app-server/cypher/</code> or an LLM call with a defined prompt template under <code>app-server/prompts/</code>. <strong>No Cypher is inlined in Go source.</strong> This is the architectural invariant from v1.6, preserved without change.</p>
+</section>
+
+<section id="s33">
+  <div class="sec-label">Part 3 · §3.3</div>
+  <div class="section-headline">agent package</div>
+  <p class="lead">The <code>agent</code> is the Next.js front-end and conversational orchestrator. It is the surface where users (Sellers, Implementors, Engineering) interact with Rosetta; behind it sits the <code>app-server</code> for retrieval and the MCP layer for external consumers.</p>
+
+  <h3 class="sub-headline">Technology stack</h3>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-name">Next.js 15 (App Router)</div><div class="tech-desc">React Server Components, streaming, edge-friendly routing.</div></div>
+    <div class="tech-item"><div class="tech-name">TypeScript 5</div><div class="tech-desc">Strict mode; shared types with <code>app-server</code> via generated clients.</div></div>
+    <div class="tech-item"><div class="tech-name">Tailwind CSS</div><div class="tech-desc">Styling layer; design tokens shared with Rosetta brand system.</div></div>
+    <div class="tech-item"><div class="tech-name">Anthropic SDK</div><div class="tech-desc">Claude API client for generation under citation contract (Mechanism 4).</div></div>
+    <div class="tech-item"><div class="tech-name">tRPC</div><div class="tech-desc">Typed RPC between agent UI and Next.js API routes.</div></div>
+    <div class="tech-item"><div class="tech-name">Zustand</div><div class="tech-desc">Client-side conversation and Canvas state.</div></div>
+  </div>
+
+  <h3 class="sub-headline">Routing</h3>
+  <p>Three top-level routes carry the user-facing experience: <code>/chat/[conversationId]</code> for conversational turns, <code>/canvas/[artifactId]</code> for the artifact authoring view (DecisionTrace prose, readiness narrative, Site Package preview), and <code>/admin/skills</code> for the skill registry UI. Authentication uses NextAuth wired to the same tenant directory as <code>app-server</code>.</p>
+
+  <h3 class="sub-headline">Eleven-step GraphRAG pipeline</h3>
+  <ol>
+    <li>Receive user turn; identify <code>conversationId</code> and <code>tenantId</code>.</li>
+    <li>Append to <code>messages</code> via <code>app-server</code>.</li>
+    <li>Call <code>/v1/context</code> with the turn payload.</li>
+    <li>Receive ranked chunks and citation manifest.</li>
+    <li>Construct prompt with <strong>cache breakpoints</strong> (see below).</li>
+    <li>Call Anthropic API with streamed response.</li>
+    <li>Stream tokens to the client; parse citation markers in-flight.</li>
+    <li>Validate citation contract: every claim must point to a <code>provenanceSources</code> entry.</li>
+    <li>If a claim lacks attribution, redact and emit a graceful fallback.</li>
+    <li>Persist completed turn to <code>messages</code> with retrieval ledger backref.</li>
+    <li>Emit OTEL span with cost, latency, and citation count attributes.</li>
+  </ol>
+
+  <h3 class="sub-headline">Hybrid retrieval and domain-aware CRUD</h3>
+  <p>The agent surfaces a <strong>domain-aware CRUD</strong> view for authorized users: ContextPatterns and ADRs are editable through forms whose schema is derived directly from the metamodel JSON Schemas exposed by <code>app-server</code>. Edits are written through the producer/consumer contract — they become engagement seed contributions, not direct graph mutations.</p>
+
+  <h3 class="sub-headline">Canvas</h3>
+  <p>The Canvas is a long-running editable surface anchored to a conversation. It is where readiness narratives, DecisionTrace prose, and Site Package previews materialize. Canvas content streams from the same <code>/v1/context</code> pipeline; the difference from chat is that the surface persists across turns and supports user edits that re-enter the prompt for the next turn.</p>
+
+  <h3 class="sub-headline">Prompt architecture with cache breakpoints</h3>
+  <p>Prompts are assembled in five segments to maximize Anthropic prompt-caching: (1) <strong>system identity</strong> — Rosetta operator role and citation contract; (2) <strong>metamodel snippet</strong> — the relevant subset of v1.5.4 schemas for the current intent; (3) <strong>retrieved chunks</strong> — the ranked context block from <code>/v1/context</code>; (4) <strong>conversation history</strong>; (5) <strong>current user turn</strong>. Cache breakpoints sit between (1)–(2), (2)–(3), and (4)–(5), so the stable head of every prompt is reused across turns within a conversation.</p>
+</section>
+
+<section id="s34">
+  <div class="sec-label">Part 3 · §3.4</div>
+  <div class="section-headline">Slack — Primary Interaction Plane</div>
+  <p class="lead">Slack is Rosetta's primary practitioner-facing surface. Sellers, Implementors, and Engineering interact with Rosetta in Slack workflows and Agentforce channels, not in a separate web UI. The Slack integration is a thin wrapper that delegates every meaningful operation to the MCP server (see §3.5).</p>
+
+  <h3 class="sub-headline">Why Slack first</h3>
+  <p>The practitioners Rosetta serves spend their workday in Slack — channels for account teams, project channels for delivery, Agentforce DMs for in-flow assistance. Building a separate destination application introduces switching cost and rarely captures real usage. By making Slack the primary plane, Rosetta meets practitioners where they already are.</p>
+
+  <h3 class="sub-headline">Architecture — wraps the MCP server</h3>
+  <p>The Slack surface is a <strong>presentation adapter</strong> over the MCP server. It accepts user input from slash commands, mentions, and message shortcuts; translates each interaction into one or more MCP tool calls; and renders the responses as Slack Block Kit messages. No retrieval logic, no graph access, no skill execution lives in the Slack layer — every call is delegated.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Slack interaction</th><th>MCP tool invoked</th><th>Slack rendering</th></tr></thead>
+      <tbody>
+        <tr><td><code>/rosetta &lt;question&gt;</code></td><td><code>rosetta.context</code></td><td>Block Kit answer card with inline citations</td></tr>
+        <tr><td>@Rosetta mention in thread</td><td><code>rosetta.conversation.continue</code></td><td>Threaded reply with citation footer</td></tr>
+        <tr><td><code>/rosetta pattern &lt;key&gt;</code></td><td><code>rosetta.pattern.get</code></td><td>Pattern detail card with relationships</td></tr>
+        <tr><td><code>/rosetta adr &lt;key&gt;</code></td><td><code>rosetta.adr.get</code></td><td>ADR card with provenance footer</td></tr>
+        <tr><td>"Run readiness check" shortcut</td><td><code>rosetta.skill.invoke</code></td><td>Streamed progress + final readiness summary</td></tr>
+        <tr><td>Agentforce agent action</td><td>Any MCP tool</td><td>Returned to the calling agent, not directly to Slack UI</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Authentication and tenancy</h3>
+  <p>Slack workspace ↔ Rosetta tenant binding is established at installation. Each Slack user is mapped to a Rosetta caller identity through the tenant directory; bearer tokens are issued per workspace, not per user, and per-user identity is carried in the MCP call envelope. Every interaction is logged to <code>mcp_audit</code> the same way as any other MCP call — there is no parallel Slack-side audit ledger.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Architectural invariant</span>
+    <p>The Slack package contains <strong>no business logic</strong>. It is a presentation layer over MCP. Every retrieval, every skill invocation, every citation, every audit entry flows through the MCP server. If a feature can't be expressed as a sequence of MCP tool calls, it does not belong in the Slack surface — it belongs in the MCP server (and from there is available to every other consumer too).</p>
+  </div>
+</section>
+
+<section id="s35">
+  <div class="sec-label">Part 3 · §3.5</div>
+  <div class="section-headline">mcp package</div>
+  <p class="lead">The <code>mcp</code> package is a new top-level component in V2.0. It exposes Rosetta as an MCP (Model Context Protocol) server so that external clients — Claude.ai, Salesforce Slack, third-party ISV tools, custom agents — can consume Rosetta's retrieval and skills surface without going through the agent UI.</p>
+
+  <h3 class="sub-headline">Tools exposed</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tool name</th><th>Purpose</th><th>Backed by</th></tr></thead>
+      <tbody>
+        <tr><td><code>rosetta.context</code></td><td>Run the eight-step <code>/context</code> pipeline; return ranked chunks with citations</td><td><code>app-server</code> <code>/v1/context</code></td></tr>
+        <tr><td><code>rosetta.pattern.get</code></td><td>Fetch a ContextPattern by <code>domainKey</code> + <code>stableKey</code></td><td><code>app-server</code> <code>/v1/pattern/...</code></td></tr>
+        <tr><td><code>rosetta.adr.get</code></td><td>Fetch an ADR by key with full provenance</td><td><code>app-server</code> <code>/v1/adr/{adrKey}</code></td></tr>
+        <tr><td><code>rosetta.skill.invoke</code></td><td>Invoke a registered skill on behalf of the calling client</td><td><code>app-server</code> <code>/v1/skills/{id}/invoke</code></td></tr>
+        <tr><td><code>rosetta.conversation.continue</code></td><td>Append a turn to an existing conversation and stream the response</td><td><code>agent</code> + <code>app-server</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Consumers</h3>
+  <div class="use-cases">
+    <div class="use-case">
+      <div class="use-case-headline">Claude.ai</div>
+      <div class="use-case-body">Users add Rosetta as a connector inside Claude.ai; the five tools above appear as MCP tools Claude can call. This is the <strong>Option 2</strong> integration model.</div>
+    </div>
+    <div class="use-case">
+      <div class="use-case-headline">Salesforce Slack</div>
+      <div class="use-case-body">Slack workflows and Agentforce agents invoke Rosetta via MCP for canonical pattern lookup and readiness assessment.</div>
+    </div>
+    <div class="use-case">
+      <div class="use-case-headline">External ISV tools</div>
+      <div class="use-case-body">Cuneiform, Elements.cloud, Hubbl, and other partners call <code>rosetta.context</code> to ground their own generations in the canonical inventory.</div>
+    </div>
+    <div class="use-case">
+      <div class="use-case-headline">Custom agents</div>
+      <div class="use-case-body">SI-built and customer-built agents consume the same surface; no special API is required for "internal" vs "external" consumers.</div>
+    </div>
+  </div>
+
+  <h3 class="sub-headline">Authentication</h3>
+  <p>The MCP server reuses the <code>rsk_</code>-prefixed bearer token scheme from v1.6 for the agent. A single token authenticates a tenant + caller identity; every tool call is logged to <code>mcp_audit</code> with the invoked tool name, input schema digest, latency, and outcome. There is no separate identity system for MCP — the rule is one tenant directory, one token scheme, one audit ledger.</p>
+
+  <div class="imperative">
+    <span class="imp-label">Architectural invariant</span>
+    <p>The MCP layer is a <strong>protocol adapter</strong>, not a parallel implementation. Every MCP tool delegates to an existing <code>app-server</code> endpoint. There is no business logic in <code>mcp</code> — only request shaping, audit logging, and response packaging. This preserves the citation contract and the producer/consumer separation.</p>
+  </div>
+</section>
+
+<section id="s36">
+  <div class="sec-label">Part 3 · §3.6</div>
+  <div class="section-headline">CI/CD</div>
+  <p class="lead">Continuous integration runs per-package and converges on a composite all-green gate before any deployable artifact is produced.</p>
+
+  <h3 class="sub-headline">Jobs</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Job</th><th>Trigger</th><th>Gates</th></tr></thead>
+      <tbody>
+        <tr><td><code>platform-ci</code></td><td>Push to <code>platform/**</code></td><td>Pydantic validation, schema lint, seed-compile dry run, invariant queries</td></tr>
+        <tr><td><code>app-server-ci</code></td><td>Push to <code>app-server/**</code></td><td><code>go vet</code>, <code>go test</code>, race detector, Cypher syntax check against test fixtures</td></tr>
+        <tr><td><code>agent-ci</code></td><td>Push to <code>agent/**</code></td><td>TypeScript strict, ESLint, Vitest, Playwright smoke on PR</td></tr>
+        <tr><td><code>mcp-ci</code></td><td>Push to <code>mcp/**</code></td><td>MCP protocol conformance tests, audit logging schema check</td></tr>
+        <tr><td><code>all-green</code> (composite)</td><td>All of the above succeed</td><td>Triggers container build + ECR push</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">Deployment flow <span class="pill pill-open" style="margin-left:.5rem;">[OPEN]</span></h3>
+  <p>The AWS deployment flow is under design. The intent is: <code>all-green</code> on <code>main</code> pushes images to ECR; an EventBridge rule triggers an ECS service update with rolling deployment; ALB health checks gate traffic shift; rollback is a single-command image rollback via the same EventBridge path. Detailed sequencing (blue/green vs rolling, canary thresholds, automated rollback triggers) is open.</p>
+</section>
+
+<section id="s37">
+  <div class="sec-label">Part 3 · §3.7</div>
+  <div class="section-headline">Security</div>
+  <p class="lead">Security architecture preserves the v1.6 invariants (no Salesforce metadata API access, bearer-token auth, citation contract enforcement) and adds AWS-target controls for the new substrate.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Concern</th><th>v1.6 control</th><th>V2.0 target (AWS)</th></tr></thead>
+      <tbody>
+        <tr><td>Edge protection</td><td>nginx + fail2ban</td><td>CloudFront + AWS WAF (managed rules + custom rate limits)</td></tr>
+        <tr><td>TLS</td><td>Let's Encrypt</td><td>ACM (auto-rotating)</td></tr>
+        <tr><td>Admin access</td><td>SSH + bastion</td><td>AWS Client VPN + SSM Session Manager (no public SSH)</td></tr>
+        <tr><td>Bearer tokens</td><td><code>rsk_</code>-prefixed, rotated quarterly</td><td><strong>Preserved unchanged</strong>; storage moves to Secrets Manager</td></tr>
+        <tr><td>Encryption at rest</td><td>VM-level disk encryption</td><td>KMS-backed: RDS, S3 (SSE-KMS), EBS</td></tr>
+        <tr><td>Encryption in transit</td><td>TLS 1.3 everywhere</td><td>Unchanged; ALB → ECS uses internal TLS or VPC isolation</td></tr>
+        <tr><td>Secrets</td><td>Encrypted files on VM</td><td>AWS Secrets Manager + IAM-scoped retrieval</td></tr>
+        <tr><td>Audit logging</td><td>journald + relational DB</td><td>CloudTrail (control plane) + CloudWatch Logs + relational audit (data plane)</td></tr>
+        <tr><td>Salesforce metadata access</td><td><strong>Forbidden by architecture</strong></td><td><strong>Forbidden by architecture</strong> — producer/consumer contract preserved</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="imperative">
+    <span class="imp-label">Non-negotiable</span>
+    <p>Rosetta <strong>never</strong> reads a customer's Salesforce metadata API directly. The plugin reads a discovery dossier; the customer runs <code>make seed-compile</code> inside their own boundary. This rule survived the AWS migration unchanged, and any future request to relax it should be treated as an architectural change requiring a new ADR.</p>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sec-label">Part 4</div>
+  <div class="section-headline">Architecture Decision Records</div>
+  <p class="lead">Two ADR series govern Rosetta. <strong>ADR-PL-*</strong> covers platform-level decisions (metamodel, producer artifact, canonical inventory). <strong>ADR-GO-*</strong> covers consumer-side Go service decisions (retrieval, MCP, deployment substrate).</p>
+
+  <h3 class="sub-headline">ADR-PL series (platform)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>ADR-PL-001</td><td>Metamodel as the authoritative schema</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-002</td><td>Five-field identity contract</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-003</td><td>Producer-only contract (no customer metadata access)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-004</td><td>SHA-256 sidecar for seed integrity</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-005</td><td>Override modes (extend, refine, supersede)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-006</td><td>Engagement-scoped Cypher emission</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-007</td><td>Canonical inventory curated, not learned</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-008</td><td>Pydantic v2 as the schema validation runtime</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-009</td><td>ProvenanceSource enumerated source types</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-010</td><td>DecisionTrace as a first-class node</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-011</td><td>PromotionCandidate workflow (proposed → accepted)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-012</td><td>Make-based seed-compile pipeline</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-013</td><td>D360 invariants as constraint queries</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-014</td><td>JSON Schema as the wire-level schema format</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-015</td><td>Plugin architecture for engagement extraction</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-016</td><td>Cypher as the producer artifact format</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-017</td><td>Three-layer inheritance (Salesforce / SI / Project)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-018</td><td>Storage-by-owner for Layer 2 and Layer 3</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-019</td><td>Citation contract as a schema-level invariant</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-020</td><td>Monorepo consolidation (single <code>rosetta/</code> repository)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-PL-021</td><td>Deployment substrate moves to AWS (supersedes GCP three-VM)</td><td><span class="pill pill-proposed">Proposed</span></td></tr>
+        <tr><td>ADR-PL-022</td><td>Skills as first-class persistent artifacts</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub-headline">ADR-GO series (consumer service)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>ADR-GO-002</td><td>Go 1.23 as the consumer runtime</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-003</td><td>chi router for HTTP</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-004</td><td>Cypher queries in files, never inlined</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-005</td><td>RRF for hybrid retrieval merge</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-006</td><td>Layer-priority bonus in re-rank</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-007</td><td>OTEL instrumentation contract</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-008</td><td><code>rsk_</code>-prefixed bearer tokens</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-009</td><td>MySQL 9.4 as the relational tier</td><td><span class="pill pill-superseded">Superseded by ADR-GO-016</span></td></tr>
+        <tr><td>ADR-GO-010</td><td>Neo4j 5 community as the graph tier</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-011</td><td>goose for schema migrations</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-012</td><td>Eight-step <code>/context</code> pipeline</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-013</td><td>Intent classifier as deterministic-first</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-014</td><td>Flow definitions in YAML, steps in Cypher or prompts</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-015</td><td>Prompt cache breakpoints (five-segment architecture)</td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+        <tr><td>ADR-GO-016</td><td>Relational tier choice for AWS (MySQL vs Postgres vs Aurora)</td><td><span class="pill pill-open">[OPEN]</span></td></tr>
+        <tr><td>ADR-GO-017</td><td>MCP server as a protocol adapter to <code>app-server</code></td><td><span class="pill pill-accepted">Accepted</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-label">Part 5</div>
+  <div class="section-headline">Glossary</div>
+  <p class="lead">Canonical definitions for terms used throughout this specification.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th style="width:24%;">Term</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ADR</strong></td><td>Architecture Decision Record. A short, dated document capturing one decision, its context, alternatives considered, and consequences. Rosetta has two series: ADR-PL (platform) and ADR-GO (consumer service).</td></tr>
+        <tr><td><strong>Canonical Inventory</strong></td><td>The hand-curated graph of ContextPatterns, ADRs, relationships, and DecisionTraces maintained by the Data Foundations team. The source of truth Rosetta retrieves against.</td></tr>
+        <tr><td><strong>Citation Contract</strong></td><td>The schema-level rule that every claim in a generated artifact must point back to a node in the canonical inventory or a passage in the engagement dossier, via <code>provenanceSources</code>.</td></tr>
+        <tr><td><strong>ContextPattern</strong></td><td>A named, versioned design pattern stored as a node in Neo4j. The canonical inventory currently contains 63+ patterns across the eight metamodel domains.</td></tr>
+        <tr><td><strong>Consumer</strong></td><td>The runtime side of Rosetta: <code>app-server</code>, <code>agent</code>, and <code>mcp</code>. Consumes producer artifacts; never writes back to canonical content.</td></tr>
+        <tr><td><strong>Cypher</strong></td><td>Neo4j's query language. Rosetta's producer artifact format and the language of every graph query in <code>app-server</code>.</td></tr>
+        <tr><td><strong>DecisionTrace</strong></td><td>A first-class node type recording <code>stateAtDecision</code>, <code>alternativesConsidered</code>, and validation criteria. The trail of why a pattern was authored or overridden.</td></tr>
+        <tr><td><strong>Engagement Seed</strong></td><td>The plugin output: engagement-scoped Cypher that extends or overrides canonical patterns for one customer engagement. SHA-256 signed; replayed by the consumer at <code>make seed-compile</code>.</td></tr>
+        <tr><td><strong>Five-Field Identity</strong></td><td>The identity contract for any inheritable graph node: <code>domainKey</code>, <code>stableKey</code>, <code>tenantId</code>, <code>layer</code>, <code>overrideMode</code>. Validated before any graph write.</td></tr>
+        <tr><td><strong>GraphRAG</strong></td><td>Retrieval pattern that combines graph traversal with hybrid retrieval; the candidates surfaced to the LLM are determined by Cypher paths, not by similarity alone.</td></tr>
+        <tr><td><strong>Layer 1 / 2 / 3</strong></td><td>The three inheritance layers: Salesforce Core (canonical, Neo4j+MCP), SI (Drive/SharePoint, system integrator content), Project (Drive/SharePoint, engagement-specific content).</td></tr>
+        <tr><td><strong>MCP</strong></td><td>Model Context Protocol. The protocol by which external clients (Claude.ai, Slack, ISV tools) consume Rosetta tools without going through the agent UI. See §3.5.</td></tr>
+        <tr><td><strong>Override Mode</strong></td><td>One of <code>extend</code>, <code>refine</code>, <code>supersede</code>. Declares how an engagement seed modifies a canonical pattern; validated by Mechanism 2 constraint checks.</td></tr>
+        <tr><td><strong>Producer</strong></td><td>The authoring side of Rosetta: the <code>platform</code> package. Owns the canonical inventory, the engagement plugin, and the seed-compile pipeline. Never observes consumer runtime state.</td></tr>
+        <tr><td><strong>ProvenanceSource</strong></td><td>The enumerated source-type field attached to every claim and node: <code>vendor_scan</code>, <code>metadata_extract</code>, <code>discovery_transcript</code>, <code>manual_authoring</code>. Backbone of the citation contract.</td></tr>
+        <tr><td><strong>Reciprocal Rank Fusion (RRF)</strong></td><td>The merge algorithm used to combine vector and keyword retrieval rankings. Score = sum over rankers of 1/(k + rank). Default <code>k</code>=60.</td></tr>
+        <tr><td><strong>Site Package</strong></td><td>A signed, deployable bundle containing canonical seed + engagement seed + metamodel + prompts, produced by <code>platform</code> for SI consumption.</td></tr>
+        <tr><td><strong>Skill</strong></td><td>A persistent, registered capability package (ZIP) that a tenant has installed. Owned by Rosetta in V2.0 (moved inside from Claude in the Step 4 architecture). Logged via <code>skill_invocations</code>; can carry per-tenant memory.</td></tr>
+        <tr><td><strong>Tenant</strong></td><td>An isolated namespace for a customer or engagement. All Layer 2/3 content, conversations, telemetry, and skills are tenant-scoped.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-label">Part 6</div>
+  <div class="section-headline">Infrastructure &amp; Technology Inventory</div>
+  <p class="lead">Side-by-side inventory of the v1.6 GCP topology and the V2.0 AWS target. Items marked <span class="pill pill-open" style="font-size:.65rem;">[OPEN]</span> are pending architecture review (see §2.6, §2.8, §3.6).</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Component</th><th>v1.6 (GCP)</th><th>V2.0 (AWS target)</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>Compute</strong></td><td>Long-running services</td><td>3× GCE VMs (Debian)</td><td>ECS on Fargate</td></tr>
+        <tr><td>Async / batch</td><td>cron on platform VM</td><td>EventBridge + Lambda / Fargate task</td></tr>
+        <tr><td>Container registry</td><td>Docker Hub + GHCR</td><td>ECR (private, scanned)</td></tr>
+        <tr><td rowspan="3"><strong>Data tier</strong></td><td>Relational</td><td>MySQL 9.4 on VM</td><td>RDS MySQL / PostgreSQL / Aurora <span class="open-marker">[OPEN]</span></td></tr>
+        <tr><td>Graph</td><td>Neo4j 5 community on VM</td><td>Neo4j on EC2 / AuraDB <span class="open-marker">[OPEN]</span></td></tr>
+        <tr><td>Vector (Layer 2/3)</td><td>Not present in v1.6</td><td>pgvector (default) / Qdrant / Pinecone / OpenSearch <span class="open-marker">[OPEN]</span></td></tr>
+        <tr><td rowspan="3"><strong>Storage</strong></td><td>Object</td><td>GCS</td><td>S3 (versioned, SSE-KMS, lifecycle)</td></tr>
+        <tr><td>Block</td><td>GCE persistent disk</td><td>EBS (gp3, encrypted)</td></tr>
+        <tr><td>Secrets</td><td>Encrypted files on VM</td><td>AWS Secrets Manager + KMS</td></tr>
+        <tr><td rowspan="4"><strong>Network &amp; edge</strong></td><td>TLS termination</td><td>nginx + Let's Encrypt</td><td>CloudFront + ACM</td></tr>
+        <tr><td>WAF / edge protection</td><td>fail2ban + nginx rules</td><td>AWS WAF (managed + custom)</td></tr>
+        <tr><td>Load balancer</td><td>nginx</td><td>Application Load Balancer (ALB)</td></tr>
+        <tr><td>DNS</td><td>External registrar</td><td>Route 53</td></tr>
+        <tr><td rowspan="2"><strong>Admin access</strong></td><td>Shell access</td><td>SSH + bastion</td><td>AWS Client VPN + SSM Session Manager</td></tr>
+        <tr><td>IAM</td><td>SSH keys + GCP IAM</td><td>AWS IAM + IAM Identity Center</td></tr>
+        <tr><td rowspan="3"><strong>Observability</strong></td><td>Traces</td><td>Self-hosted Jaeger</td><td>AWS X-Ray / hosted Tempo <span class="open-marker">[OPEN]</span></td></tr>
+        <tr><td>Metrics</td><td>Prometheus on VM</td><td>Amazon Managed Prometheus + CloudWatch</td></tr>
+        <tr><td>Logs</td><td>journald + file</td><td>CloudWatch Logs (structured JSON)</td></tr>
+        <tr><td rowspan="3"><strong>Application</strong></td><td>platform</td><td>Python 3.12 / Pydantic v2</td><td>Unchanged</td></tr>
+        <tr><td>app-server</td><td>Go 1.23 / chi</td><td>Unchanged</td></tr>
+        <tr><td>agent</td><td>Next.js 15 / TypeScript</td><td>Unchanged</td></tr>
+        <tr><td><strong>Application (new)</strong></td><td>mcp</td><td>—</td><td>Go MCP server</td></tr>
+        <tr><td rowspan="2"><strong>External integrations</strong></td><td>LLM provider</td><td>Anthropic Claude API</td><td>Unchanged</td></tr>
+        <tr><td>Content sources (L2/L3)</td><td>Google Drive (planned)</td><td>Google Drive + SharePoint (+ optional Data Cloud, Git)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="doc-footer">
+  <div>Keenan Vision LLC · Confidential · Rosetta Program · 2026</div>
+  <div style="margin-top:.4rem;opacity:.7;">Rosetta by KeenanVision.net</div>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>
