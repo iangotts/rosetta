@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphify vs Rosetta — Formal Comparative Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1040b8; --blue-deep:#0a2080; --blue-bright:#1a4bc4; --blue-light:#e8eef8; --blue-pale:#f0f4fc;
+  --gold:#d4920a; --gold-bright:#f0b429; --gold-pale:#fef9ec; --gold-border:rgba(212,146,10,.2);
+  --text:#1a1a2e; --muted:#5a6072; --light-muted:#8b91a1; --bg:#f7f8fc; --surface:#ffffff; --border:#e2e6f0;
+  --dot-sky:#00a1e0; --dot-amber:#e8a000;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',-apple-system,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:1.15}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 40px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--blue-bright),var(--blue-deep));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-family:'DM Serif Display';font-size:15px}
+.logo-wordmark{font-family:'DM Serif Display';font-size:19px;color:var(--blue-deep);letter-spacing:.5px}
+.nav-meta{display:flex;align-items:center;gap:14px}
+.nav-meta span{font-size:12px;color:var(--muted)}
+.nav-badge{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;padding:5px 11px;border-radius:20px;
+  background:var(--gold-pale);color:var(--gold);border:1px solid var(--gold-border)}
+.nav-badge.badge-blue{background:var(--blue-pale);color:var(--blue);border-color:rgba(16,64,184,.18)}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--blue-deep) 0%,var(--blue) 55%,var(--blue-bright) 100%);color:#fff;padding:74px 40px 66px}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:34px 34px}
+.hero::after{content:"";position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(240,180,41,.28),transparent 68%)}
+.hero-inner{position:relative;max-width:980px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold-bright);margin-bottom:18px}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--gold-bright)}
+.hero-title{font-size:clamp(34px,5vw,56px);margin-bottom:16px;letter-spacing:-.5px}
+.hero-title em{font-style:italic;color:var(--gold-bright)}
+.hero-subtitle{font-size:18px;max-width:720px;color:rgba(255,255,255,.82);font-weight:300}
+.hero-meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:30px;padding-top:24px;border-top:1px solid rgba(255,255,255,.18)}
+.meta-item{display:flex;flex-direction:column;gap:2px}
+.meta-item .k{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold-bright)}
+.meta-item .v{font-size:14px;color:rgba(255,255,255,.92)}
+
+/* PAGE */
+.page{max-width:980px;margin:0 auto;padding:0 40px}
+section{padding:56px 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+.sec-label{display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.6px;color:var(--gold);padding-bottom:8px;border-bottom:2px solid var(--gold-border);margin-bottom:20px}
+.sec-label::after{content:"";flex:1;height:1px;background:var(--border);min-width:30px}
+.section-headline{font-size:clamp(26px,3.4vw,36px);color:var(--blue-deep);margin-bottom:18px;letter-spacing:-.3px}
+section p{color:var(--muted);font-size:16px;margin-bottom:14px;max-width:780px}
+section p strong{color:var(--text);font-weight:600}
+.lead{font-size:18px;color:var(--text)}
+
+/* IMPERATIVE */
+.imperative{background:var(--gold-pale);border-left:4px solid var(--gold);padding:22px 26px;border-radius:0 10px 10px 0;margin:26px 0;font-size:17px;color:var(--text)}
+.imperative strong{color:var(--gold)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:30px 0}
+.kpi{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:10px;padding:20px 18px}
+.kpi-num{font-family:'DM Serif Display';font-size:30px;color:var(--blue-deep);line-height:1.05}
+.kpi-num small{font-size:15px;color:var(--blue)}
+.kpi-label{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* TWO CARDS */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;position:relative}
+.card.graphify{border-top:4px solid var(--dot-sky)}
+.card.rosetta{border-top:4px solid var(--gold)}
+.card h3{font-size:23px;color:var(--blue-deep);margin-bottom:4px}
+.card .tagline{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--light-muted);margin-bottom:16px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.card li{font-size:14.5px;color:var(--muted);padding-left:20px;position:relative}
+.card li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%}
+.card.graphify li::before{background:var(--dot-sky)}
+.card.rosetta li::before{background:var(--gold-bright)}
+.card li strong{color:var(--text);font-weight:600}
+
+/* TABLE */
+.cmp-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;margin-top:10px}
+table.cmp{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
+table.cmp th,table.cmp td{text-align:left;padding:13px 16px;vertical-align:top;border-bottom:1px solid var(--border)}
+table.cmp thead th{background:var(--blue-deep);color:#fff;font-family:'DM Sans';font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+table.cmp thead th:first-child{background:var(--blue)}
+table.cmp tbody tr:nth-child(even){background:var(--blue-pale)}
+table.cmp td:first-child{font-weight:600;color:var(--text);width:180px}
+table.cmp .g{color:#0a6e96}
+table.cmp .r{color:var(--gold)}
+table.cmp tbody tr:last-child td{border-bottom:none}
+
+/* 2x2 */
+.matrix-note{font-size:13px;color:var(--light-muted);margin-top:10px;text-align:center}
+svg.matrix{display:block;width:100%;height:auto;margin:18px auto 0;max-width:640px}
+
+/* PROOF */
+.proof{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+.proof-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:20px 22px}
+.proof-card h4{font-size:16px;color:var(--blue-deep);font-family:'DM Sans';font-weight:700;margin-bottom:6px}
+.proof-card p{font-size:14px;margin-bottom:0}
+.proof-card.warn{border-left-color:var(--gold)}
+
+/* VERDICT */
+.verdict{background:linear-gradient(135deg,var(--blue-deep),var(--blue));color:#fff;border-radius:14px;padding:32px 34px;margin-top:14px;position:relative;overflow:hidden}
+.verdict::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px}
+.verdict h3{position:relative;color:#fff;font-size:24px;margin-bottom:12px}
+.verdict p{position:relative;color:rgba(255,255,255,.9);max-width:none;margin-bottom:10px}
+.verdict .tag{position:relative;display:inline-block;font-size:12px;text-transform:uppercase;letter-spacing:1.4px;color:var(--gold-bright);margin-bottom:14px;font-weight:600}
+
+/* FOOTER */
+.doc-footer{background:var(--blue-deep);color:rgba(255,255,255,.7);padding:26px 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px}
+.doc-footer span:first-child{color:var(--gold-bright)}
+
+.horizon{height:3px;background:linear-gradient(90deg,var(--gold-bright),var(--blue));border:none;margin:0}
+
+@media(max-width:760px){
+  .nav{padding:12px 20px}.nav-meta{display:none}
+  .hero{padding:54px 22px 44px}.page{padding:0 22px}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .duo,.proof{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-mark">R</div>
+    <div class="logo-wordmark">Rosetta</div>
+  </div>
+  <div class="nav-meta">
+    <span>Internal &middot; 2026</span>
+    <span class="nav-badge badge-blue">Competitive Analysis</span>
+    <span class="nav-badge">Confidential</span>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Comparative Analysis</div>
+    <h1 class="hero-title">Graphify <em>vs</em> Rosetta</h1>
+    <p class="hero-subtitle">Two knowledge graphs, two philosophies. One is an open-source tool that auto-extracts structure from a codebase at build time. The other is a governed, curated knowledge layer that serves Salesforce methodology to agents at runtime. This is where they meet, where they diverge, and what each can do for the other.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><span class="k">Prepared for</span><span class="v">Rosetta Programme</span></div>
+      <div class="meta-item"><span class="k">Subjects</span><span class="v">Graphify (OSS) &middot; Project Rosetta</span></div>
+      <div class="meta-item"><span class="k">Date</span><span class="v">June 2026</span></div>
+      <div class="meta-item"><span class="k">Status</span><span class="v">Decision support</span></div>
+    </div>
+  </div>
+</header>
+<hr class="horizon">
+
+<div class="page">
+
+  <!-- EXEC SUMMARY -->
+  <section id="summary">
+    <div class="sec-label">Executive Summary</div>
+    <h2 class="section-headline">They are not competitors. They are different categories that happen to share a noun.</h2>
+    <p class="lead">Both are described as "knowledge graphs that give AI the right context." That surface similarity hides a fundamental split. <strong>Graphify is a developer comprehension tool</strong> — point it at a folder, it parses code locally and emits a queryable graph so an AI coding assistant stops grepping blind. <strong>Rosetta is a governed operational knowledge layer</strong> — a curated Neo4j canonical inventory of Salesforce methodology that acts as a runtime "co-driver," surfacing trusted guidance at the moment of need.</p>
+    <div class="imperative">The honest verdict: <strong>complementary, not competitive.</strong> Where they overlap — graph-as-context-for-AI — they embody opposite design philosophies: <strong>emergent auto-extraction</strong> versus <strong>governed curation</strong>. Graphify is a candidate <em>tool inside</em> the Rosetta programme, not a threat to it.</p>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-num">Build-<small>time</small></div><div class="kpi-label">Graphify: per-repo, on demand</div></div>
+      <div class="kpi"><div class="kpi-num">Run-<small>time</small></div><div class="kpi-label">Rosetta: always-on source of truth</div></div>
+      <div class="kpi"><div class="kpi-num">Auto</div><div class="kpi-label">Graphify: emergent, ungoverned</div></div>
+      <div class="kpi"><div class="kpi-num">Curated</div><div class="kpi-label">Rosetta: governed, harmonised</div></div>
+    </div>
+  </section>
+
+  <!-- WHAT EACH IS -->
+  <section id="what">
+    <div class="sec-label">What Each One Is</div>
+    <h2 class="section-headline">A tool and a layer</h2>
+    <div class="duo">
+      <div class="card graphify">
+        <h3>Graphify</h3>
+        <div class="tagline">Open-source &middot; Build-time &middot; Code-centric</div>
+        <ul>
+          <li>An AI-coding-assistant <strong>skill</strong> (Claude Code, Codex, Cursor, etc.) that turns a folder of code, docs, papers and images into a queryable graph.</li>
+          <li><strong>Construction:</strong> Tree-sitter AST locally (code never leaves the machine) + LLM semantic extraction for prose and images.</li>
+          <li><strong>Clustering:</strong> NetworkX + Leiden community detection on topology alone — no embeddings, no vector store.</li>
+          <li><strong>Output:</strong> three committed files — graph.html, graph.json, GRAPH_REPORT.md — plus optional Neo4j/Cypher export, MCP server, watch mode.</li>
+          <li><strong>Trust model:</strong> every edge tagged EXTRACTED / INFERRED / AMBIGUOUS — honest about found vs guessed.</li>
+          <li><strong>Maturity:</strong> ~58K GitHub stars, ~1.2M PyPI downloads, YC-backed, single primary maintainer (Safi Shamsi).</li>
+        </ul>
+      </div>
+      <div class="card rosetta">
+        <h3>Rosetta</h3>
+        <div class="tagline">Governed &middot; Run-time &middot; Methodology-centric</div>
+        <ul>
+          <li>A <strong>governed knowledge layer</strong> (KeenanVision / Ian Gotts) unifying fragmented Salesforce documentation, product naming and methodology into one source of truth.</li>
+          <li><strong>Construction:</strong> a Cypher-first content pipeline over a <strong>governed semantic model on Neo4j</strong> — a formal entity-and-relationship canonical inventory.</li>
+          <li><strong>Ontology:</strong> a deliberate Phase &rarr; Stage &rarr; Task hierarchy with RASCI, versioning and harmonisation rules under a design authority.</li>
+          <li><strong>Delivery:</strong> serves context to agents at runtime via RAG middleware, MCP and SKILL.md inside Slack and Cowork — "no new interface, no ramp time."</li>
+          <li><strong>Trust model:</strong> curated gold-standard content; the canonical inventory doubles as compounding <strong>eval ground truth</strong>.</li>
+          <li><strong>Positioning:</strong> the "co-driver" that amplifies the architect's judgement — proof of value in 5 days, activation in 24 hours.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIMENSION TABLE -->
+  <section id="dimensions">
+    <div class="sec-label">Side by Side</div>
+    <h2 class="section-headline">Twelve dimensions of difference</h2>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>Dimension</th><th class="g">Graphify</th><th class="r">Rosetta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Category</td><td>Developer tool / OSS skill</td><td>Governed knowledge product / layer</td></tr>
+          <tr><td>Primary user</td><td>Engineers &amp; their AI coding assistants</td><td>AEs, SEs, SIs, implementers, agents in the field</td></tr>
+          <tr><td>Corpus</td><td>A repository: code, docs, papers, images</td><td>Salesforce methodology, product naming, SOPs, org metadata</td></tr>
+          <tr><td>Graph construction</td><td>Auto: tree-sitter AST + LLM extraction</td><td>Curated: Cypher-first pipeline, human authored &amp; harmonised</td></tr>
+          <tr><td>Structure</td><td>Emergent Leiden communities + typed edges</td><td>Formal ontology: Phase &rarr; Stage &rarr; Task, entities &amp; relationships</td></tr>
+          <tr><td>Governance</td><td>None — ungoverned, regenerated per build</td><td>Strong — RASCI, versioning, design authority, harmonisation</td></tr>
+          <tr><td>Provenance</td><td>Confidence tags (EXTRACTED/INFERRED/AMBIGUOUS)</td><td>Curated chain of custody; gold-standard master versions</td></tr>
+          <tr><td>Lifecycle</td><td>Build-time, per-repo, committed to git</td><td>Always-on canonical source of truth; versioned, compounding</td></tr>
+          <tr><td>AI delivery</td><td>Query CLI, MCP, GRAPH_REPORT for assistants</td><td>RAG middleware + MCP + SKILL.md in Slack / Cowork at runtime</td></tr>
+          <tr><td>Embeddings</td><td>None — topology-only clustering</td><td>Semantic retrieval over the governed graph (RAG)</td></tr>
+          <tr><td>Data residency</td><td>Code local; docs/images sent to your LLM</td><td>Internal governed content under the programme's control</td></tr>
+          <tr><td>Maturity / ownership</td><td>Mass-adopted OSS, single maintainer, fast releases</td><td>Internal Phase-1 programme, 15 deliverables, Dreamforce-targeted</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2x2 -->
+  <section id="matrix">
+    <div class="sec-label">Positioning</div>
+    <h2 class="section-headline">The 2&times;2: extraction vs governance, code vs business knowledge</h2>
+    <p>The two axes that actually separate them are <strong>how the graph is created</strong> (emergent auto-extraction at the bottom, governed curation at the top) and <strong>what it is a graph of</strong> (code &amp; repository structure on the left, business knowledge &amp; methodology on the right). They land in opposite quadrants. ZenAlpha is plotted as ecosystem context — a process-knowledge pipeline that sits between the two.</p>
+    <svg class="matrix" viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two by two positioning matrix">
+      <!-- quadrant backgrounds -->
+      <rect x="70" y="40" width="235" height="190" fill="#f0f4fc"/>
+      <rect x="305" y="40" width="235" height="190" fill="#fef9ec"/>
+      <rect x="70" y="230" width="235" height="190" fill="#f7f8fc"/>
+      <rect x="305" y="230" width="235" height="190" fill="#f0f4fc"/>
+      <!-- axes -->
+      <line x1="70" y1="40" x2="70" y2="420" stroke="#5a6072" stroke-width="1.5"/>
+      <line x1="70" y1="420" x2="540" y2="420" stroke="#5a6072" stroke-width="1.5"/>
+      <line x1="305" y1="40" x2="305" y2="420" stroke="#e2e6f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <line x1="70" y1="230" x2="540" y2="230" stroke="#e2e6f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <!-- axis labels -->
+      <text x="42" y="135" fill="#0a2080" font-family="DM Sans" font-size="12" font-weight="600" transform="rotate(-90 42 135)" text-anchor="middle">Governed / curated</text>
+      <text x="42" y="325" fill="#8b91a1" font-family="DM Sans" font-size="12" font-weight="600" transform="rotate(-90 42 325)" text-anchor="middle">Emergent / auto-extracted</text>
+      <text x="187" y="448" fill="#8b91a1" font-family="DM Sans" font-size="12" font-weight="600" text-anchor="middle">Code &amp; repository structure</text>
+      <text x="423" y="448" fill="#0a2080" font-family="DM Sans" font-size="12" font-weight="600" text-anchor="middle">Business knowledge &amp; methodology</text>
+      <!-- Rosetta marker (upper-right) -->
+      <circle cx="450" cy="105" r="13" fill="#d4920a"/>
+      <text x="450" y="110" fill="#fff" font-family="DM Serif Display" font-size="14" text-anchor="middle">R</text>
+      <text x="450" y="140" fill="#1a1a2e" font-family="DM Sans" font-size="13" font-weight="700" text-anchor="middle">Rosetta</text>
+      <text x="450" y="156" fill="#5a6072" font-family="DM Sans" font-size="10.5" text-anchor="middle">Governed methodology layer</text>
+      <!-- Graphify marker (lower-left) -->
+      <circle cx="165" cy="340" r="13" fill="#00a1e0"/>
+      <text x="165" y="345" fill="#fff" font-family="DM Serif Display" font-size="13" text-anchor="middle">G</text>
+      <text x="165" y="375" fill="#1a1a2e" font-family="DM Sans" font-size="13" font-weight="700" text-anchor="middle">Graphify</text>
+      <text x="165" y="391" fill="#5a6072" font-family="DM Sans" font-size="10.5" text-anchor="middle">Auto-extracted code graph</text>
+      <!-- ZenAlpha ecosystem context (center) -->
+      <circle cx="340" cy="250" r="10" fill="none" stroke="#5a6072" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="340" y="254" fill="#5a6072" font-family="DM Serif Display" font-size="11" text-anchor="middle">Z</text>
+      <text x="340" y="282" fill="#8b91a1" font-family="DM Sans" font-size="11" font-weight="600" text-anchor="middle">ZenAlpha</text>
+      <text x="340" y="297" fill="#8b91a1" font-family="DM Sans" font-size="10" text-anchor="middle">(ecosystem context)</text>
+    </svg>
+    <p class="matrix-note">Markers are qualitative positions, not measured scores.</p>
+  </section>
+
+  <!-- OVERLAP -->
+  <section id="overlap">
+    <div class="sec-label">Where They Touch</div>
+    <h2 class="section-headline">The narrow overlap — and the deep philosophical contrast</h2>
+    <p>Both produce a graph, both can speak MCP, and both ultimately exist to put better context in front of an AI. Graphify can even export Cypher and push to Neo4j — the same database Rosetta is built on. So at the plumbing layer they can literally meet.</p>
+    <p>But the philosophies are opposites. <strong>Graphify trusts the corpus and surfaces what is there</strong> — emergent communities, "god nodes," surprising cross-file links, all regenerated each run and explicitly flagged when guessed. <strong>Rosetta distrusts raw corpora and imposes an authored truth</strong> — harmonised, governed, RASCI-owned, versioned so every improvement compounds. Graphify answers "what does this codebase actually look like?" Rosetta answers "what is the correct, sanctioned way to do this?"</p>
+    <div class="imperative">Put simply: <strong>Graphify is descriptive; Rosetta is prescriptive.</strong> A descriptive graph is a perfect input to — and audit lens on — a prescriptive one. It is a poor replacement for it.</div>
+  </section>
+
+  <!-- WHAT GRAPHIFY OFFERS ROSETTA -->
+  <section id="for-rosetta">
+    <div class="sec-label">Opportunity</div>
+    <h2 class="section-headline">What Graphify could do <em>for</em> the Rosetta programme</h2>
+    <div class="proof">
+      <div class="proof-card">
+        <h4>Bootstrap &amp; audit the canonical inventory</h4>
+        <p>Run Graphify over the raw Salesforce docs, methodology files and transcripts to auto-draft a first-pass entity graph. Use it as a candidate set the design authority then harmonises — faster than a blank page, with confidence tags showing what needs human judgement.</p>
+      </div>
+      <div class="proof-card">
+        <h4>QA lens on the governed graph</h4>
+        <p>Graphify's god-node and "surprising connection" analysis is a cheap structural sanity check. Run it against the curated content to find orphaned nodes, over-connected hubs, or links the harmonisation step missed.</p>
+      </div>
+      <div class="proof-card">
+        <h4>Understand the Rosetta codebase itself</h4>
+        <p>The middleware, MCP server, SKILL.md and Cowork config are real code. Graphify maps that repo so contributors trace how a query flows from Cowork &rarr; middleware &rarr; Neo4j without reading every file.</p>
+      </div>
+      <div class="proof-card">
+        <h4>Borrow the discipline, not just the tool</h4>
+        <p>Two ideas are worth importing regardless: <strong>topology-only clustering</strong> (no embedding bill) as a structural view of the inventory, and <strong>explicit found-vs-guessed tagging</strong> — a natural fit for Rosetta's ground-truth and eval ambitions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT ROSETTA HAS -->
+  <section id="for-graphify">
+    <div class="sec-label">The Moat</div>
+    <h2 class="section-headline">What Rosetta has that Graphify structurally cannot</h2>
+    <p>None of the above is a threat to Rosetta's reason to exist, because Graphify cannot produce the things that make Rosetta valuable:</p>
+    <div class="duo">
+      <div class="card rosetta">
+        <h3 style="font-size:19px">Governance &amp; authority</h3>
+        <ul>
+          <li><strong>Sanctioned correctness.</strong> An auto-extracted graph reflects whatever the docs say, contradictions and all. Rosetta encodes the <em>approved</em> answer, owned via RASCI.</li>
+          <li><strong>Compounding ground truth.</strong> The versioned inventory survives model, retrieval and rubric changes — every preference pair is a permanent data point. A per-build graph has no such memory.</li>
+          <li><strong>Runtime co-driver.</strong> Rosetta serves guidance live, in the flow of work. Graphify is a build-time artefact, not a production guidance layer.</li>
+          <li><strong>Domain ontology.</strong> Phase &rarr; Stage &rarr; Task is a deliberate methodology model, not an emergent cluster. It is the product.</li>
+        </ul>
+      </div>
+      <div class="card graphify">
+        <h3 style="font-size:19px">Due diligence if adopted</h3>
+        <ul>
+          <li><strong>Package name.</strong> The official PyPI package is <em>graphifyy</em> (double-y) with many unaffiliated look-alikes — a typosquat hazard. Pin the version; prefer uv/pipx.</li>
+          <li><strong>Data residency.</strong> Code stays local, but docs and images are sent to the configured LLM. For sensitive Salesforce content, route through a controlled model deliberately.</li>
+          <li><strong>Self-reported metrics.</strong> The headline 71.5&times; token-reduction figure is the project's own number on a mixed corpus — treat as indicative, not benchmarked.</li>
+          <li><strong>Single-maintainer risk.</strong> Fast-moving OSS with one primary author; fine for internal tooling, weigh before any production dependency.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERDICT -->
+  <section id="verdict">
+    <div class="sec-label">Recommendation</div>
+    <h2 class="section-headline">Verdict</h2>
+    <div class="verdict">
+      <span class="tag">Complementary &middot; Not Competitive</span>
+      <h3>Adopt Graphify as an internal tool. Do not frame it as a Rosetta alternative.</h3>
+      <p>Graphify and Rosetta occupy opposite quadrants: descriptive auto-extraction of code versus prescriptive governed business knowledge. They are not substitutes. The strategic move is to use Graphify <strong>upstream and around</strong> Rosetta — to bootstrap the inventory, audit the governed graph, and map the Rosetta codebase — while Rosetta remains the curated, runtime source of truth that no auto-extraction tool can replace.</p>
+      <p>If a competitive 2&times;2 is needed for positioning, Rosetta sits firmly upper-right (governed &times; business-knowledge) on its own merits here — not by construction, but because that quadrant is genuinely where the defensible value lives.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="doc-footer">
+  <span>Rosetta &middot; KeenanVision.net &middot; Internal</span>
+  <span>Comparative Analysis &middot; Graphify vs Rosetta &middot; 2026</span>
+</footer>
+
+</body>
+</html>
