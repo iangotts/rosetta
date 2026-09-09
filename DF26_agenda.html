@@ -1,0 +1,549 @@
+<title>Dreamforce 2026 Agenda</title>
+<style>
+  :root {
+    --blue: #1040b8;
+    --blue-deep: #0a2080;
+    --blue-bright: #1a4bc4;
+    --blue-light: #e8eef8;
+    --blue-pale: #f0f4fc;
+    --gold: #d4920a;
+    --gold-bright: #f0b429;
+    --gold-pale: #fef9ec;
+    --gold-border: rgba(212, 146, 10, 0.2);
+    --text: #1a1a2e;
+    --muted: #5a6072;
+    --light-muted: #8b91a1;
+    --bg: #f7f8fc;
+    --surface: #ffffff;
+    --border: #e2e6f0;
+    --row-alt: #f5f7fb;
+    --sticky-shadow: rgba(10, 32, 128, 0.10);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --blue: #5b86e8;
+      --blue-deep: #0a1230;
+      --blue-bright: #6f97ee;
+      --blue-light: #16224a;
+      --blue-pale: #131b3a;
+      --gold: #f0b429;
+      --gold-bright: #f3c65a;
+      --gold-pale: #2a2312;
+      --gold-border: rgba(240, 180, 41, 0.28);
+      --text: #eef0f8;
+      --muted: #a9afc4;
+      --light-muted: #7c82a0;
+      --bg: #0c1024;
+      --surface: #12162e;
+      --border: #262c4d;
+      --row-alt: #161b38;
+      --sticky-shadow: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --blue: #5b86e8;
+    --blue-deep: #0a1230;
+    --blue-bright: #6f97ee;
+    --blue-light: #16224a;
+    --blue-pale: #131b3a;
+    --gold: #f0b429;
+    --gold-bright: #f3c65a;
+    --gold-pale: #2a2312;
+    --gold-border: rgba(240, 180, 41, 0.28);
+    --text: #eef0f8;
+    --muted: #a9afc4;
+    --light-muted: #7c82a0;
+    --bg: #0c1024;
+    --surface: #12162e;
+    --border: #262c4d;
+    --row-alt: #161b38;
+    --sticky-shadow: rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, .brand-serif {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-weight: 400;
+  }
+
+  /* Nav */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue-bright));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-bright);
+    font-family: "DM Serif Display", serif;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .logo-wordmark { font-family: "DM Serif Display", serif; font-size: 19px; color: var(--text); }
+  .logo-wordmark span { color: var(--gold); }
+  .nav-meta { display: flex; align-items: center; gap: 18px; }
+  .nav-badge {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    background: var(--blue-pale);
+    border: 1px solid var(--gold-border);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .nav-source { font-size: 13px; color: var(--light-muted); }
+
+  /* Page / Hero */
+  .page { max-width: 1240px; margin: 0 auto; padding: 0 32px 64px; }
+
+  .hero { padding: 56px 0 32px; }
+  .hero-inner { max-width: 800px; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 12px;
+  }
+  .hero-title {
+    font-size: 42px;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  .hero-title em { font-style: normal; color: var(--blue); }
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 24px;
+    max-width: 62ch;
+  }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 22px; }
+  .meta-item { display: flex; align-items: baseline; gap: 6px; font-size: 14px; color: var(--muted); }
+  .meta-item strong { color: var(--text); font-weight: 700; }
+
+  .horizon {
+    height: 3px;
+    border: none;
+    margin: 0 0 32px;
+    background: linear-gradient(to right, var(--gold-bright), var(--blue-bright));
+    border-radius: 2px;
+  }
+
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi {
+    background: var(--blue-pale);
+    border-top: 3px solid var(--blue-bright);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .kpi-num {
+    font-family: "DM Serif Display", serif;
+    font-size: 30px;
+    color: var(--blue-deep);
+    line-height: 1;
+    display: block;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .sec-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin: 0 0 8px;
+  }
+  .section-headline {
+    font-size: 24px;
+    margin: 0 0 6px;
+  }
+  .section-sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+
+  /* Table */
+  .table-wrap {
+    overflow: auto;
+    max-height: 72vh;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(10, 32, 128, 0.06);
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 13px;
+    min-width: 2200px;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--blue-deep);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    z-index: 5;
+  }
+  thead tr.group-row th {
+    background: var(--blue);
+    top: 0;
+    z-index: 6;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.18);
+  }
+  thead tr.sub-row th {
+    top: 33px;
+    z-index: 5;
+    font-size: 10.5px;
+    font-weight: 500;
+    background: var(--blue-deep);
+  }
+  th.sticky-col, td.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 4;
+    box-shadow: 2px 0 4px var(--sticky-shadow);
+  }
+  th.sticky-col { z-index: 7; background: var(--blue-deep); }
+  td.sticky-col {
+    background: var(--surface);
+    font-weight: 600;
+    color: var(--text);
+  }
+  tbody tr.row-even td.sticky-col { background: var(--row-alt); }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+  }
+  tbody tr.row-even { background: var(--row-alt); }
+  tbody tr:hover td { background: var(--blue-pale); }
+  tbody tr:hover td.sticky-col { background: var(--blue-pale); }
+
+  .col-name { min-width: 260px; max-width: 320px; white-space: normal; }
+  .col-name a { color: var(--text); text-decoration: none; border-bottom: 1px dotted var(--blue-bright); }
+  .col-name a:hover { color: var(--blue-bright); }
+  .col-abstract { min-width: 230px; max-width: 320px; white-space: normal; font-style: italic; }
+  .muted-cell { color: var(--light-muted); }
+  .empty-slot { background: transparent; }
+  .nowrap { white-space: nowrap; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Footer */
+  .doc-footer {
+    background: var(--blue-deep);
+    color: rgba(255,255,255,0.85);
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .doc-footer strong { color: #fff; }
+  .doc-footer a { color: var(--gold-bright); text-decoration: none; }
+
+  @media (max-width: 720px) {
+    .nav-meta { display: none; }
+    .hero-title { font-size: 32px; }
+    .doc-footer { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Search bar */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+  .search-icon { color: var(--light-muted); flex-shrink: 0; }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    min-width: 120px;
+  }
+  .search-bar input::placeholder { color: var(--light-muted); }
+  .search-bar button {
+    border: none;
+    background: var(--blue-pale);
+    color: var(--muted);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .search-bar button:hover { background: var(--gold-pale); color: var(--blue-deep); }
+  .search-count {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 12px;
+  }
+  .no-results {
+    text-align: center;
+    color: var(--muted);
+    font-style: italic;
+    padding: 28px 14px !important;
+  }
+  mark {
+    background: var(--gold-bright);
+    color: var(--blue-deep);
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  @media (max-width: 720px) {
+    .search-count { display: none; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon">R</div>
+    <div class="logo-wordmark">Rosetta <span>·</span> KeenanVision.net</div>
+  </div>
+  <div class="nav-meta">
+    <span class="nav-source">Source: Dreamforce 2026 personal agenda (df26 schedule export + session catalog)</span>
+    <span class="nav-badge">Sept 15–17, 2026 · San Francisco</span>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">My Agenda</p>
+      <h1 class="hero-title">Dreamforce 2026 — <em>My Sessions</em></h1>
+      <p class="hero-subtitle">Every session on Ian Gotts's registered Dreamforce agenda, laid out as one reference table: what, when, where, who's presenting — and now, what each session is actually about.</p>
+      <div class="hero-meta">
+        <div class="meta-item"><strong>27</strong> sessions</div>
+        <div class="meta-item"><strong>3</strong> days</div>
+        <div class="meta-item"><strong>116</strong> speaker appearances</div>
+        <div class="meta-item"><strong>Pacific</strong> time zone</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="horizon">
+
+  <div class="kpi-row">
+    <div class="kpi"><span class="kpi-num">27</span><span class="kpi-label">Total sessions</span></div>
+    <div class="kpi"><span class="kpi-num">8</span><span class="kpi-label">Tue, Sep 15</span></div>
+    <div class="kpi"><span class="kpi-num">11</span><span class="kpi-label">Wed, Sep 16</span></div>
+    <div class="kpi"><span class="kpi-num">8</span><span class="kpi-label">Thu, Sep 17</span></div>
+  </div>
+
+  <p class="sec-label">Full Schedule</p>
+  <h2 class="section-headline">All 27 Sessions</h2>
+  <p class="section-sub">Sorted by date, then start time. Scroll right for speaker detail — up to 10 speakers per session, each with name / company / title.</p>
+
+  <div class="search-bar">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input type="text" id="searchInput" placeholder="Search by session title, abstract, speaker name, or company…" autocomplete="off">
+    <button type="button" id="searchClear" hidden aria-label="Clear search">×</button>
+    <span class="search-count" id="searchCount">27 of 27 sessions</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr class="group-row">
+          <th class="sticky-col" rowspan="2">Session Name</th>
+          <th rowspan="2">Abstract</th>
+          <th rowspan="2">Date</th>
+          <th rowspan="2">Start</th>
+          <th rowspan="2">End</th>
+          <th rowspan="2">Location</th>
+          <th colspan="3">Speaker 1</th>
+          <th colspan="3">Speaker 2</th>
+          <th colspan="3">Speaker 3</th>
+          <th colspan="3">Speaker 4</th>
+          <th colspan="3">Speaker 5</th>
+          <th colspan="3">Speaker 6</th>
+          <th colspan="3">Speaker 7</th>
+          <th colspan="3">Speaker 8</th>
+          <th colspan="3">Speaker 9</th>
+          <th colspan="3">Speaker 10</th>
+        </tr>
+        <tr class="sub-row">
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+          <th>Name</th><th>Company</th><th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr data-search="get started with casey the help agent turn your help portal into an ai-powered resolution engine with casey the help agent. build, ground, and customize an agent and deploy it across channels, transforming your service experience. gabo ostolaza alfaro salesforce darren hendrick salesforce max golov salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779896099259001vXWd" target="_blank" rel="noopener">Get Started with Casey the Help Agent</a></td><td class="col-abstract">Turn your help portal into an AI-powered resolution engine with Casey the help agent. Build, ground, and customize an agent and deploy it across channels, transforming your service experience.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">8:00 AM</td><td class="nowrap tabular">9:00 AM</td><td>Marriott, Level B2, Salon 8</td><td class="nowrap">Gabo Ostolaza Alfaro</td><td class="">Salesforce</td><td class="">Industries Senior Trainer</td><td class="nowrap">Darren Hendrick</td><td class="">Salesforce</td><td class="">Principal Instructor</td><td class="nowrap">Max Golov</td><td class="">Salesforce</td><td class="">Sr. Principal Technical Instructor</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="dreamforce main keynote 2026 join salesforce chair and ceo marc benioff, along with special guests, to explore what it means to become an agentic enterprise, where humans, agents, and platforms together promote customer success. maryann patel salesforce rohan kumar salesforce leandro perez salesforce patrick stokes salesforce roland busch siemens ag katie o’neil qualified, from salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1776704005612001dxP3" target="_blank" rel="noopener">Dreamforce Main Keynote 2026</a></td><td class="col-abstract">Join Salesforce Chair and CEO Marc Benioff, along with special guests, to explore what it means to become an Agentic Enterprise, where humans, agents, and platforms together promote customer success.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">10:00 AM</td><td class="nowrap tabular">12:00 PM</td><td>Moscone South, LL, Keynote - Hall B</td><td class="nowrap">MaryAnn Patel</td><td class="">Salesforce</td><td class="">SVP, Product Management</td><td class="nowrap">Rohan Kumar</td><td class="">Salesforce</td><td class="">President, Chief Platform &amp; Engineering Officer</td><td class="nowrap">Leandro Perez</td><td class="">Salesforce</td><td class="">SVP &amp; CMO, Australia &amp; New Zealand</td><td class="nowrap">Patrick Stokes</td><td class="">Salesforce</td><td class="">President, Applications &amp; Marketing</td><td class="nowrap">Roland Busch</td><td class="">Siemens AG</td><td class="">President &amp; CEO</td><td class="nowrap">Katie O’Neil</td><td class="">Qualified, from Salesforce</td><td class="">Product Marketing</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="keynote: the enterprise ai harness for the agentic enterprise discover salesforce’s vision for the agentic enterprise – and the trusted capabilities that bring context, agency, action, governance, security, and ai control together across your business. desiree motamedi salesforce rohan kumar salesforce muralidhar krishnaprasad salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726975414001ljr5" target="_blank" rel="noopener">Keynote: The Enterprise AI Harness for the Agentic Enterprise</a></td><td class="col-abstract">Discover Salesforce’s vision for the Agentic Enterprise – and the trusted capabilities that bring context, agency, action, governance, security, and AI control together across your business.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">12:30 PM</td><td class="nowrap tabular">1:20 PM</td><td>Moscone West, L3, Keynote - Room 3001</td><td class="nowrap">Desiree Motamedi</td><td class="">Salesforce</td><td class="">CMO, Data &amp; Platform</td><td class="nowrap">Rohan Kumar</td><td class="">Salesforce</td><td class="">President, Chief Platform &amp; Engineering Officer</td><td class="nowrap">Muralidhar Krishnaprasad</td><td class="">Salesforce</td><td class="">President &amp; CTO, C360 Platform, Apps, Industries &amp; Agentforce</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="build smarter with aiforce in this circle of success, see when headless fits, and learn how to evaluate headless readiness, api strategy for ai, and llm basics while networking with peers. andre robitaille salesforce nikhil gupta salesforce kunal pal salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779896086618001vXDA" target="_blank" rel="noopener">Build Smarter With AIforce</a></td><td class="col-abstract">In this Circle of Success, see when headless fits, and learn how to evaluate headless readiness, API strategy for AI, and LLM basics while networking with peers.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">1:00 PM</td><td class="nowrap tabular">2:00 PM</td><td>Marriott, Level B2, Salon 4-6</td><td class="nowrap">Andre Robitaille</td><td class="">Salesforce</td><td class="">RVP, Forward Deployed Engineering</td><td class="nowrap">Nikhil Gupta</td><td class="">Salesforce</td><td class="">Forward Deployed Engineering Lead</td><td class="nowrap">Kunal Pal</td><td class="">Salesforce</td><td class="">Agentforce FDE Sr. Director</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="agentforce and data 360: lessons from deployments planning or currently deploying agentforce or data 360? learn from agentblazers and datablazers who&#x27;ve done it. ask about use cases, change management, implementation lessons, and more. magon mair wilco source shreeya rashinkar tata consultancy services cc chiderski cld partners joey monroe bluegator, llc"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779912637153001srOD" target="_blank" rel="noopener">Agentforce and Data 360: Lessons from Deployments</a></td><td class="col-abstract">Planning or currently deploying Agentforce or Data 360? Learn from Agentblazers and Datablazers who&#x27;ve done it. Ask about use cases, change management, implementation lessons, and more.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">1:30 PM</td><td class="nowrap tabular">2:15 PM</td><td>Moscone West, L2, Community Networking 2</td><td class="nowrap">Magon Mair</td><td class="">Wilco Source</td><td class="">Director of Solution Engineering</td><td class="nowrap">Shreeya Rashinkar</td><td class="">Tata Consultancy Services</td><td class="">Salesforce Presales and GTM Leader</td><td class="nowrap">CC Chiderski</td><td class="">CLD Partners</td><td class="">Director of AI</td><td class="nowrap">Joey Monroe</td><td class="">BlueGator, LLC</td><td class="">Senior Consultant</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="help agent in salesforce: context-aware support discover how context-aware help agent experiences inside salesforce transform support into a seamless, in-product customer success journey. tzlil kreitman salesforce inkit freeze salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779911547923001FLX4" target="_blank" rel="noopener">Help Agent in Salesforce: Context-Aware Support</a></td><td class="col-abstract">Discover how context-aware Help Agent experiences inside Salesforce transform support into a seamless, in-product customer success journey.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">2:00 PM</td><td class="nowrap tabular">2:20 PM</td><td>Moscone North, LL, Campground, Theater 1</td><td class="nowrap">Tzlil Kreitman</td><td class="">Salesforce</td><td class="">Product Management Director</td><td class="nowrap">Inkit Freeze</td><td class="">Salesforce</td><td class="">Product Management Director</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="security keynote: trust across agents, data, and platforms learn how to secure and govern your agentic enterprise. outpace evolving threats and accelerate ai initiatives with ironclad trust, visibility, and guardrails. pete thurston salesforce gagan gulati salesforce christine magnuson salesforce carl brundage salesforce marla hay salesforce iain mulholland salesforce tiina stephens capita"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727012181001lpWi" target="_blank" rel="noopener">Security Keynote: Trust Across Agents, Data, and Platforms</a></td><td class="col-abstract">Learn how to secure and govern your Agentic Enterprise. Outpace evolving threats and accelerate AI initiatives with ironclad trust, visibility, and guardrails.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">2:15 PM</td><td class="nowrap tabular">3:05 PM</td><td>Moscone West, L2, Keynote - Room 2020</td><td class="nowrap">Pete Thurston</td><td class="">Salesforce</td><td class="">Vice President, Product Management</td><td class="nowrap">Gagan Gulati</td><td class="">Salesforce</td><td class="">GM, Security</td><td class="nowrap">Christine Magnuson</td><td class="">Salesforce</td><td class="">SVP, Solution Engineering TMT</td><td class="nowrap">Carl Brundage</td><td class="">Salesforce</td><td class="">Distinguished Technical Architect</td><td class="nowrap">Marla Hay</td><td class="">Salesforce</td><td class="">SVP Product, Salesforce Guardian</td><td class="nowrap">Iain Mulholland</td><td class="">Salesforce</td><td class="">EVP, Chief Information Security Officer</td><td class="nowrap">Tiina Stephens</td><td class="">Capita</td><td class="">Director of AI Engineering</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="salesforce on salesforce: scaling the agentic enterprise we built the agentic enterprise, and now we&#x27;re scaling it. joe inzerillo and the leaders who&#x27;ve lived it share what broke, what we&#x27;re seeing today, and the customer zero empowerment we&#x27;re handing you. bernard slowey salesforce adam johnson salesforce shree reddy pentagon federal credit union nathalie scardino salesforce andy white salesforce sabastian niles salesforce joe inzerillo salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727010830001l2f7" target="_blank" rel="noopener">Salesforce on Salesforce: Scaling the Agentic Enterprise</a></td><td class="col-abstract">We built the Agentic Enterprise, and now we&#x27;re scaling it. Joe Inzerillo and the leaders who&#x27;ve lived it share what broke, what we&#x27;re seeing today, and the Customer Zero empowerment we&#x27;re handing you.</td><td class="nowrap">Tue, Sep 15, 2026</td><td class="nowrap tabular">3:45 PM</td><td class="nowrap tabular">4:35 PM</td><td>Moscone West, L2, Keynote - Room 2020</td><td class="nowrap">Bernard Slowey</td><td class="">Salesforce</td><td class="">SVP, Digital Success</td><td class="nowrap">Adam Johnson</td><td class="">Salesforce</td><td class="">SVP, Sales Transformation &amp; Productivity</td><td class="nowrap">Shree Reddy</td><td class="">Pentagon Federal Credit Union</td><td class="">EVP, CIO</td><td class="nowrap">Nathalie Scardino</td><td class="">Salesforce</td><td class="">President &amp; Chief People Officer</td><td class="nowrap">Andy White</td><td class="">Salesforce</td><td class="">SVP, Salesforce on Salesforce Technology</td><td class="nowrap">Sabastian Niles</td><td class="">Salesforce</td><td class="">President &amp; Chief Legal Officer</td><td class="nowrap">Joe Inzerillo</td><td class="">Salesforce</td><td class="">President, Enterprise &amp; AI Technology</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="build your first casey, the help agent, in 30 minutes hands-on workshop for admins. configure help agent from scratch: set up guided flows, ground with knowledge, select deployment channels, and test live. bring your laptop. leave with a working agent. eden max salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839026876001GoBB" target="_blank" rel="noopener">Build Your First Casey, the Help Agent, in 30 Minutes</a></td><td class="col-abstract">Hands-on workshop for admins. Configure Help Agent from scratch: set up guided flows, ground with Knowledge, select deployment channels, and test live. Bring your laptop. Leave with a working agent.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">8:30 AM</td><td class="nowrap tabular">9:30 AM</td><td>Moscone West, L2, Room 2006</td><td class="nowrap">Eden Max</td><td class="">Salesforce</td><td class="">Senior Solution Engineer - Service</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="how salesforce measures business value of agentforce on help discover how salesforce measures our help agent efficacy, true resolution, and roi – driving continuous improvement across help portal. ankur sah salesforce raman makkar salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779821550405001Argy" target="_blank" rel="noopener">How Salesforce Measures Business Value of Agentforce on Help</a></td><td class="col-abstract">Discover how Salesforce measures our Help Agent efficacy, True Resolution, and ROI – driving continuous improvement across Help Portal.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">9:30 AM</td><td class="nowrap tabular">9:50 AM</td><td>Moscone North, Campground, SF on SF Theater</td><td class="nowrap">Ankur Sah</td><td class="">Salesforce</td><td class="">Director, Customer Success Insights</td><td class="nowrap">Raman Makkar</td><td class="">Salesforce</td><td class="">Manager, Digital Success - Agentforce C0 Analytics</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="agentforce keynote: from fast start to real roi  liz awad  avanthika ramesh  mark wakelin  justin bundick  john kucera  susannah plaisted  brandon bernard "><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726970823001ltlp" target="_blank" rel="noopener">Agentforce Keynote: From Fast Start to Real ROI</a></td><td class="col-abstract muted-cell">Not published in calendar feed</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">10:30 AM</td><td class="nowrap tabular">11:20 AM</td><td>Moscone South, LL, Keynote - Hall B</td><td class="nowrap">Liz Awad</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">Avanthika Ramesh</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">Mark Wakelin</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">Justin Bundick</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">John Kucera</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">Susannah Plaisted</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="nowrap">Brandon Bernard</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="boost your resolution rates with casey the help agent most self-service deflects. hear why resolution is the new bar. see casey, the help agent, resolve live across channels, and discover how every handoff makes your agent smarter. harish batlapenumarthy salesforce dipkin guglani salesforce kat treadwell salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779838997910001GVqm" target="_blank" rel="noopener">Boost Your Resolution Rates With Casey the Help Agent</a></td><td class="col-abstract">Most self-service deflects. Hear why resolution is the new bar. See Casey, the Help Agent, resolve live across channels, and discover how every handoff makes your agent smarter.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">10:30 AM</td><td class="nowrap tabular">11:10 AM</td><td>Moscone West, L3, Room 3016</td><td class="nowrap">Harish Batlapenumarthy</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">Dipkin Guglani</td><td class="">Salesforce</td><td class="">Director, Product Management</td><td class="nowrap">Kat Treadwell</td><td class="">Salesforce</td><td class="">Principal Solution Engineer</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="show me the money: making the case for data 360 the hardest part of data transformation isn&#x27;t the tech – it&#x27;s the boardroom. learn how to translate trusted data into business outcomes and build the roi story that turns skeptics into stakeholders. mike rogan wayfinder dustin arnold revely"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779838828556001G6Uw" target="_blank" rel="noopener">Show Me the Money: Making the Case for Data 360</a></td><td class="col-abstract">The hardest part of data transformation isn&#x27;t the tech – it&#x27;s the boardroom. Learn how to translate trusted data into business outcomes and build the ROI story that turns skeptics into stakeholders.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">10:30 AM</td><td class="nowrap tabular">11:30 AM</td><td>InterCon, L3, Grand Ballroom A, Roundtable 2</td><td class="nowrap">Mike Rogan</td><td class="">Wayfinder</td><td class="">Founder &amp; CTO</td><td class="nowrap">Dustin Arnold</td><td class="">Revely</td><td class="">Chief Technology Officer</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="5 steps to build your ai roadmap with confidence learn the five steps your organization can use to turn ai vision into execution – aligning teams and transforming how work gets done at every stage. irina gutman salesforce elina shaknovsky salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839405456001Gwyy" target="_blank" rel="noopener">5 Steps to Build Your AI Roadmap With Confidence</a></td><td class="col-abstract">Learn the five steps your organization can use to turn AI vision into execution – aligning teams and transforming how work gets done at every stage.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">12:00 PM</td><td class="nowrap tabular">12:20 PM</td><td>Moscone North, LL, Campground, Theater 1</td><td class="nowrap">Irina Gutman</td><td class="">Salesforce</td><td class="">VP, Forward Deployed Engineering</td><td class="nowrap">Elina Shaknovsky</td><td class="">Salesforce</td><td class="">RVP, Forward Deployed Engineering</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="architect keynote: architecture for the agentic future see the future of enterprise architecture come to life. experience how aiforce and the latest salesforce innovations are helping architects unlock, scale, and govern the agentic enterprise. tim breeden salesforce leo tran salesforce shelly sousa salesforce miriam mccabe salesforce lilith van biesen salesforce daniel stange dia digital consulting gmbh"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727007090001lEyf" target="_blank" rel="noopener">Architect Keynote: Architecture for the Agentic Future</a></td><td class="col-abstract">See the future of enterprise architecture come to life. Experience how AIforce and the latest Salesforce innovations are helping architects unlock, scale, and govern the Agentic Enterprise.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">12:40 PM</td><td class="nowrap tabular">1:30 PM</td><td>Moscone South, LL, Keynote - Hall A</td><td class="nowrap">Tim Breeden</td><td class="">Salesforce</td><td class="">Software Engineering Architect</td><td class="nowrap">Leo Tran</td><td class="">Salesforce</td><td class="">Distinguished Architect, Software Engineering</td><td class="nowrap">Shelly Sousa</td><td class="">Salesforce</td><td class="">Lead Technical Architect</td><td class="nowrap">Miriam McCabe</td><td class="">Salesforce</td><td class="">Senior Director, Admin &amp; Architect Evangelism</td><td class="nowrap">Lilith Van Biesen</td><td class="">Salesforce</td><td class="">Principal Architect Evangelist</td><td class="nowrap">Daniel Stange</td><td class="">DIA Digital Consulting GmbH</td><td class="">CTO</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="aiforce keynote: anywhere humans and agents work get the ai you want, the trust you need, and the ai roi your enterprise demands with aiforce. dive into headless capabilities under the hood and see how customers are taking salesforce anywhere. natala menezes salesforce shannon mathews salesforce jay hurst salesforce khushwant singh salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726973233001l5xc" target="_blank" rel="noopener">AIforce Keynote: Anywhere Humans and Agents Work</a></td><td class="col-abstract">Get the AI you want, the trust you need, and the AI ROI your enterprise demands with AIforce. Dive into headless capabilities under the hood and see how customers are taking Salesforce anywhere.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">2:10 PM</td><td class="nowrap tabular">3:00 PM</td><td>Moscone South, LL, Keynote - Hall A</td><td class="nowrap">Natala Menezes</td><td class="">Salesforce</td><td class="">CMO, Salesforce Platform</td><td class="nowrap">Shannon Mathews</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">Jay Hurst</td><td class="">Salesforce</td><td class="">SVP, Product Management</td><td class="nowrap">Khushwant Singh</td><td class="">Salesforce</td><td class="">SVP, Product Management, Platform</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="mulesoft keynote ai is spreading faster than enterprises can control it. learn how agent fabric, the ai control plane for trusted action and governance across any agent or system, drives measurable roi. brad ringer at&amp;t adolfo hernandez capita andrew comstock salesforce simon goddard mulesoft kristy fisher adt ahyoung an mulesoft steve sigrist newell brands matthew detroia salesforce ashley hathaway salesforce karuna mukherjea salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726977552001lnl2" target="_blank" rel="noopener">Mulesoft Keynote</a></td><td class="col-abstract">AI is spreading faster than enterprises can control it. Learn how Agent Fabric, the AI control plane for trusted action and governance across any agent or system, drives measurable ROI.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">3:30 PM</td><td class="nowrap tabular">4:20 PM</td><td>Moscone South, LL, Keynote - Hall A</td><td class="nowrap">Brad Ringer</td><td class="">AT&amp;T</td><td class="">Principal System Engineer</td><td class="nowrap">Adolfo Hernandez</td><td class="">Capita</td><td class="">Group CEO</td><td class="nowrap">Andrew Comstock</td><td class="">Salesforce</td><td class="">SVP &amp; GM, MuleSoft</td><td class="nowrap">Simon Goddard</td><td class="">MuleSoft</td><td class="">Senior Director, Product Marketing</td><td class="nowrap">Kristy Fisher</td><td class="">ADT</td><td class="">SVP, Chief Digital Officer and CIO</td><td class="nowrap">Ahyoung An</td><td class="">MuleSoft</td><td class="">COO</td><td class="nowrap">Steve Sigrist</td><td class="">Newell Brands</td><td class="">VP, Global Customer Service</td><td class="nowrap">Matthew DeTroia</td><td class="">Salesforce</td><td class="">EVP, Sales</td><td class="nowrap">Ashley Hathaway</td><td class="">Salesforce</td><td class="">Senior Director, Product Management, MuleSoft</td><td class="nowrap">Karuna Mukherjea</td><td class="">Salesforce</td><td class="">CMO</td></tr>
+<tr class="row-even" data-search="data 360 keynote: context is your ai advantage everyone has the same ai. trusted enterprise context is the advantage. data 360 gives humans and agents real-time context to win customers, boost ai efficiency, and scale trusted ai anywhere. amanda bailey lowe’s companies inc. muralidhar krishnaprasad salesforce abhishek nandi lowe’s companies inc. rahul auradkar salesforce james nakashima salesforce rekha srivatsan salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726974670001ltzf" target="_blank" rel="noopener">Data 360 Keynote: Context Is Your AI Advantage</a></td><td class="col-abstract">Everyone has the same AI. Trusted enterprise context is the advantage. Data 360 gives humans and agents real-time context to win customers, boost AI efficiency, and scale trusted AI anywhere.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">3:45 PM</td><td class="nowrap tabular">4:35 PM</td><td>Moscone West, L3, Keynote - Room 3001</td><td class="nowrap">Amanda Bailey</td><td class="">Lowe’s Companies Inc.</td><td class="">VP, Customer Marketing &amp; Loyalty</td><td class="nowrap">Muralidhar Krishnaprasad</td><td class="">Salesforce</td><td class="">President &amp; CTO, C360 Platform, Apps, Industries &amp; Agentforce</td><td class="nowrap">Abhishek Nandi</td><td class="">Lowe’s Companies Inc.</td><td class="">VP, Technology</td><td class="nowrap">Rahul Auradkar</td><td class="">Salesforce</td><td class="">President &amp; GM, Data 360</td><td class="nowrap">James Nakashima</td><td class="">Salesforce</td><td class="">SVP, Product Management, Data 360</td><td class="nowrap">Rekha Srivatsan</td><td class="">Salesforce</td><td class="">CMO, Data 360</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="become a forward deployed engineer: the developers roadmap code alone won’t define the future salesforce developer. ai fluency, architecture thinking, and human skills will. learn what it takes to become a forward deployed engineer and leave with a roadmap. manish thaduri forsys"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779786376727001s5Cb" target="_blank" rel="noopener">Become a Forward Deployed Engineer: The Developers Roadmap</a></td><td class="col-abstract">Code alone won’t define the future Salesforce developer. AI fluency, architecture thinking, and human skills will. Learn what it takes to become a Forward Deployed Engineer and leave with a roadmap.</td><td class="nowrap">Wed, Sep 16, 2026</td><td class="nowrap tabular">4:00 PM</td><td class="nowrap tabular">4:20 PM</td><td>Moscone West, L2, Trailblazer Theater</td><td class="nowrap">Manish Thaduri</td><td class="">Forsys</td><td class="">Salesforce MVP Hall of Famer</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="5 roles every enterprise needs to scale ai successfully ai transformation takes more than tools – it takes talent. learn the five key roles that drive adoption, scale responsibly, and ensure your ai strategy delivers value across the business. joahna kuiper salesforce elina shaknovsky salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1779839406279001GgW4" target="_blank" rel="noopener">5 Roles Every Enterprise Needs to Scale AI Successfully</a></td><td class="col-abstract">AI transformation takes more than tools – it takes talent. Learn the five key roles that drive adoption, scale responsibly, and ensure your AI strategy delivers value across the business.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">8:30 AM</td><td class="nowrap tabular">8:50 AM</td><td>Moscone West, L2, Theater 5</td><td class="nowrap">Joahna Kuiper</td><td class="">Salesforce</td><td class="">Forward Deployed Engineering, RVP</td><td class="nowrap">Elina Shaknovsky</td><td class="">Salesforce</td><td class="">RVP, Forward Deployed Engineering</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="developer keynote: build the agentic enterprise built by developers, for developers. see aiforce and the latest ai-powered innovations in action through live demos, and discover how ai is transforming your developer workflows. mohith shrivastava salesforce chathura ranasinghe empowering our minds stephan chandler-garcia salesforce alba rivas salesforce christophe coenraets salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727007867001leU5" target="_blank" rel="noopener">Developer Keynote: Build the Agentic Enterprise</a></td><td class="col-abstract">Built by developers, for developers. See AIforce and the latest AI-powered innovations in action through live demos, and discover how AI is transforming your developer workflows.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">9:00 AM</td><td class="nowrap tabular">9:50 AM</td><td>Moscone West, L3, Keynote - Room 3001</td><td class="nowrap">Mohith Shrivastava</td><td class="">Salesforce</td><td class="">Principal Developer Advocate</td><td class="nowrap">Chathura Ranasinghe</td><td class="">Empowering our Minds</td><td class="">Director of Technology Operations</td><td class="nowrap">Stephan Chandler-Garcia</td><td class="">Salesforce</td><td class="">Senior Director, Strategic Content Engineering</td><td class="nowrap">Alba Rivas</td><td class="">Salesforce</td><td class="">Principal Developer Advocate</td><td class="nowrap">Christophe Coenraets</td><td class="">Salesforce</td><td class="">SVP, Trailblazer Relations</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="slack keynote: the front door to the agentic enterprise the world needs a new way to work and slack is it. slack pays off every investment you&#x27;ve made, turns ai into a team sport, and gives every employee one superagent, slackbot, to orchestrate it all. katie steigman salesforce amy bauer slack jaime delanghe slack john williams stripe ryan gavin salesforce zach ciliotta-young salesforce rob seaman salesforce allie k. miller open machine"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726988849001lmFb" target="_blank" rel="noopener">Slack Keynote: The Front Door to the Agentic Enterprise</a></td><td class="col-abstract">The world needs a new way to work and Slack is it. Slack pays off every investment you&#x27;ve made, turns AI into a team sport, and gives every employee one superagent, Slackbot, to orchestrate it all.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">10:00 AM</td><td class="nowrap tabular">10:50 AM</td><td>Moscone South, LL, Keynote - Hall B</td><td class="nowrap">Katie Steigman</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">Amy Bauer</td><td class="">Slack</td><td class="">Senior Director, Product Manager</td><td class="nowrap">Jaime DeLanghe</td><td class="">Slack</td><td class="">Chief Product Officer</td><td class="nowrap">John Williams</td><td class="">Stripe</td><td class="">GM &amp; Head of Enterprise Sales, Existing Business, AMER</td><td class="nowrap">Ryan Gavin</td><td class="">Salesforce</td><td class="">EVP, Slack CMO, Global Growth Systems, Global SMB Marketing</td><td class="nowrap">Zach Ciliotta-Young</td><td class="">Salesforce</td><td class="">SVP &amp; CRO, Slack</td><td class="nowrap">Rob Seaman</td><td class="">Salesforce</td><td class="">EVP &amp; GM, Slack</td><td class="nowrap">Allie K. Miller</td><td class="">Open Machine</td><td class="">CEO, Open Machine &amp; Fortune 500 AI Advisor</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="admin keynote: bring the agentic enterprise to life your admin skills were built for this moment. see salesforce innovations, including aiforce and builder central, live demos, and real stories showing admins leading the agentic enterprise. rachel beard salesforce tiaan kruger salesforce david green salesforce gordon lee coop careers kate lessard salesforce ella marks salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727006316001lj8h" target="_blank" rel="noopener">Admin Keynote: Bring the Agentic Enterprise to Life</a></td><td class="col-abstract">Your admin skills were built for this moment. See Salesforce innovations, including AIforce and Builder Central, live demos, and real stories showing admins leading the Agentic Enterprise.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">10:30 AM</td><td class="nowrap tabular">11:20 AM</td><td>Moscone West, L3, Keynote - Room 3001</td><td class="nowrap">Rachel Beard</td><td class="">Salesforce</td><td class="">Field CTO, Security Solutions</td><td class="nowrap">Tiaan Kruger</td><td class="">Salesforce</td><td class="">Senior Director, AI Product Management</td><td class="nowrap">David Green</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">Gordon Lee</td><td class="">COOP Careers</td><td class="">Managing Director of Technology</td><td class="nowrap">Kate Lessard</td><td class="">Salesforce</td><td class="">Lead Admin Evangelist</td><td class="nowrap">Ella Marks</td><td class="">Salesforce</td><td class="">Director, Admin &amp; Architect Marketing</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="agentforce operations keynote your business is slowed by manual processes, disconnected systems, and operational bottlenecks. learn how ai agents accelerate execution, reduce costs, and let you run with speed, accuracy, and scale. amy neidlinger salesforce heidi smith honeywell simon mulcahy salesforce robert kovach freeport-mcmoran marcello la rosa salesforce meredith sain brand salesforce jason briggs salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726972302001lyx4" target="_blank" rel="noopener">Agentforce Operations Keynote</a></td><td class="col-abstract">Your business is slowed by manual processes, disconnected systems, and operational bottlenecks. Learn how AI agents accelerate execution, reduce costs, and let you run with speed, accuracy, and scale.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">10:30 AM</td><td class="nowrap tabular">11:20 AM</td><td>Moscone West, L2, Keynote - Room 2020</td><td class="nowrap">Amy Neidlinger</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">Heidi Smith</td><td class="">Honeywell</td><td class="">VP, Digital IT, GenAI, Agentic AI Strategy</td><td class="nowrap">Simon Mulcahy</td><td class="">Salesforce</td><td class="">Chief Business Officer/GM AI Labs; Former President, Regrello</td><td class="nowrap">Robert Kovach</td><td class="">Freeport-McMoRan</td><td class="">VP &amp; CIO</td><td class="nowrap">Marcello La Rosa</td><td class="">Salesforce</td><td class="">VP &amp; GM, Intelligent Process Optimization</td><td class="nowrap">Meredith Sain Brand</td><td class="">Salesforce</td><td class="">VP, Product Marketing</td><td class="nowrap">Jason Briggs</td><td class="">Salesforce</td><td class="">SVP, Product, Agentforce Applications</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="informatica keynote: ai-readiness starts with trusted data ai agents fail because of bad data. see how informatica&#x27;s headless data management, claire agents, and governed services, power the agentic enterprise – fast, trusted, and built for scale. kaiser larsen informatica, a salesforce company sumeet kumar agrawal salesforce james p. brady baker hughes oilfield operations savinay berry salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781726976162001ldT4" target="_blank" rel="noopener">Informatica Keynote: AI-Readiness Starts with Trusted Data</a></td><td class="col-abstract">AI agents fail because of bad data. See how Informatica&#x27;s headless data management, CLAIRE agents, and governed services, power the agentic enterprise – fast, trusted, and built for scale.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">2:00 PM</td><td class="nowrap tabular">2:50 PM</td><td>Moscone West, L2, Keynote - Room 2020</td><td class="nowrap">Kaiser Larsen</td><td class="">Informatica, a Salesforce company</td><td class="">CMO</td><td class="nowrap">Sumeet Kumar Agrawal</td><td class="">Salesforce</td><td class="">VP, Product Management</td><td class="nowrap">James P. Brady</td><td class="">Baker Hughes Oilfield Operations</td><td class="">Chief Digital Officer</td><td class="nowrap">Savinay Berry</td><td class="">Salesforce</td><td class="">EVP &amp; GM, Data Foundations</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr class="row-even" data-search="true to the core: live q&amp;a with product leaders co-founder parker harris and salesforce leaders answer burning product questions in this fan-favorite unscripted session. feature requests, roadmap changes, and platform feedback – bring them all. meredith brown salesforce joy shutters-helbing salesforce, link logistics jay hurst salesforce parker harris salesforce"><td class="col-name sticky-col"><a href="https://reg.salesforce.com/flow/plus/df26/sessioncatalog/page/catalog/session/1781727008652001lBd7" target="_blank" rel="noopener">True to the Core: Live Q&amp;A with Product Leaders</a></td><td class="col-abstract">Co-founder Parker Harris and Salesforce leaders answer burning product questions in this fan-favorite unscripted session. Feature requests, roadmap changes, and platform feedback – bring them all.</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">2:30 PM</td><td class="nowrap tabular">3:30 PM</td><td>Moscone South, LL, Keynote - Hall A</td><td class="nowrap">Meredith Brown</td><td class="">Salesforce</td><td class="">SVP, Trailhead &amp; Community</td><td class="nowrap">Joy Shutters-Helbing</td><td class="">Salesforce, Link Logistics</td><td class="">Senior Manager of Application Engineering</td><td class="nowrap">Jay Hurst</td><td class="">Salesforce</td><td class="">SVP, Product Management</td><td class="nowrap">Parker Harris</td><td class="">Salesforce</td><td class="">Salesforce Co-Founder</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr data-search="dreamforce comedy hour with jim gaffigan  jim gaffigan "><td class="col-name sticky-col">Dreamforce Comedy Hour with Jim Gaffigan</td><td class="col-abstract muted-cell">Not published in calendar feed</td><td class="nowrap">Thu, Sep 17, 2026</td><td class="nowrap tabular">3:00 PM</td><td class="nowrap tabular">3:45 PM</td><td>Moscone South, LL, Keynote - Hall B</td><td class="nowrap">Jim Gaffigan</td><td class="muted-cell">–</td><td class="muted-cell">–</td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td><td class="empty-slot"></td></tr>
+<tr id="noResultsRow" hidden><td colspan="36" class="no-results">No sessions match your search.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="doc-footer">
+  <div><strong>Rosetta</strong> · KeenanVision.net</div>
+  <div>Generated from Dreamforce 2026 personal agenda export + session catalog · <a href="https://event.salesforce.com/plus/df26/">event.salesforce.com/plus/df26</a></div>
+</div>
+
+<script>
+(function () {
+  var input = document.getElementById('searchInput');
+  var clearBtn = document.getElementById('searchClear');
+  var countEl = document.getElementById('searchCount');
+  var noResultsRow = document.getElementById('noResultsRow');
+  var tbody = noResultsRow.parentElement;
+  var rows = Array.prototype.filter.call(tbody.querySelectorAll('tr[data-search]'), function (r) {
+    return r.id !== 'noResultsRow';
+  });
+  var total = rows.length;
+
+  // Cache original cell HTML (for highlight reset) once, up front.
+  rows.forEach(function (row) {
+    var nameLink = row.querySelector('td.col-name a, td.col-name');
+    var abstractCell = row.querySelector('td.col-abstract');
+    row._origNameHTML = nameLink ? nameLink.innerHTML : '';
+    row._origAbstractHTML = abstractCell ? abstractCell.innerHTML : '';
+    row._nameEl = nameLink;
+    row._abstractEl = abstractCell;
+  });
+
+  function escapeRegExp(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlight(el, originalHTML, query) {
+    if (!el) return;
+    if (!query) { el.innerHTML = originalHTML; return; }
+    // Name/abstract cell content is always plain text (no nested tags), so a
+    // straight replace on the cached original HTML is safe here.
+    var re = new RegExp('(' + escapeRegExp(query) + ')', 'ig');
+    el.innerHTML = originalHTML.replace(re, '<mark>$1</mark>');
+  }
+
+  function applyFilter() {
+    var q = input.value.trim().toLowerCase();
+    clearBtn.hidden = q.length === 0;
+    var visible = 0;
+    rows.forEach(function (row) {
+      var match = !q || row.getAttribute('data-search').indexOf(q) !== -1;
+      row.hidden = !match;
+      if (match) {
+        visible++;
+        row.classList.toggle('row-even', visible % 2 === 0);
+        highlight(row._nameEl, row._origNameHTML, q);
+        highlight(row._abstractEl, row._origAbstractHTML, q);
+      } else {
+        row.classList.remove('row-even');
+      }
+    });
+    noResultsRow.hidden = visible !== 0;
+    countEl.textContent = visible + ' of ' + total + ' sessions';
+  }
+
+  input.addEventListener('input', applyFilter);
+  clearBtn.addEventListener('click', function () {
+    input.value = '';
+    input.focus();
+    applyFilter();
+  });
+})();
+</script>
