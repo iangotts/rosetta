@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Performance Intelligence App Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EFF2EE;
+    --surface:#FFFFFF;
+    --ink:#161B1F;
+    --ink-soft:#4B535A;
+    --line:#D6DBD4;
+    --accent:#E1571E;
+    --accent-ink:#FFFFFF;
+    --accent-tint:#FBE3D5;
+    --teal:#1F6F68;
+    --teal-tint:#DCEEEC;
+    --code-bg:#E7EAE4;
+    --shadow: 0 1px 2px rgba(20,20,15,0.06), 0 8px 24px -12px rgba(20,20,15,0.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12161A;
+      --surface:#181F24;
+      --ink:#E7EAE6;
+      --ink-soft:#A6AFAF;
+      --line:#2A3138;
+      --accent:#FF7A3D;
+      --accent-ink:#171008;
+      --accent-tint:#3A2318;
+      --teal:#4FBDB3;
+      --teal-tint:#16302C;
+      --code-bg:#1F262B;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12161A;
+    --surface:#181F24;
+    --ink:#E7EAE6;
+    --ink-soft:#A6AFAF;
+    --line:#2A3138;
+    --accent:#FF7A3D;
+    --accent-ink:#171008;
+    --accent-tint:#3A2318;
+    --teal:#4FBDB3;
+    --teal-tint:#16302C;
+    --code-bg:#1F262B;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    padding-inline:20px;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    text-wrap:balance;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  a{color:var(--accent);}
+  code, .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  .tabular{font-variant-numeric: tabular-nums;}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding-block:40px 90px;
+    display:grid;
+    grid-template-columns: 220px minmax(0,760px);
+    gap:56px;
+    justify-content:center;
+  }
+  @media (max-width: 900px){
+    .shell{grid-template-columns: minmax(0,1fr); gap:32px;}
+    .toc{display:none;}
+  }
+
+  /* ---- masthead ---- */
+  .masthead{
+    grid-column:1 / -1;
+    border-bottom:1px solid var(--line);
+    padding-bottom:28px;
+    margin-bottom:8px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    display:inline-block;
+  }
+  .masthead h1{
+    font-size:clamp(30px, 4.4vw, 46px);
+    font-weight:600;
+    max-width:16ch;
+  }
+  .masthead .sub{
+    margin-top:12px;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:56ch;
+  }
+  .meta-row{
+    margin-top:22px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 22px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .meta-row b{color:var(--ink); font-weight:600;}
+  .stat-strip{
+    margin-top:26px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .stat{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 16px;
+    min-width:120px;
+    box-shadow:var(--shadow);
+  }
+  .stat .n{font-family:"Fraunces",serif; font-size:22px; font-weight:600;}
+  .stat .l{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+
+  /* ---- toc ---- */
+  .toc{
+    align-self:start;
+    position:sticky;
+    top:28px;
+    font-size:13.5px;
+  }
+  .toc-title{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .toc a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    display:flex; gap:8px;
+    padding:3px 0;
+    border-radius:4px;
+  }
+  .toc a:hover{color:var(--accent);}
+  .toc a .num{font-family:"IBM Plex Mono",monospace; color:var(--line); font-size:11px; padding-top:2px;}
+
+  /* ---- content ---- */
+  main{min-width:0;}
+  section{
+    padding-block:40px;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-child{border-bottom:none;}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .sec-num{
+    font-family:"IBM Plex Mono",monospace;
+    color:var(--accent);
+    font-size:14px;
+  }
+  section h2{font-size:26px; font-weight:600;}
+  section h3{font-size:18px; font-weight:600; margin-bottom:8px;}
+  p{margin:0 0 14px; max-width:68ch;}
+  p:last-child{margin-bottom:0;}
+  ul, ol.plain{margin:0 0 14px; padding-left:22px;}
+  ul li, ol.plain li{margin-bottom:6px;}
+  .lede{font-size:17px; color:var(--ink-soft); max-width:62ch;}
+
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:6px;
+    padding:14px 18px;
+    margin:16px 0;
+    box-shadow:var(--shadow);
+  }
+  .callout.risk{border-left-color:#C0392B;}
+  .callout .tag{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    display:block;
+    margin-bottom:6px;
+  }
+  .callout.risk .tag{color:#C0392B;}
+
+  /* mapping table */
+  .tablewrap{overflow-x:auto; margin:14px 0;}
+  table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:14px;
+    min-width:560px;
+  }
+  th, td{
+    text-align:left;
+    padding:9px 14px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  thead th{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    font-weight:500;
+    border-bottom:1px solid var(--ink-soft);
+  }
+  tbody tr:hover{background:var(--surface);}
+  .fieldname{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--teal);}
+
+  /* screen cards */
+  .screens{display:flex; flex-direction:column; gap:14px;}
+  .screen-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+  }
+  .screen-card .top{
+    display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .screen-card h3{margin:0;}
+  .screen-idx{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:13px;}
+  .screen-purpose{color:var(--ink-soft); font-size:14.5px; margin-bottom:10px;}
+  .screen-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 20px;
+  }
+  @media (max-width:600px){.screen-grid{grid-template-columns:1fr;}}
+  .screen-grid .label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--ink-soft);
+    margin-bottom:3px;
+  }
+  .screen-grid .val{font-size:14px;}
+  .chip{
+    display:inline-block;
+    font-size:11px;
+    font-family:"IBM Plex Mono",monospace;
+    padding:2px 8px;
+    border-radius:20px;
+    margin:2px 4px 2px 0;
+  }
+  .chip.shorts{background:var(--accent-tint); color:var(--accent);}
+  .chip.long{background:var(--teal-tint); color:var(--teal);}
+  .chip.collection{background:var(--code-bg); color:var(--ink-soft);}
+
+  /* palette swatches */
+  .swatches{display:flex; flex-wrap:wrap; gap:12px; margin:14px 0 22px;}
+  .swatch{
+    width:118px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .swatch .fill{height:64px;}
+  .swatch .info{padding:8px 10px;}
+  .swatch .name{font-size:12px; font-weight:600;}
+  .swatch .hex{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-soft);}
+  .type-spec{display:flex; flex-direction:column; gap:10px; margin:14px 0 6px;}
+  .type-spec .row{display:flex; align-items:baseline; gap:16px; border-bottom:1px dashed var(--line); padding-bottom:10px;}
+  .type-spec .name{width:150px; flex:none; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-soft);}
+
+  /* phase timeline */
+  .phases{display:flex; flex-direction:column; gap:0;}
+  .phase{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:18px;
+    padding:18px 0;
+    border-top:1px solid var(--line);
+  }
+  .phase:first-child{border-top:none;}
+  @media (max-width:600px){.phase{grid-template-columns:1fr;}}
+  .phase .ph-label{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:13px;}
+  .phase h3{margin-bottom:8px;}
+
+  footer{
+    grid-column:1/-1;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    padding-top:20px;
+  }
+
+  .theme-toggle{
+    position:fixed;
+    top:16px;
+    right:16px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    padding:7px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    z-index:10;
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" type="button">☾ / ☀ theme</button>
+
+<div class="shell">
+
+  <div class="masthead">
+    <div class="eyebrow">Product Specification · Draft v1</div>
+    <h1>Performance Intelligence App</h1>
+    <p class="sub">A video-only insights app — short-form discovery meets long-form masterclass — built on the Performance Intelligence YouTube library, for web and iOS.</p>
+    <div class="meta-row">
+      <span>Prepared for <b>Ian Gotts</b></span>
+      <span>Content source: <b>youtube.com/@performance-intelligence</b></span>
+      <span>UI reference: <b>weeklybriefing.jezcartwright.com</b></span>
+      <span>Precedent app: <b>Inspiring Excellence (Bubble)</b></span>
+      <span>Adjacent inspiration: <b>audvisor.com</b></span>
+      <span><b>10 Sep 2026</b></span>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n tabular">46</div><div class="l">pages reviewed in the<br>Bubble export</div></div>
+      <div class="stat"><div class="n tabular">13</div><div class="l">data types carried<br>over from that model</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">formats: Shorts &amp;<br>Long-form</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">surfaces: Web app<br>&amp; iOS app</div></div>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#sources"><span class="num">01</span> The four inputs</a></li>
+      <li><a href="#concept"><span class="num">02</span> Product concept</a></li>
+      <li><a href="#ia"><span class="num">03</span> Information architecture</a></li>
+      <li><a href="#screens"><span class="num">04</span> Screens</a></li>
+      <li><a href="#data-model"><span class="num">05</span> Data model</a></li>
+      <li><a href="#youtube"><span class="num">06</span> YouTube pipeline</a></li>
+      <li><a href="#design"><span class="num">07</span> Visual system</a></li>
+      <li><a href="#architecture"><span class="num">08</span> Architecture</a></li>
+      <li><a href="#admin"><span class="num">09</span> Admin &amp; moderation</a></li>
+      <li><a href="#nfr"><span class="num">10</span> Non-functionals</a></li>
+      <li><a href="#roadmap"><span class="num">11</span> Roadmap</a></li>
+      <li><a href="#open"><span class="num">12</span> Open questions</a></li>
+      <li><a href="#critique"><span class="num">13</span> Self-critique</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section id="sources">
+      <div class="sec-head"><span class="sec-num">01</span><h2>What we learned from four inputs</h2></div>
+      <p class="lede">The brief pointed at concrete things rather than a blank page: an existing Bubble app to mine for functionality, a YouTube channel to mine for content, a live site to mine for UI, and — added after first review — an adjacent product to mine for feature inspiration. Each shaped a different layer of this spec.</p>
+
+      <h3>Inspiring Excellence (the Bubble export)</h3>
+      <p>This is a working product, not a mockup — 46 pages and 13 data types, with real workflows for sign-up/login, content approval, tagging, and a personal library. The concepts worth carrying forward:</p>
+      <ul>
+        <li><b>Session → Insight.</b> Every piece of content is one record with a title, an SME, tags, a summary, and engagement counters (plays, shares).</li>
+        <li><b>SME as a first-class profile</b>, not just a byline — bio, employer, title, social links, and their own list of Insights (the "SME sessions" screenshot).</li>
+        <li><b>A personal library built from one join table</b> (<code>user_module</code>): Later, Favourite, and Watched are just three booleans on the same row per user-per-insight — cheap to replicate, and it's exactly what the "LATER / FAVE / HISTORY" icon row in the screenshots does.</li>
+        <li><b>Content tiers</b> (<code>level_text</code>: Public / Registered / Paid) — a gating model already designed in, even if unused today.</li>
+        <li><b>An approval queue</b> before content goes live (<code>s-session-approve</code>, <code>s-sme-approve</code>) — new SMEs and new sessions are reviewed, not auto-published.</li>
+        <li><b>No-login share pages</b> for sessions, SMEs, and tags — content is shareable without forcing a sign-up wall.</li>
+      </ul>
+
+      <h3>Performance Intelligence (the YouTube channel)</h3>
+      <p>The channel, run by performance coach Jez Cartwright, anchors on long-form conversations — CEO and founder interviews, leadership and high-performance coaching. That's the "MasterClass" half of the brief: substantial, expert-led, sit-down content rather than quick tips. The channel is the entire content operation — there's no separate video CMS to build; YouTube <i>is</i> the asset store, and this app is a curated viewing layer on top of it.</p>
+
+      <h3>Weekly Briefing (the UI reference)</h3>
+      <p>Also a Jez Cartwright product, so it's a natural sibling rather than an arbitrary style reference — and one seen directly, not just described. The masthead is a full-width orange band: a small <span class="mono">π</span> mark above "PERFORMANCE INTELLIGENCE / WEEKLY BRIEFING" in a wide-tracked serif, with the day's date pinned top-left, framing it as a dated briefing rather than an evergreen library. What reads as "navigation" is actually a row of <b>topic pills — Leadership, Markets, Psychology, Technology, Geopolitics, Philosophy — each carrying its own accent colour</b> rather than one universal orange; account, notes, and messages live instead behind three small icons tucked in the top-right corner. Each item below is numbered, sits against a thin orange rail, and splits into a bold headline + grey subhead, then a two-column body — "Why it matters" prose with a cited source link, beside an italic "Key insight" pull-quote — with a heart (save) and an orange × (dismiss) per item. Section 07 carries this pattern through in detail.</p>
+
+      <h3>Audvisor (adjacent, for inspiration)</h3>
+      <p>Not a video product — a micro-podcast app built around "Brilliance in 3 minutes": thousands of sub-3-minute audio lessons from named experts (Tom Peters, Josh Bersin, and others among them), priced as a $120/year subscription after a free trial. It's the closest live comparable to the Shorts half of this app, and three things from it are worth borrowing:</p>
+      <ul>
+        <li><b>Duration as the pitch, not an apology.</b> Audvisor markets brevity itself — "Brilliance in 3 minutes" — rather than treating short content as a lesser version of the long-form. Worth carrying that framing into how the Discover feed is positioned, not just how it's built.</li>
+        <li><b>Editorial playlists above raw tags.</b> Content is grouped into named, curated shelves — Strategy &amp; Execution, Leadership, Mental Health — sitting above simple tag filtering as a guided "start here" layer. See the new <b>Curated Collections</b> screen in section 04.</li>
+        <li><b>Sharing with a person, not just a link.</b> Audvisor's "My Chats" lets someone send a specific episode into a conversation with a colleague, and its MentorCloud partnership uses the same mechanism for a mentor to point a mentee at one piece of content. A lighter version of this — share one Insight to a named person with a note — is worth adding to the Insight detail screen and Messages, rather than building a full public share link as the only option.</li>
+      </ul>
+      <p>Audvisor also curates against a stated quality bar it calls <span class="mono">T.R.A.C.K.</span> — Timeless, Relevant, Actionable, Curated, Knowledge. That's a usable checklist for the Admin approval step (section 09) when deciding what gets published, and separately, what gets featured in a Collection.</p>
+    </section>
+
+    <section id="concept">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Product concept</h2></div>
+      <p class="lede">One content model, two ways of watching it.</p>
+      <p>Every video in the app is an <b>Insight</b>: one SME, a set of topic tags, and a home in the personal library. What changes is the format it was published in on YouTube, and the way the app lets you watch it:</p>
+      <div class="screen-grid" style="margin-bottom:8px;">
+        <div>
+          <span class="chip shorts">Shorts</span>
+          <p>≤3 minutes, vertical. Surfaced in a full-screen, swipe-to-advance feed — autoplay, loop, one Insight at a time. This is the TikTok half: low-friction discovery, built for a scroll session.</p>
+        </div>
+        <div>
+          <span class="chip long">Long-form</span>
+          <p>Interviews and deep dives. Surfaced as a browsable library with a proper detail page — SME byline, summary, tags, related Insights. This is the MasterClass half: something you choose deliberately and sit with.</p>
+        </div>
+      </div>
+      <p>Saving, favouriting, sharing, and watch history work identically across both — a user builds one library regardless of which format they watched something in.</p>
+    </section>
+
+    <section id="ia">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Information architecture</h2></div>
+      <p class="lede">This app needs a real primary nav — a multi-screen video app isn't a single-feed briefing — but every destination in it has a direct match on Weekly Briefing.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Nav item</th><th>What it is</th><th>Precedent</th></tr></thead>
+          <tbody>
+            <tr><td><b>Discover</b></td><td>Home. Full-screen swipeable Shorts feed.</td><td>New, TikTok-style</td></tr>
+            <tr><td><b>Library</b></td><td>Browsable long-form Insights, by SME / topic / recency.</td><td><span class="fieldname">s-session-list</span></td></tr>
+            <tr><td><b>My List</b></td><td>Later / Favourites / History, as three tabs.</td><td><span class="fieldname">s-mylist / s-fav / s-history</span></td></tr>
+            <tr><td><b>Experts</b></td><td>SME directory and individual SME profiles.</td><td><span class="fieldname">s-sme-list / s-sme-view</span></td></tr>
+            <tr><td><b>My Notes</b></td><td>Freeform and per-Insight notes.</td><td>Weekly Briefing "My Notes"</td></tr>
+            <tr><td><b>Settings</b></td><td>Theme, account, notifications, sign out.</td><td>Weekly Briefing account menu</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Global, reachable from anywhere: search (by title / SME / tag — the exact filter row in the screenshots), the tag cloud, and share.</p>
+      <p>One addition sits inside Library and Discover rather than in the primary nav: a row of editorial <b>Collections</b> — named, curated topic shelves (inspired by Audvisor's playlists), each carrying its own colour the way Weekly Briefing's Leadership / Markets / Psychology / Technology / Geopolitics / Philosophy pills do — as a guided layer above raw tag filtering. That colour-coded pill row is in fact <i>the</i> nav pattern Weekly Briefing uses in place of a text menu; My Notes and Settings echo its own corner-icon utilities, folded into a proper tab bar here since this app has more screens to hold.</p>
+    </section>
+
+    <section id="screens">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Screens</h2></div>
+      <p class="lede">Fourteen screens. Each states its job, what's on it, and what it's built from.</p>
+      <div class="screens">
+
+        <div class="screen-card">
+          <div class="top"><h3>Onboarding &amp; sign-in</h3><span class="screen-idx">01</span></div>
+          <p class="screen-purpose">Get a new visitor watching in under a minute, then attach an account.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Email, Google, magic-link sign-in; optional topic picker to seed the first feed</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing sign-in flow; <span class="fieldname">s-signup-social / s-login-social</span></div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Discover — Shorts feed</h3><span class="screen-idx">02</span></div>
+          <p class="screen-purpose">Default landing screen. One Insight fills the screen; swipe up for the next.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Autoplay + loop, captions on by default, SME chip overlay, like / save / share / next, progress dots</div></div>
+            <div><div class="label">Precedent</div><div class="val">Reimagines <span class="fieldname">s-session-list</span> as a vertical swipe rather than a scroll</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Library — Long-form</h3><span class="screen-idx">03</span></div>
+          <p class="screen-purpose">Browse the deep-dive interviews deliberately, not by chance.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Grid/list, filter by SME / topic / duration, sort newest or most-watched</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">s-session-list</span> + <span class="fieldname">s-tagcloud</span></div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Curated Collections</h3><span class="screen-idx">04</span></div>
+          <p class="screen-purpose">A guided layer above raw tags — named, editor-picked shelves of Insights.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Horizontal shelves at the top of Library and Discover — colour-coded pills, e.g. <span class="chip" style="background:#1B3B6F1a;color:#1B3B6F;">Leadership</span><span class="chip" style="background:#C0392B1a;color:#C0392B;">Resilience</span><span class="chip" style="background:#3FA9E01a;color:#2E80AC;">Founder Interviews</span> — curated against the T.R.A.C.K. bar (Timeless / Relevant / Actionable / Curated / Knowledge)</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing's own colour-per-topic pill row, curation approach from Audvisor's playlists</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Insight detail (long-form player)</h3><span class="screen-idx">05</span></div>
+          <p class="screen-purpose">The MasterClass page for one interview.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Embedded YouTube player, SME byline, summary, tags, transcript / notes panel, related Insights, "share to a colleague" with a note</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">s-session-view</span> ("Rebuilding to get rid of technical debt" screenshot); sharing-with-a-note inspired by Audvisor's My Chats</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>SME profile</h3><span class="screen-idx">06</span></div>
+          <p class="screen-purpose">One expert, everything they've contributed.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Photo, bio, title/employer, social links, their Shorts and Long-form grouped, follow / save-all</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">s-sme-view</span> (Justin Dolon screenshot)</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Expert directory</h3><span class="screen-idx">07</span></div>
+          <p class="screen-purpose">Find an expert by name or specialism rather than by content.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Searchable grid of all SMEs, filter by expertise tag</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">s-sme-list</span></div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Search &amp; tag cloud</h3><span class="screen-idx">08</span></div>
+          <p class="screen-purpose">The single filter surface used everywhere else in the app.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Filter by title / SME / tag; tag cloud sized by popularity</div></div>
+            <div><div class="label">Precedent</div><div class="val">Exact filter row from the "ALL INSIGHTS (165)" screenshot; <span class="fieldname">s-tagcloud</span></div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>My List</h3><span class="screen-idx">09</span></div>
+          <p class="screen-purpose">Everything a user has kept, across both formats.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Three tabs — Later, Favourites, History — same three booleans as the Bubble join table</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">later_list_boolean / favorite_boolean / watched_boolean</span> on <span class="fieldname">user_module</span></div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>My Notes</h3><span class="screen-idx">10</span></div>
+          <p class="screen-purpose">Freeform notes, and notes pinned to a specific Insight.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Rich-text note, tag, link back to the Insight it came from, search across notes</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing's "My Notes" — new relative to the Bubble app, which only had task-style <span class="fieldname">todo</span> records</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Messages / inbox</h3><span class="screen-idx">11</span></div>
+          <p class="screen-purpose">A light channel from Jez to subscribers, and where a "shared to you" Insight from another user lands — optional broadcast half for MVP.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Broadcast announcements, personal inbox, incoming shared-Insight-with-a-note threads</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing's messaging system; thread concept from Audvisor's My Chats</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Export reading pack</h3><span class="screen-idx">12</span></div>
+          <p class="screen-purpose">Weekly Briefing's PDF export, reframed for a video-first app.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Export saved Insights + notes as a PDF summary — titles, SMEs, links, and note text (not the video itself)</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing PDF export</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Settings</h3><span class="screen-idx">13</span></div>
+          <p class="screen-purpose">Account housekeeping.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Light/dark theme toggle, notification prefs, profile, sign out, delete account</div></div>
+            <div><div class="label">Precedent</div><div class="val">Weekly Briefing theme toggle + account menu</div></div>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="top"><h3>Admin / CMS (internal)</h3><span class="screen-idx">14</span></div>
+          <p class="screen-purpose">Web-only. Where new YouTube uploads become published Insights.</p>
+          <div class="screen-grid">
+            <div><div class="label">Key elements</div><div class="val">Sync queue from YouTube, approve + tag + assign SME before publish, manage SME profiles, engagement dashboard</div></div>
+            <div><div class="label">Precedent</div><div class="val"><span class="fieldname">s-session-approve / s-sme-approve / s-profile-approve</span></div></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="data-model">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Content &amp; data model</h2></div>
+      <p class="lede">Four entities carry almost the entire app. This maps each one from the Bubble field it's replacing.</p>
+
+      <h3>Insight <span style="font-weight:400;color:var(--ink-soft);font-size:14px;">— was <span class="fieldname">module</span> / "Session"</span></h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>New field</th><th>Bubble field</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">title</td><td class="fieldname">name_text</td><td>—</td></tr>
+            <tr><td class="fieldname">sme</td><td class="fieldname">author_user</td><td>Link to SME (User)</td></tr>
+            <tr><td class="fieldname">format</td><td class="fieldname">— (new)</td><td><span class="mono">short | long</span>, derived from YouTube duration + aspect ratio</td></tr>
+            <tr><td class="fieldname">youtube_id</td><td class="fieldname">video_id_text</td><td>YouTube is the only video source now — drop the separate <span class="fieldname">audio_id_text</span> field</td></tr>
+            <tr><td class="fieldname">summary</td><td class="fieldname">summary_text</td><td>—</td></tr>
+            <tr><td class="fieldname">tags</td><td class="fieldname">sub_tag_list</td><td>—</td></tr>
+            <tr><td class="fieldname">access_tier</td><td class="fieldname">level_text</td><td>Public / Registered / Paid — carried over even if unused at launch</td></tr>
+            <tr><td class="fieldname">status</td><td class="fieldname">status_text</td><td>Draft → In review → Published</td></tr>
+            <tr><td class="fieldname">plays, shares</td><td class="fieldname">plays_number, shares_number</td><td>Drop the audio-specific <span class="fieldname">play_v_started</span> / <span class="fieldname">play_finished</span> split — video-only now</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>SME <span style="font-weight:400;color:var(--ink-soft);font-size:14px;">— was <span class="fieldname">user</span>, where <span class="fieldname">author_boolean = yes</span></span></h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>New field</th><th>Bubble field</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">name, title, employer</td><td class="fieldname">full_name_text, author_title_text, author_employer_text</td></tr>
+            <tr><td class="fieldname">bio, photo</td><td class="fieldname">pb_bio_text, pb_image_image</td></tr>
+            <tr><td class="fieldname">social_links</td><td class="fieldname">pb_website_text, pub_linkedin_text, pub_instagram_text</td></tr>
+            <tr><td class="fieldname">published</td><td class="fieldname">author_published_boolean</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Tag <span style="font-weight:400;color:var(--ink-soft);font-size:14px;">— was <span class="fieldname">tag</span></span></h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>New field</th><th>Bubble field</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">label</td><td class="fieldname">tag_text</td></tr>
+            <tr><td class="fieldname">insight_count, plays, shares, searches</td><td class="fieldname">session_count_number, play_number, share_number, search_number</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Library entry <span style="font-weight:400;color:var(--ink-soft);font-size:14px;">— was the <span class="fieldname">user_module</span> join</span></h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>New field</th><th>Bubble field</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">later</td><td class="fieldname">later_list_boolean</td></tr>
+            <tr><td class="fieldname">favourite</td><td class="fieldname">favorite_boolean</td></tr>
+            <tr><td class="fieldname">watched</td><td class="fieldname">watched_boolean</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:6px;">One row per user per Insight — identical shape to the source app, which is why the LATER / FAVE / HISTORY icon row in the screenshots can be reused directly.</p>
+    </section>
+
+    <section id="youtube">
+      <div class="sec-head"><span class="sec-num">06</span><h2>YouTube ingestion pipeline</h2></div>
+      <p class="lede">YouTube is the video store. The app only ever stores metadata and an embed reference — never the video file.</p>
+      <ol class="plain">
+        <li><b>Poll the channel's uploads.</b> YouTube Data API v3 against the channel's uploads playlist (PubSubHubbub push notification as an optional faster path) for new videos on <span class="mono">@performance-intelligence</span>.</li>
+        <li><b>Classify format automatically.</b> Duration ≤ ~180 seconds and vertical aspect ratio (or presence on the channel's Shorts shelf) → <span class="chip shorts">Shorts</span>; everything else → <span class="chip long">Long-form</span>.</li>
+        <li><b>Pull metadata only</b> — title, description, duration, publish date, thumbnail, auto-captions (for search and the transcript panel). The <span class="mono">videoId</span> is the only pointer stored to the actual media.</li>
+        <li><b>Land in the Admin queue.</b> New uploads sit as drafts until an editor assigns an SME, confirms tags, and writes the short summary — this mirrors the Bubble app's approval workflow rather than auto-publishing.</li>
+        <li><b>Play back via YouTube's embedded player</b> (IFrame API on web, YouTube's iOS player SDK / WKWebView on iOS) — never a downloaded or re-hosted file.</li>
+      </ol>
+      <div class="callout risk">
+        <span class="tag">Risk to validate early</span>
+        YouTube's terms require its player chrome, branding, and (where applicable) ads to stay visible. A fully "clean," silent, edge-to-edge TikTok feel may be constrained by that, and autoplay-with-sound is restricted on iOS Safari/WebView. Worth a short technical spike against the real embed before committing to the Discover feed's exact interaction model.
+      </div>
+    </section>
+
+    <section id="design">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Visual system</h2></div>
+      <p class="lede">A sibling to Weekly Briefing, not a copy of TikTok's or MasterClass's own branding — carrying over its masthead, its per-category colour, and its numbered card anatomy, applied to a video-card and swipe-feed layout.</p>
+
+      <h3>Colour</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="fill" style="background:#E1571E;"></div><div class="info"><div class="name">Masthead orange</div><div class="hex">#E1571E</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#161B1F;"></div><div class="info"><div class="name">Ink</div><div class="hex">#161B1F</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#EFF2EE;border-bottom:1px solid #d6dbd4;"></div><div class="info"><div class="name">Paper</div><div class="hex">#EFF2EE</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#12161A;"></div><div class="info"><div class="name">Paper (dark)</div><div class="hex">#12161A</div></div></div>
+      </div>
+      <p>The reference site's real distinctive move isn't a single accent — it's that <b>every topic carries its own colour</b>: Leadership (white-on-orange), Markets (navy), Psychology (red), Technology (sky blue), Geopolitics (purple), Philosophy (green). This app should inherit that directly for <b>Collections</b>, rather than inventing a flat tag-colour scheme of its own:</p>
+      <div class="swatches">
+        <div class="swatch"><div class="fill" style="background:#1B3B6F;"></div><div class="info"><div class="name">Markets</div><div class="hex">#1B3B6F</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#C0392B;"></div><div class="info"><div class="name">Psychology</div><div class="hex">#C0392B</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#3FA9E0;"></div><div class="info"><div class="name">Technology</div><div class="hex">#3FA9E0</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#6C4FA1;"></div><div class="info"><div class="name">Geopolitics</div><div class="hex">#6C4FA1</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#3A7D44;"></div><div class="info"><div class="name">Philosophy</div><div class="hex">#3A7D44</div></div></div>
+      </div>
+      <p>Format (Shorts vs. Long-form) stays the one thing marked outside that system — a small, neutral <span class="chip shorts">Shorts</span> / <span class="chip long">Long-form</span> chip — so format and topic never fight for the same colour.</p>
+
+      <h3>Type</h3>
+      <div class="type-spec">
+        <div class="row"><div class="name">Display — Fraunces</div><div style="font-family:'Fraunces',serif; font-size:22px; font-weight:600;">Section and screen titles</div></div>
+        <div class="row"><div class="name">Masthead treatment</div><div style="font-family:'Fraunces',serif; font-size:15px; letter-spacing:0.18em; text-transform:uppercase;">Wide-tracked serif caps, echoing Weekly Briefing's own wordmark</div></div>
+        <div class="row"><div class="name">Body — IBM Plex Sans</div><div style="font-family:'IBM Plex Sans',sans-serif; font-size:16px;">Summaries, bios, notes, "Why it matters" prose</div></div>
+        <div class="row"><div class="name">Mono — IBM Plex Mono</div><div style="font-family:'IBM Plex Mono',monospace; font-size:14px;">Tags, timestamps, field labels</div></div>
+      </div>
+
+      <h3>Card anatomy (Insight list item)</h3>
+      <p>Carried straight from the reference site's numbered briefing items: an index number, a thin left rail in the item's Collection colour, a bold headline with a one-line grey subhead beneath it, and a lightweight two-column body on the detail view — SME summary on one side, a pulled quote or key stat on the other — closing with a heart (save to Favourites) and a dismiss control, matching the weight of the source's own icon-only actions.</p>
+
+      <h3>Interaction</h3>
+      <ul>
+        <li>Light/dark theme toggle, matching Weekly Briefing's own toggle.</li>
+        <li>Primary "navigation" is the colour-coded Collections pill row (section 04), not a text nav bar; account, My Notes, and Messages sit behind compact corner icons, exactly as they do on Weekly Briefing.</li>
+        <li>The Later / Favourite / History icon row from the Bubble app carries over unchanged — it's already a clean, compact pattern, and pairs naturally with the reference site's heart-and-dismiss item actions.</li>
+      </ul>
+    </section>
+
+    <section id="architecture">
+      <div class="sec-head"><span class="sec-num">08</span><h2>Platform &amp; technical architecture</h2></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Recommendation</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Web</td><td>Responsive, installable web app</td><td>Matches Weekly Briefing's own delivery model</td></tr>
+            <tr><td>iOS</td><td>React Native (Expo) sharing components/design tokens with web</td><td>App is content-display-heavy, not graphics-intensive — one codebase covers both surfaces faster than native Swift</td></tr>
+            <tr><td>Video playback</td><td>YouTube IFrame API (web) / official YouTube iOS player or WKWebView embed (iOS)</td><td>Only legal way to play YouTube-hosted video; native <span class="mono">AVPlayer</span> cannot stream it directly</td></tr>
+            <tr><td>Backend</td><td>Thin API + database for metadata, engagement, library, notes only</td><td>YouTube remains the video CDN — no media storage or transcoding to run ourselves</td></tr>
+            <tr><td>Search</td><td>Index title, summary, tags, and auto-caption text</td><td>Lets search work like the Bubble app's title/SME/tag filter, plus full transcript search as a step up</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="admin">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Admin &amp; moderation</h2></div>
+      <p class="lede">Nothing from YouTube goes live untouched — this is the one workflow carried over wholesale from the Bubble app.</p>
+      <ul>
+        <li><b>Sync queue</b> — new uploads appear as drafts, tagged with the auto-detected format.</li>
+        <li><b>Approve Insight</b> — assign or confirm SME, confirm tags, write the short-form summary, set access tier, publish.</li>
+        <li><b>Approve SME</b> — new expert profiles are reviewed before they're publicly listed.</li>
+        <li><b>Curate a Collection</b> — separately from publishing, an editor can pull an approved Insight into a named shelf; the suggested bar is Audvisor's <span class="mono">T.R.A.C.K.</span> — Timeless, Relevant, Actionable, Curated, Knowledge — so Collections stay a genuine "best of," not everything that was published.</li>
+        <li><b>Engagement dashboard</b> — plays, shares, and searches per Insight and per tag, the same counters the Bubble app already tracked.</li>
+      </ul>
+    </section>
+
+    <section id="nfr">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Non-functional requirements</h2></div>
+      <ul>
+        <li><b>Performance</b> — pre-fetch the next 1–2 Shorts in the feed so swipe-to-advance feels instant.</li>
+        <li><b>Accessibility</b> — captions on by default in the Shorts feed; transcripts available on every long-form Insight; Dynamic Type support on iOS.</li>
+        <li><b>Compliance</b> — no downloading or offline caching of video, per YouTube's Terms of Service; player branding stays visible.</li>
+        <li><b>Privacy</b> — account deletion and unsubscribe, matching what Weekly Briefing already offers.</li>
+        <li><b>Analytics parity</b> — plays, shares, and searches tracked per Insight and per tag from day one, not bolted on later.</li>
+      </ul>
+    </section>
+
+    <section id="roadmap">
+      <div class="sec-head"><span class="sec-num">11</span><h2>Roadmap</h2></div>
+      <div class="phases">
+        <div class="phase">
+          <div class="ph-label">Phase 1<br>MVP</div>
+          <div>
+            <h3>Watch and save</h3>
+            <p>Discover feed, Long-form Library, Insight detail, SME directory + profiles, search &amp; tags, My List (Later/Favourites/History), Admin sync + approve queue. Web and iOS, light/dark theme.</p>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="ph-label">Phase 2<br>Deepen</div>
+          <div>
+            <h3>Keep and revisit</h3>
+            <p>My Notes, export reading pack (PDF), Messages/inbox, Curated Collections, "share to a colleague with a note," basic personalised recommendations based on tag affinity.</p>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="ph-label">Phase 3<br>Extend</div>
+          <div>
+            <h3>Push and assist</h3>
+            <p>Push notifications for new SME uploads, offline note sync, and an AI Q&amp;A layer over Insight transcripts — revisiting the unused <span class="fieldname">ai</span> table found in the Bubble export, worked through in full as its own extended spec: <a href="https://claude.ai/code/artifact/bc7fc856-933b-465a-8424-006c9e317797">The Wisdom Layer</a>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="open">
+      <div class="sec-head"><span class="sec-num">12</span><h2>Open questions</h2></div>
+      <ul>
+        <li><b>Naming and branding</b> — is this a Weekly Briefing sibling, a Performance Intelligence-branded app, or its own identity? This spec deliberately doesn't invent a name.</li>
+        <li><b>Access tiers and pricing</b> — keep the Public/Registered/Paid model from Bubble, or make everything free since the source content is already public on YouTube? If a Paid tier ships, Audvisor's $120/year is a live benchmark for a comparable micro-content subscription.</li>
+        <li><b>Curation ownership</b> — does Jez personally approve new Insights and pick Collections, or does an editor run the Admin queue day to day?</li>
+        <li><b>Accounts</b> — same login as Weekly Briefing, or a separate account system?</li>
+        <li><b>B2B / mentoring angle</b> — Audvisor's MentorCloud partnership lets a mentor push specific content to a mentee. Is a coaching/enterprise use case in scope here, or is "share with a note" purely a peer-to-peer, consumer-app feature?</li>
+        <li><b>iOS build approach</b> — confirm React Native is workable against whatever team/skillset will actually build this, versus native Swift.</li>
+      </ul>
+    </section>
+
+    <section id="critique">
+      <div class="sec-head"><span class="sec-num">13</span><h2>Self-critique</h2></div>
+      <p class="lede">Before handing this over: where this spec is solid, and where it's guessing.</p>
+      <div class="callout">
+        <span class="tag">Solid</span>
+        The screen list, data model, and admin workflow aren't invented — they're read directly off a real, working Bubble app (46 pages, 13 data types), so the functional scope has precedent rather than being a generic "TikTok meets MasterClass" guess.
+      </div>
+      <div class="callout">
+        <span class="tag">Corrected</span>
+        The first draft of this spec built section 07 from a fetched text description of weeklybriefing.jezcartwright.com, because an automated screenshot was blocked by this environment's network policy. Ian then supplied a real screenshot, which corrected two real misses — the "nav" is a colour-coded topic-pill row, not a text menu, and utilities sit behind corner icons — both now reflected in sections 01, 03, and 07. Still not seen directly: what's actually behind those corner icons (My Notes, Messages, account), so those three screens in section 04 remain functional inference, not a direct look.
+      </div>
+      <div class="callout risk">
+        <span class="tag">Weaker</span>
+        I didn't get an actual list of the channel's videos (titles, durations, current Shorts-vs-long-form split) — only the channel's About description. The ingestion pipeline in section 06 is designed against YouTube's general API capabilities, not against this channel's real current catalogue. Worth confirming the Shorts/long-form mix before sizing the Discover feed's content pool.
+      </div>
+      <div class="callout risk">
+        <span class="tag">Weaker</span>
+        The Bubble export shows signs of being a working, slightly messy production app — fields marked "(notused)," leftover demo-template auth comments, an unrelated ratings module bundled in. I used judgment to separate signal from noise; worth checking my read of it against the live app if one is still running, rather than trusting this document alone.
+      </div>
+      <div class="callout">
+        <span class="tag">Scope</span>
+        This is a product spec, not a technical design doc — the React Native / thin-backend recommendation in section 08 is a reasonable default, not a committed architecture decision.
+      </div>
+      <div class="callout risk">
+        <span class="tag">Weaker</span>
+        The Audvisor findings (Collections, T.R.A.C.K., "share with a note") come from its marketing site and one partner press release — its library page 404'd, so I never saw its actual browse/playlist UI directly. Treat those additions as directionally sound inspiration, not a reverse-engineered feature set the way the Bubble app's sections are.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Performance Intelligence App — Product Specification · Draft v1 · 10 September 2026</footer>
+</div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    try {
+      var saved = localStorage.getItem('pi-spec-theme');
+      if (saved) root.setAttribute('data-theme', saved);
+    } catch(e){}
+    btn.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : (current === 'light' ? null : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+      if (next) { root.setAttribute('data-theme', next); } else { root.removeAttribute('data-theme'); }
+      try { localStorage.setItem('pi-spec-theme', next || ''); } catch(e){}
+    });
+  })();
+</script>
+
+</body>
+</html>

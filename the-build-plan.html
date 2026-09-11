@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Build Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EFF2EE;
+    --surface:#FFFFFF;
+    --ink:#161B1F;
+    --ink-soft:#4B535A;
+    --line:#D6DBD4;
+    --accent:#E1571E;
+    --cite:#1F6F68;
+    --code-bg:#E7EAE4;
+    --shadow: 0 1px 2px rgba(20,20,15,0.06), 0 8px 24px -12px rgba(20,20,15,0.14);
+    /* chart-only categorical palette, validator-passed */
+    --c-found:#8992A3;
+    --c-core:#E1571E;
+    --c-wisdom:#0E8A78;
+    --c-scale:#6B7480;
+    --chart-surface:#fcfcfb;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12161A; --surface:#181F24; --ink:#E7EAE6; --ink-soft:#A6AFAF; --line:#2A3138;
+      --accent:#FF7A3D; --cite:#4FBDB3; --code-bg:#1F262B;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+      --c-found:#7C8794; --c-core:#E8672A; --c-wisdom:#2FA394; --c-scale:#8792A0;
+      --chart-surface:#171F22;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12161A; --surface:#181F24; --ink:#E7EAE6; --ink-soft:#A6AFAF; --line:#2A3138;
+    --accent:#FF7A3D; --cite:#4FBDB3; --code-bg:#1F262B;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+    --c-found:#7C8794; --c-core:#E8672A; --c-wisdom:#2FA394; --c-scale:#8792A0;
+    --chart-surface:#171F22;
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; font-size:16px; line-height:1.6; padding-inline:20px;}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; letter-spacing:-0.01em; margin:0;}
+  a{color:var(--cite);}
+  code, .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  .tabular{font-variant-numeric: tabular-nums;}
+
+  .shell{max-width:1180px; margin:0 auto; padding-block:40px 90px; display:grid; grid-template-columns: 220px minmax(0,760px); gap:56px; justify-content:center;}
+  @media (max-width: 900px){.shell{grid-template-columns: minmax(0,1fr); gap:32px;} .toc{display:none;}}
+
+  .masthead{grid-column:1 / -1; border-bottom:1px solid var(--line); padding-bottom:28px; margin-bottom:8px;}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .eyebrow::before{content:""; width:8px;height:8px;border-radius:50%; background:var(--accent); display:inline-block;}
+  .masthead h1{font-size:clamp(30px, 4.4vw, 46px); font-weight:600; max-width:16ch;}
+  .masthead .sub{margin-top:12px; font-size:18px; color:var(--ink-soft); max-width:58ch;}
+  .meta-row{margin-top:22px; display:flex; flex-wrap:wrap; gap:10px 22px; font-size:13px; color:var(--ink-soft);}
+  .meta-row b{color:var(--ink); font-weight:600;}
+  .stat-strip{margin-top:26px; display:flex; flex-wrap:wrap; gap:10px;}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 16px; min-width:120px; box-shadow:var(--shadow);}
+  .stat .n{font-family:"Fraunces",serif; font-size:22px; font-weight:600;}
+  .stat .l{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+
+  .toc{align-self:start; position:sticky; top:28px; font-size:13.5px;}
+  .toc-title{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;}
+  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .toc a{color:var(--ink-soft); text-decoration:none; display:flex; gap:8px; padding:3px 0; border-radius:4px;}
+  .toc a:hover{color:var(--accent);}
+  .toc a .num{font-family:"IBM Plex Mono",monospace; color:var(--line); font-size:11px; padding-top:2px;}
+
+  main{min-width:0;}
+  section{padding-block:40px; border-bottom:1px solid var(--line);}
+  section:last-child{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:18px;}
+  .sec-num{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:14px;}
+  section h2{font-size:26px; font-weight:600;}
+  section h3{font-size:18px; font-weight:600; margin-bottom:8px;}
+  p{margin:0 0 14px; max-width:68ch;}
+  p:last-child{margin-bottom:0;}
+  ul, ol.plain{margin:0 0 14px; padding-left:22px;}
+  ul li, ol.plain li{margin-bottom:6px;}
+  .lede{font-size:17px; color:var(--ink-soft); max-width:62ch;}
+
+  .callout{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:14px 18px; margin:16px 0; box-shadow:var(--shadow);}
+  .callout.wisdom{border-left-color:var(--cite);}
+  .callout .tag{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); display:block; margin-bottom:6px;}
+  .callout.wisdom .tag{color:var(--cite);}
+
+  .tablewrap{overflow-x:auto; margin:14px 0;}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:520px;}
+  th, td{text-align:left; padding:9px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); font-weight:500; border-bottom:1px solid var(--ink-soft);}
+  tbody tr:hover{background:var(--surface);}
+  .fieldname{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cite);}
+
+  /* ---- Gantt ---- */
+  .gantt-wrap{overflow-x:auto; margin:18px 0; border:1px solid var(--line); border-radius:10px; background:var(--chart-surface); box-shadow:var(--shadow);}
+  .gantt{display:grid; grid-template-columns: 214px repeat(34, minmax(15px, 1fr)); min-width:1000px; font-size:12px;}
+  .g-axis{grid-column:1/-1; display:grid; grid-template-columns: subgrid; border-bottom:1px solid var(--line); padding-bottom:6px; padding-top:10px;}
+  .g-axis .corner{grid-column:1;}
+  .g-tick{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-soft); border-left:1px solid var(--line); padding-left:4px; grid-row:1;}
+  .g-band{grid-column:1/-1; display:grid; grid-template-columns: subgrid; align-items:center; background:color-mix(in srgb, var(--ink) 3%, transparent);}
+  .g-band .band-label{grid-column:1/-1; padding:8px 14px 4px; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft);}
+  .g-row{grid-column:1/-1; display:grid; grid-template-columns: subgrid; align-items:center; min-height:34px; border-bottom:1px solid var(--line);}
+  .g-row .g-label{grid-column:1; padding:6px 14px; font-size:12.5px;}
+  .g-bar{border-radius:5px; height:16px; margin-block:2px; position:relative; box-shadow:0 0 0 2px var(--chart-surface);}
+  .g-bar.found{background:var(--c-found);}
+  .g-bar.core{background:var(--c-core);}
+  .g-bar.wisdom{background:var(--c-wisdom);}
+  .g-bar.scale{background:repeating-linear-gradient(45deg, var(--c-scale), var(--c-scale) 4px, transparent 4px, transparent 8px); border:1.5px dashed var(--c-scale); background-color:transparent;}
+  .g-gate{grid-column:1/-1; display:grid; grid-template-columns: subgrid; min-height:24px;}
+  .g-gate .flag{font-size:11px; border-left:2px dashed var(--ink-soft); padding-left:4px; color:var(--ink-soft); writing-mode:vertical-rl; text-orientation:mixed;}
+  .legend{display:flex; flex-wrap:wrap; gap:16px; padding:10px 14px; font-size:12.5px; color:var(--ink-soft); border-top:1px solid var(--line);}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .legend i{width:14px; height:10px; border-radius:3px; display:inline-block;}
+  .legend i.found{background:var(--c-found);}
+  .legend i.core{background:var(--c-core);}
+  .legend i.wisdom{background:var(--c-wisdom);}
+  .legend i.scale{background:repeating-linear-gradient(45deg, var(--c-scale), var(--c-scale) 3px, transparent 3px, transparent 6px); border:1px dashed var(--c-scale);}
+
+  .cards{display:flex; flex-direction:column; gap:14px;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow);}
+  .card .top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .card-idx{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:13px;}
+  .card-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; margin-top:8px;}
+  @media (max-width:600px){.card-grid{grid-template-columns:1fr;}}
+  .card-grid .label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-soft); margin-bottom:3px;}
+  .card-grid .val{font-size:14px;}
+
+  .footer{grid-column:1/-1; text-align:center; color:var(--ink-soft); font-size:12.5px; padding-top:20px;}
+  .theme-toggle{position:fixed; top:16px; right:16px; background:var(--surface); border:1px solid var(--line); color:var(--ink); font-family:"IBM Plex Mono",monospace; font-size:11px; padding:7px 12px; border-radius:20px; cursor:pointer; box-shadow:var(--shadow); z-index:10;}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" type="button">☾ / ☀ theme</button>
+
+<div class="shell">
+
+  <div class="masthead">
+    <div class="eyebrow">Execution Plan · Phase 0–4 · Synthesizes both specs</div>
+    <h1>The Build Plan</h1>
+    <p class="sub">Sequencing, dependencies, and gates across the core app and the Wisdom Layer — kickoff to the first external coaching release.</p>
+    <div class="meta-row">
+      <span>Prepared for <b>Ian Gotts</b></span>
+      <span>Synthesizes: <b>Performance Intelligence App Spec</b> + <b>The Wisdom Layer</b></span>
+      <span><b>10 Sep 2026</b></span>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n">5</div><div class="l">phases, Foundations<br>through Scale</div></div>
+      <div class="stat"><div class="n tabular">~33</div><div class="l">illustrative weeks to<br>first Wisdom release</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">hard gates — see<br>section 08</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">documents this plan<br>reconciles into one</div></div>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#reading"><span class="num">01</span> How to read this</a></li>
+      <li><a href="#timeline"><span class="num">02</span> The timeline</a></li>
+      <li><a href="#p0"><span class="num">03</span> Phase 0 — Foundations</a></li>
+      <li><a href="#p1"><span class="num">04</span> Phase 1 — MVP</a></li>
+      <li><a href="#p2"><span class="num">05</span> Phase 2 — Deepen</a></li>
+      <li><a href="#p3"><span class="num">06</span> Phase 3 — Wisdom Layer</a></li>
+      <li><a href="#p4"><span class="num">07</span> Phase 4 — Scale</a></li>
+      <li><a href="#gates"><span class="num">08</span> Gates &amp; dependencies</a></li>
+      <li><a href="#team"><span class="num">09</span> Team shape</a></li>
+      <li><a href="#risks"><span class="num">10</span> Risks to the plan</a></li>
+      <li><a href="#critique"><span class="num">11</span> Self-critique</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section id="reading">
+      <div class="sec-head"><span class="sec-num">01</span><h2>How to read this</h2></div>
+      <p class="lede">The sequencing and dependencies below are real planning judgement. The week numbers are not.</p>
+      <p>Durations assume a small team working in parallel — roughly 3–5 full-stack/product engineers, one iOS specialist joining at Phase 1, and a data/ML engineer joining for Phase 3 — with no team-size or velocity data behind that assumption. Treat the timeline as <b>relative sequencing</b> — what can run in parallel, what blocks what — and recalibrate the actual week numbers once real resourcing is known. That's a deliberate choice: inventing a fake calendar would be worse than not having one, the same reason neither prior spec invented a subscription price.</p>
+    </section>
+
+    <section id="timeline">
+      <div class="sec-head"><span class="sec-num">02</span><h2>The timeline</h2></div>
+      <p class="lede">Five phases. Colour marks which document a workstream belongs to — grey for shared foundations, orange for the core app spec, teal for the Wisdom Layer, hatched for the deliberately unscoped Phase 4.</p>
+
+      <div class="gantt-wrap">
+        <div class="gantt">
+          <div class="g-axis">
+            <div class="corner"></div>
+            <div class="g-tick" style="grid-column:2;">W1</div>
+            <div class="g-tick" style="grid-column:6;">W5</div>
+            <div class="g-tick" style="grid-column:10;">W9</div>
+            <div class="g-tick" style="grid-column:14;">W13</div>
+            <div class="g-tick" style="grid-column:18;">W17</div>
+            <div class="g-tick" style="grid-column:22;">W21</div>
+            <div class="g-tick" style="grid-column:26;">W25</div>
+            <div class="g-tick" style="grid-column:30;">W29</div>
+            <div class="g-tick" style="grid-column:34;">W33</div>
+          </div>
+
+          <div class="g-band"><div class="band-label">Phase 0 — Foundations</div></div>
+          <div class="g-row"><div class="g-label">Legal &amp; rights scoping</div><div class="g-bar found" style="grid-column:2/6;" title="Legal & rights scoping — W1–4. Begins immediately; must close before Phase 3a."></div></div>
+          <div class="g-row"><div class="g-label">Naming, pricing, iOS-approach decisions</div><div class="g-bar found" style="grid-column:2/4;" title="Naming, pricing, iOS-approach decisions — W1–2"></div></div>
+          <div class="g-row"><div class="g-label">YouTube content &amp; catalog audit</div><div class="g-bar found" style="grid-column:2/5;" title="YouTube content & catalog audit — W1–3"></div></div>
+          <div class="g-row"><div class="g-label">Design tokens &amp; component library</div><div class="g-bar found" style="grid-column:3/6;" title="Design tokens & component library — W2–4"></div></div>
+
+          <div class="g-band"><div class="band-label">Phase 1 — MVP: Watch &amp; Save</div></div>
+          <div class="g-row"><div class="g-label">Backend, data model &amp; YouTube ingestion</div><div class="g-bar core" style="grid-column:4/10;" title="Backend, data model & YouTube ingestion pipeline — W3–8"></div></div>
+          <div class="g-row"><div class="g-label">Platform shells — Web + iOS, theme</div><div class="g-bar core" style="grid-column:4/13;" title="Platform shells: Web + iOS, theme — W3–11"></div></div>
+          <div class="g-row"><div class="g-label">Core screens (Discover, Library, Insight, SME, Search, Collections)</div><div class="g-bar core" style="grid-column:6/13;" title="Core screens — W5–11"></div></div>
+          <div class="g-row"><div class="g-label">Accounts &amp; personal library (My List)</div><div class="g-bar core" style="grid-column:7/11;" title="Accounts & personal library — W6–9"></div></div>
+          <div class="g-row"><div class="g-label">Admin / CMS — sync, approve, curate</div><div class="g-bar core" style="grid-column:8/12;" title="Admin / CMS — W7–10"></div></div>
+          <div class="g-row"><div class="g-label">QA &amp; closed beta</div><div class="g-bar core" style="grid-column:12/15;" title="QA & closed beta — W11–13"></div></div>
+
+          <div class="g-band"><div class="band-label">Phase 2 — Deepen</div></div>
+          <div class="g-row"><div class="g-label">Notes, PDF export, Messages, share-with-a-note, tag recs</div><div class="g-bar core" style="grid-column:14/20;" title="Phase 2 features — W13–18"></div></div>
+
+          <div class="g-band"><div class="band-label">Phase 3 — The Wisdom Layer</div></div>
+          <div class="g-row"><div class="g-label">3a — Ingest, extract, Admin review</div><div class="g-bar wisdom" style="grid-column:20/26;" title="3a Ingest & review — W19–24. Gated by legal clearance."></div></div>
+          <div class="g-row"><div class="g-label">3b — In-app Ask (quality validation)</div><div class="g-bar wisdom" style="grid-column:25/29;" title="3b In-app Ask — W24–28. Gated by corpus threshold."></div></div>
+          <div class="g-row"><div class="g-label">3c — MCP server + subscription gate</div><div class="g-bar wisdom" style="grid-column:28/34;" title="3c MCP server — W27–33. Gated by validated Ask quality."></div></div>
+
+          <div class="g-band"><div class="band-label">Phase 4 — Scale &amp; extend</div></div>
+          <div class="g-row"><div class="g-label">Push, offline sync, more Lenses/Skills, personalization</div><div class="g-bar scale" style="grid-column:33/35;" title="Open-ended — deliberately unscoped"></div></div>
+
+          <div class="legend">
+            <span><i class="found"></i> Foundations (shared)</span>
+            <span><i class="core"></i> Core app spec</span>
+            <span><i class="wisdom"></i> Wisdom Layer spec</span>
+            <span><i class="scale"></i> Unscoped / ongoing</span>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-soft);">Hover any bar for its week range. Gates referenced in the tooltips are detailed in section 08.</p>
+    </section>
+
+    <section id="p0">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Phase 0 — Foundations</h2></div>
+      <p class="lede">Nothing here is a full-time long pole — it's the handful of decisions and one-off audits that everything downstream depends on.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Workstream</th><th>Closes the gap</th></tr></thead>
+          <tbody>
+            <tr><td>Legal &amp; rights scoping</td><td>Starts now because it's slow, not because Phase 1 needs it — it gates Phase 3a, not Phase 0 itself</td></tr>
+            <tr><td>Naming, pricing tier, iOS-approach decisions</td><td>Base spec's open questions — each blocks a specific downstream workstream if left open</td></tr>
+            <tr><td>YouTube content &amp; catalog audit</td><td>Closes the base spec's own flagged gap: the real Shorts-vs-long-form split, not an assumed one</td></tr>
+            <tr><td>Design tokens &amp; component library</td><td>Turns the visual system (section 07 of the base spec) into buildable tokens, not just a reference page</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b>Exit criteria:</b> naming and pricing tier decided (even directionally); iOS build approach confirmed; a real catalog count in hand; component library ready for engineering to consume.</p>
+    </section>
+
+    <section id="p1">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Phase 1 — MVP: Watch &amp; Save</h2></div>
+      <p class="lede">The biggest phase, and the one that has to prove the content pipeline works before anything else is worth building on top of it.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Workstream</th><th>Covers</th></tr></thead>
+          <tbody>
+            <tr><td>Backend, data model &amp; ingestion</td><td>Insight / SME / Tag / Library schema; YouTube sync + Shorts-vs-long-form classifier</td></tr>
+            <tr><td>Platform shells</td><td>Web (responsive) + iOS (React Native) scaffolding, light/dark theme</td></tr>
+            <tr><td>Core screens</td><td>Discover, Library, Insight detail, SME profile/directory, Search, Curated Collections</td></tr>
+            <tr><td>Accounts &amp; personal library</td><td>Auth, My List (Later/Favourites/History)</td></tr>
+            <tr><td>Admin / CMS</td><td>Sync queue, approve Insight/SME, Collections curation</td></tr>
+            <tr><td>QA &amp; closed beta</td><td>A small subscriber cohort using it daily before wider release</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b>Exit criteria:</b> real content flowing from YouTube through to a published, swipeable, browsable app on both surfaces; a beta cohort returning daily without being asked to.</p>
+    </section>
+
+    <section id="p2">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Phase 2 — Deepen</h2></div>
+      <p>My Notes, the PDF export reading pack, Messages/inbox, Audvisor-inspired "share to a colleague with a note," and a first pass at tag-affinity recommendations.</p>
+      <p><b>Exit criteria:</b> retention and engagement from the Phase 1 beta justify further investment, and there's enough real usage data to prioritise which Coaching Lenses matter most in Phase 3.</p>
+    </section>
+
+    <section id="p3">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Phase 3 — The Wisdom Layer</h2></div>
+      <p class="lede">Sequenced exactly as the extended spec lays out — each sub-phase gates the next.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="top"><h3>3a — Ingest, extract, review</h3><span class="card-idx">Gated by legal</span></div>
+          <div class="card-grid">
+            <div><div class="label">Covers</div><div class="val">Transcript segmentation, Wisdom Fragment extraction, Admin review queue — no live Q&amp;A yet</div></div>
+            <div><div class="label">Exit criteria</div><div class="val">A corpus past the minimum size/quality threshold (open question in the Wisdom Layer spec, section 13)</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="top"><h3>3b — In-app Ask</h3><span class="card-idx">Gated by 3a</span></div>
+          <div class="card-grid">
+            <div><div class="label">Covers</div><div class="val">One surface, real subscribers, validating answer quality and the CONTESTED-disagreement pattern</div></div>
+            <div><div class="label">Exit criteria</div><div class="val">Answer quality validated well enough to trust distributing it externally</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="top"><h3>3c — MCP server + subscription gate</h3><span class="card-idx">Gated by 3b</span></div>
+          <div class="card-grid">
+            <div><div class="label">Covers</div><div class="val">The 6-tool MCP surface, Coach-tier entitlement, external distribution into a subscriber's own Claude</div></div>
+            <div><div class="label">Exit criteria</div><div class="val">First external subscribers connected and using it</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="p4">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Phase 4 — Scale &amp; extend</h2></div>
+      <p>Push notifications for new SME uploads, offline note sync, expanding Coaching Lenses and Skills from real usage rather than the starter set, broader personalization. Drawn hatched on the timeline on purpose — this phase is genuinely unscoped until Phase 3 tells us what subscribers actually ask for.</p>
+    </section>
+
+    <section id="gates">
+      <div class="sec-head"><span class="sec-num">08</span><h2>Gates &amp; dependencies</h2></div>
+      <p class="lede">Three points where the plan can't proceed on schedule alone — something specific has to be true first.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Blocks</th><th>Must be true first</th></tr></thead>
+          <tbody>
+            <tr><td><b>A</b></td><td>Phase 3a start</td><td>Legal &amp; rights clearance closed — the Wisdom Layer spec's biggest flagged risk (section 11 there)</td></tr>
+            <tr><td><b>B</b></td><td>3a → 3b</td><td>Corpus size/quality threshold met, not just "some time has passed"</td></tr>
+            <tr><td><b>C</b></td><td>3b → 3c</td><td>In-app Ask quality validated with real subscribers before it's handed to an external MCP audience</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout wisdom">
+        <span class="tag">If a gate slips</span>
+        A slipped gate delays only what it blocks. Legal running long pushes 3a, not Phase 1 or 2 — they don't depend on it. That's the point of running legal scoping from week one: it has the most calendar risk and the least engineering dependency, so it should never be the reason engineering is idle.
+      </div>
+    </section>
+
+    <section id="team">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Team shape across phases</h2></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Phase</th><th>Roles needed</th></tr></thead>
+          <tbody>
+            <tr><td>0 — Foundations</td><td>Product/design lead, external counsel (part-time)</td></tr>
+            <tr><td>1 — MVP</td><td>+ Backend engineer(s), web engineer, iOS engineer, Admin/ops</td></tr>
+            <tr><td>2 — Deepen</td><td>Same team, steady state</td></tr>
+            <tr><td>3 — Wisdom Layer</td><td>+ Data/ML engineer (extraction pipeline), a human reviewer for the Admin queue, continued counsel involvement through Gate A</td></tr>
+            <tr><td>4 — Scale</td><td>Sized against what Phase 3 usage actually shows</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="risks">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Risks to the plan itself</h2></div>
+      <p class="lede">Not feature risk — already covered in both specs — schedule risk specifically.</p>
+      <ul>
+        <li><b>Legal takes longer than four weeks.</b> Mitigated by starting it in week one and not putting anything else behind it except Gate A.</li>
+        <li><b>The iOS-approach decision slips.</b> Platform-shell work (week 3) can't really start without it — this is the one Foundations decision with a hard downstream dependency, so it deserves being forced early rather than left open.</li>
+        <li><b>The content audit reveals a thin Shorts catalog.</b> If the channel turns out to be long-form-heavy, the Discover feed's scope and the Phase 1 timeline itself may need resizing — better to learn this in week one than week eleven.</li>
+      </ul>
+    </section>
+
+    <section id="critique">
+      <div class="sec-head"><span class="sec-num">11</span><h2>Self-critique</h2></div>
+      <div class="callout">
+        <span class="tag">Solid</span>
+        The sequencing and gates are real judgement calls grounded in what each spec already established — Gate A through C aren't new constraints, they're the dependencies both documents already named, made explicit and placed on a timeline.
+      </div>
+      <div class="callout wisdom">
+        <span class="tag">Weaker, by design</span>
+        The week numbers are illustrative, stated plainly as such in section 01, and built on an undisclosed-elsewhere team-size assumption I made explicit rather than hid. Once real resourcing exists, the bars will move; the order and the gates most likely won't.
+      </div>
+      <div class="callout">
+        <span class="tag">Not covered</span>
+        This is a build plan, not a budget — no cost estimates, and no attempt to size the legal engagement itself, which is a real unknown this plan just treats as "start it early."
+      </div>
+    </section>
+
+  </main>
+
+  <div class="footer">The Build Plan · Execution Plan, Phase 0–4 · 10 September 2026</div>
+</div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    try { var saved = localStorage.getItem('pi-buildplan-theme'); if (saved) root.setAttribute('data-theme', saved); } catch(e){}
+    btn.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : (current === 'light' ? null : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+      if (next) { root.setAttribute('data-theme', next); } else { root.removeAttribute('data-theme'); }
+      try { localStorage.setItem('pi-buildplan-theme', next || ''); } catch(e){}
+    });
+  })();
+</script>
+
+</body>
+</html>
