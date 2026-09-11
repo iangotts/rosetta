@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Wisdom Layer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EFF2EE;
+    --surface:#FFFFFF;
+    --ink:#161B1F;
+    --ink-soft:#4B535A;
+    --line:#D6DBD4;
+    --accent:#1F6F68;
+    --accent-ink:#FFFFFF;
+    --accent-tint:#DCEEEC;
+    --cite:#E1571E;
+    --code-bg:#E7EAE4;
+    --warn:#8B3A42;
+    --warn-tint:#F3E1E3;
+    --shadow: 0 1px 2px rgba(20,20,15,0.06), 0 8px 24px -12px rgba(20,20,15,0.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#11171A;
+      --surface:#171F22;
+      --ink:#E7EAE6;
+      --ink-soft:#9FB0AD;
+      --line:#28322F;
+      --accent:#4FBDB3;
+      --accent-ink:#0C1615;
+      --accent-tint:#16302C;
+      --cite:#FF7A3D;
+      --code-bg:#1E2624;
+      --warn:#D98D96;
+      --warn-tint:#33191D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#11171A;
+    --surface:#171F22;
+    --ink:#E7EAE6;
+    --ink-soft:#9FB0AD;
+    --line:#28322F;
+    --accent:#4FBDB3;
+    --accent-ink:#0C1615;
+    --accent-tint:#16302C;
+    --cite:#FF7A3D;
+    --code-bg:#1E2624;
+    --warn:#D98D96;
+    --warn-tint:#33191D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; font-size:16px; line-height:1.6; padding-inline:20px;}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; letter-spacing:-0.01em; margin:0;}
+  a{color:var(--cite);}
+  code, .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+
+  .shell{max-width:1180px; margin:0 auto; padding-block:40px 90px; display:grid; grid-template-columns: 220px minmax(0,760px); gap:56px; justify-content:center;}
+  @media (max-width: 900px){.shell{grid-template-columns: minmax(0,1fr); gap:32px;} .toc{display:none;}}
+
+  .masthead{grid-column:1 / -1; border-bottom:1px solid var(--line); padding-bottom:28px; margin-bottom:8px;}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .eyebrow::before{content:""; width:8px;height:8px;border-radius:50%; background:var(--accent); display:inline-block;}
+  .masthead h1{font-size:clamp(30px, 4.4vw, 46px); font-weight:600; max-width:16ch;}
+  .masthead .sub{margin-top:12px; font-size:18px; color:var(--ink-soft); max-width:58ch;}
+  .meta-row{margin-top:22px; display:flex; flex-wrap:wrap; gap:10px 22px; font-size:13px; color:var(--ink-soft);}
+  .meta-row b{color:var(--ink); font-weight:600;}
+  .stat-strip{margin-top:26px; display:flex; flex-wrap:wrap; gap:10px;}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 16px; min-width:120px; box-shadow:var(--shadow);}
+  .stat .n{font-family:"Fraunces",serif; font-size:22px; font-weight:600;}
+  .stat .l{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+
+  .toc{align-self:start; position:sticky; top:28px; font-size:13.5px;}
+  .toc-title{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;}
+  .toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .toc a{color:var(--ink-soft); text-decoration:none; display:flex; gap:8px; padding:3px 0; border-radius:4px;}
+  .toc a:hover{color:var(--accent);}
+  .toc a .num{font-family:"IBM Plex Mono",monospace; color:var(--line); font-size:11px; padding-top:2px;}
+
+  main{min-width:0;}
+  section{padding-block:40px; border-bottom:1px solid var(--line);}
+  section:last-child{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:18px;}
+  .sec-num{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:14px;}
+  section h2{font-size:26px; font-weight:600;}
+  section h3{font-size:18px; font-weight:600; margin-bottom:8px;}
+  p{margin:0 0 14px; max-width:68ch;}
+  p:last-child{margin-bottom:0;}
+  ul, ol.plain{margin:0 0 14px; padding-left:22px;}
+  ul li, ol.plain li{margin-bottom:6px;}
+  .lede{font-size:17px; color:var(--ink-soft); max-width:62ch;}
+
+  .callout{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:6px; padding:14px 18px; margin:16px 0; box-shadow:var(--shadow);}
+  .callout.warn{border-left-color:var(--warn); background:var(--warn-tint);}
+  .callout .tag{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); display:block; margin-bottom:6px;}
+  .callout.warn .tag{color:var(--warn);}
+
+  .tablewrap{overflow-x:auto; margin:14px 0;}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:560px;}
+  th, td{text-align:left; padding:9px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); font-weight:500; border-bottom:1px solid var(--ink-soft);}
+  tbody tr:hover{background:var(--surface);}
+  .fieldname{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--accent);}
+
+  .cards{display:flex; flex-direction:column; gap:14px;}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow);}
+  .card .top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .card h3{margin:0;}
+  .card-idx{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:13px;}
+  .card-purpose{color:var(--ink-soft); font-size:14.5px; margin-bottom:10px;}
+  .card-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 20px;}
+  @media (max-width:600px){.card-grid{grid-template-columns:1fr;}}
+  .card-grid .label{font-family:"IBM Plex Mono",monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-soft); margin-bottom:3px;}
+  .card-grid .val{font-size:14px;}
+
+  .swatches{display:flex; flex-wrap:wrap; gap:12px; margin:14px 0 22px;}
+  .swatch{width:150px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow);}
+  .swatch .fill{height:52px;}
+  .swatch .info{padding:8px 10px;}
+  .swatch .name{font-size:12px; font-weight:600;}
+  .swatch .hex{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-soft);}
+  .swatch .why{font-size:10.5px; color:var(--ink-soft); margin-top:2px;}
+
+  .pipeline{display:flex; flex-wrap:wrap; align-items:stretch; gap:0; margin:18px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow);}
+  .pstep{flex:1 1 150px; padding:16px 14px; position:relative; border-right:1px solid var(--line);}
+  .pstep:last-child{border-right:none;}
+  .pstep .pn{font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:11px; display:block; margin-bottom:6px;}
+  .pstep .pt{font-weight:600; font-size:14px; margin-bottom:4px;}
+  .pstep .pd{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+  .pstep:not(:last-child)::after{content:"→"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--ink-soft); font-size:14px; z-index:2; background:var(--surface); width:20px; text-align:center;}
+  @media (max-width:700px){.pipeline{flex-direction:column;} .pstep{border-right:none; border-bottom:1px solid var(--line);} .pstep:last-child{border-bottom:none;} .pstep:not(:last-child)::after{content:"↓"; right:auto; left:14px; top:auto; bottom:-11px; transform:none;}}
+
+  .footer{grid-column:1/-1; text-align:center; color:var(--ink-soft); font-size:12.5px; padding-top:20px;}
+
+  .theme-toggle{position:fixed; top:16px; right:16px; background:var(--surface); border:1px solid var(--line); color:var(--ink); font-family:"IBM Plex Mono",monospace; font-size:11px; padding:7px 12px; border-radius:20px; cursor:pointer; box-shadow:var(--shadow); z-index:10;}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" type="button">☾ / ☀ theme</button>
+
+<div class="shell">
+
+  <div class="masthead">
+    <div class="eyebrow">Extended Specification · Phase 2/3 · Builds on Draft v1</div>
+    <h1>The Wisdom Layer</h1>
+    <p class="sub">Turning every Performance Intelligence video into a searchable, citable body of coaching wisdom — answerable from inside the app, or from a subscriber's own Claude over MCP.</p>
+    <div class="meta-row">
+      <span>Prepared for <b>Ian Gotts</b></span>
+      <span>Extends: <b>Performance Intelligence App — Product Specification</b></span>
+      <span>Modelled on: <b>how AquaBrain stores &amp; retrieves thoughts</b></span>
+      <span><b>10 Sep 2026</b></span>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n">10</div><div class="l">AquaBrain tools used<br>as the design precedent</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">starter Coaching<br>Lenses proposed</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">MCP tools spec'd for<br>the Coach server</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">worked Coaching Skills:<br>career, succession, anxiety</div></div>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#leap"><span class="num">01</span> Library → oracle</a></li>
+      <li><a href="#borrowed"><span class="num">02</span> What we're borrowing</a></li>
+      <li><a href="#ingestion"><span class="num">03</span> Ingestion pipeline</a></li>
+      <li><a href="#fragment"><span class="num">04</span> Wisdom Fragment model</a></li>
+      <li><a href="#lenses"><span class="num">05</span> Coaching Lenses</a></li>
+      <li><a href="#retrieval"><span class="num">06</span> Ask &amp; synthesis</a></li>
+      <li><a href="#skills"><span class="num">07</span> Coaching Skills</a></li>
+      <li><a href="#mcp"><span class="num">08</span> The MCP server</a></li>
+      <li><a href="#surfaces"><span class="num">09</span> Two surfaces</a></li>
+      <li><a href="#subscription"><span class="num">10</span> Subscription model</a></li>
+      <li><a href="#rights"><span class="num">11</span> Rights &amp; consent</a></li>
+      <li><a href="#roadmap"><span class="num">12</span> Where this sits</a></li>
+      <li><a href="#open"><span class="num">13</span> Open questions</a></li>
+      <li><a href="#critique"><span class="num">14</span> Self-critique</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section id="leap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>From library to oracle</h2></div>
+      <p class="lede">Phase 1 gets someone to the right video. This phase lets them skip that step entirely and just ask.</p>
+      <p>Right now, a subscriber has to know roughly what they're looking for — a tag, an expert, a title — and go watch it. The Wisdom Layer inverts that: ask a real coaching question in plain language — <i>"How do I tell my co-founder it's time to step back?"</i> — and get back a synthesized, cited answer drawn from everything every Performance Intelligence expert has ever said on the subject, not just the one video you happened to find.</p>
+      <p>That's the same leap AquaBrain makes for a person's own notes: from "a pile of things I once wrote down" to "ask anything, get a grounded answer, tagged to a Lens, with the sources shown." This spec applies that exact model to a shared corpus of expert video instead of one person's private notes.</p>
+    </section>
+
+    <section id="borrowed">
+      <div class="sec-head"><span class="sec-num">02</span><h2>What we're borrowing from AquaBrain's own model</h2></div>
+      <p class="lede">Not an analogy — this session has live visibility into AquaBrain's actual tool set, so the mapping below is against a real, working system.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>AquaBrain (personal Brain)</th><th>Wisdom Layer (shared corpus)</th></tr></thead>
+          <tbody>
+            <tr><td><b>Thought</b> — an atomic capture, auto-classified and embedded</td><td><b>Wisdom Fragment</b> — one atomic, self-contained insight extracted from a transcript segment</td></tr>
+            <tr><td><b>Lens</b> — a saved semantic scope (theme, people, date window)</td><td><b>Coaching Lens</b> — a coaching domain (Career Planning, Overcoming Anxiety, …)</td></tr>
+            <tr><td><span class="fieldname">type_hint</span>: observation, idea, decision, person_note…</td><td>Fragment type: framework, technique, story, quote, principle, pitfall</td></tr>
+            <tr><td><span class="fieldname">search_thoughts</span> / <span class="fieldname">list_thoughts</span></td><td><span class="fieldname">search_wisdom</span> — same shape, scoped to the shared corpus</td></tr>
+            <tr><td>⚠️ <b>CONTESTED</b> — flagged when a user's own notes disagree with each other</td><td>Same flag when two SMEs give <i>conflicting</i> advice — surfaced, never silently resolved</td></tr>
+            <tr><td><span class="fieldname">get_skill</span> / <span class="fieldname">get_skills</span> — a named playbook to follow</td><td><b>Coaching Skills</b> — Career Planning, Succession Planning, Overcoming Anxiety…</td></tr>
+            <tr><td>Captured content is treated as <i>data</i>, never as instructions</td><td>Same discipline: a transcript fragment is source material to cite, never a command to follow</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="tag">One real difference</span>
+        AquaBrain is a personal Brain — one person's own thoughts, private by default. This is a shared, product-owned corpus built from published expert content, queried by many subscribers. The corpus itself has no per-user privacy boundary — but a subscriber's own questions and saved reflections (section 08) need exactly the privacy AquaBrain gives a person's own thoughts.
+      </div>
+    </section>
+
+    <section id="ingestion">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Ingestion: transcript → Wisdom Fragment</h2></div>
+      <p class="lede">Nothing here replaces Phase 1's YouTube pipeline (section 06 of the base spec) — it runs one step further, on the transcript that pipeline already pulls for search and captions.</p>
+      <div class="pipeline">
+        <div class="pstep"><span class="pn">1</span><div class="pt">Transcript</div><div class="pd">Auto-captions already pulled per-video in Phase 1</div></div>
+        <div class="pstep"><span class="pn">2</span><div class="pt">Segment</div><div class="pd">An LLM pass finds where the SME shifts from one idea to the next — not fixed time windows</div></div>
+        <div class="pstep"><span class="pn">3</span><div class="pt">Extract</div><div class="pd">Each segment yields one self-contained Wisdom Fragment, timestamp preserved</div></div>
+        <div class="pstep"><span class="pn">4</span><div class="pt">Classify</div><div class="pd">Fragment type + Lens tags + SME + a confidence score</div></div>
+        <div class="pstep"><span class="pn">5</span><div class="pt">Admin review</div><div class="pd">Low-confidence fragments queue for a human spot-check, reusing Phase 1's approval screen</div></div>
+        <div class="pstep"><span class="pn">6</span><div class="pt">Corpus</div><div class="pd">Approved fragments become searchable</div></div>
+      </div>
+      <p>The quality bar is the one already established in Phase 1: Audvisor's <span class="mono">T.R.A.C.K.</span> — Timeless, Relevant, Actionable, Curated, Knowledge — applied here to individual fragments, not just whole Insights. Nothing gets quoted back to a subscriber as advice without having passed it.</p>
+    </section>
+
+    <section id="fragment">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Wisdom Fragment data model</h2></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Field</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">content</td><td>The self-contained insight, written to stand alone</td></tr>
+            <tr><td class="fieldname">type</td><td><span class="mono">framework | technique | story | quote | principle | pitfall</span></td></tr>
+            <tr><td class="fieldname">lens_tags</td><td>One or more Coaching Lenses (section 05)</td></tr>
+            <tr><td class="fieldname">sme</td><td>Links to the same SME record from the base spec's data model</td></tr>
+            <tr><td class="fieldname">source_insight, source_timestamp</td><td>Deep-links back to the exact moment in the video — "hear Justin Dolon say this at 4:12"</td></tr>
+            <tr><td class="fieldname">confidence</td><td>Extraction quality — routes low scores to Admin review</td></tr>
+            <tr><td class="fieldname">contested_with</td><td>Optional link to a fragment that meaningfully disagrees with this one</td></tr>
+            <tr><td class="fieldname">approved_by, approved_date</td><td>Carried from Phase 1's approval workflow</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="lenses">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Coaching Lenses — a starter set</h2></div>
+      <p class="lede">Six lenses, deliberately the same count as Weekly Briefing's own category row — and three of the six colours are reused directly from it, not reinvented.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="fill" style="background:#C68A1D;"></div><div class="info"><div class="name">Career Planning</div><div class="hex">#C68A1D</div><div class="why">New</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#8B3A42;"></div><div class="info"><div class="name">Succession Planning</div><div class="hex">#8B3A42</div><div class="why">New</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#C0392B;"></div><div class="info"><div class="name">Overcoming Anxiety &amp; Performance Pressure</div><div class="hex">#C0392B</div><div class="why">Reused from Psychology</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#3E6E9E;"></div><div class="info"><div class="name">Difficult Conversations</div><div class="hex">#3E6E9E</div><div class="why">New</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#3A7D44;"></div><div class="info"><div class="name">Decision-Making</div><div class="hex">#3A7D44</div><div class="why">Reused from Philosophy</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#8A8F8A;"></div><div class="info"><div class="name">Leadership Presence</div><div class="hex">outline, no fill</div><div class="why">Reused from Leadership</div></div></div>
+      </div>
+      <p>Each Lens carries a one-line semantic seed, the same shape AquaBrain gives a Lens description — e.g. Succession Planning: <i>"Readiness signals, timelines, and the conversations around stepping back or stepping up."</i> New Lenses are added the same way AquaBrain finds-or-creates one: an editor names it once, and fragment classification (step 4 above) starts tagging into it immediately.</p>
+    </section>
+
+    <section id="retrieval">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Ask &amp; synthesis</h2></div>
+      <p class="lede">Walking through one real question: <i>"How do I have a succession conversation with my co-founder, who doesn't want to step back?"</i></p>
+      <ol class="plain">
+        <li><b>Embed and search.</b> The question is embedded and matched against Wisdom Fragments, pre-scoped to Succession Planning and Difficult Conversations.</li>
+        <li><b>Rank.</b> Relevance first, with a light authority signal from each SME's own engagement stats (plays/shares per tag, already tracked in Phase 1) as a weak prior — never a hard override.</li>
+        <li><b>Compose, grounded only in what was retrieved.</b> The answer is built strictly from matched fragments — never the model's own free-associated coaching advice. This is a hard rule, not a style preference: an "expert-sourced" product that quietly isn't is a trust problem, not just a quality one.</li>
+        <li><b>Surface disagreement.</b> If two SMEs meaningfully conflict — one says give an ultimatum, another says never force the timeline — both are shown, not silently resolved. This is the CONTESTED pattern from section 02, applied to disagreeing experts instead of a disagreeing set of one person's own notes.</li>
+        <li><b>Cite everything.</b> Every claim carries an SME name, video title, timestamp, and a deep link — the same "Sources:" discipline as any other grounded answer.</li>
+        <li><b>Offer a next step.</b> Watch the full clip, save the answer as a Note, or open the Succession Planning Collection for more.</li>
+      </ol>
+    </section>
+
+    <section id="skills">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Coaching Skills</h2></div>
+      <p class="lede">A raw search answers one question. A Skill is a structured way of running a whole category of coaching conversation — the same distinction AquaBrain draws between a plain semantic answer and following a named <span class="fieldname">get_skill</span> playbook.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="top"><h3>Career Planning</h3><span class="card-idx">Skill</span></div>
+          <p class="card-purpose">A short structured interview, then a grounded answer — not generic career advice, this product's own experts' actual framing.</p>
+          <div class="card-grid">
+            <div><div class="label">Flow</div><div class="val">Current role → what energises / drains them → a 3-year picture they'd be proud of</div></div>
+            <div><div class="label">Draws on</div><div class="val">Career Planning + Decision-Making fragments</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="top"><h3>Succession Planning</h3><span class="card-idx">Skill</span></div>
+          <p class="card-purpose">For a founder or exec thinking about stepping back, or planning who's next.</p>
+          <div class="card-grid">
+            <div><div class="label">Flow</div><div class="val">Readiness signals → timeline → the hard conversation itself → common pitfalls multiple SMEs flag independently</div></div>
+            <div><div class="label">Draws on</div><div class="val">Succession Planning + Difficult Conversations fragments</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="top"><h3>Overcoming Anxiety &amp; Performance Pressure</h3><span class="card-idx">Skill</span></div>
+          <p class="card-purpose">Framed explicitly as performance coaching — pre-performance nerves, reframing pressure, routines the experts themselves describe.</p>
+          <div class="card-grid">
+            <div><div class="label">Flow</div><div class="val">What the pressure shows up as → what's been tried → grounded, cited reframes and routines</div></div>
+            <div><div class="label">Draws on</div><div class="val">Overcoming Anxiety &amp; Performance Pressure fragments</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout warn">
+        <span class="tag">Non-negotiable guardrail</span>
+        The Overcoming Anxiety Skill is performance coaching, not therapy, and it says so plainly. It does not diagnose, does not present itself as a substitute for professional mental-health care, and never reaches for content that mimics or normalises self-harm coping. If a subscriber's language suggests real crisis rather than performance pressure, the Skill stops coaching and hands off to crisis resources instead of producing more content. This isn't a caveat to soften later — it's a fixed design requirement from day one, the same standard this assistant already holds itself to.
+      </div>
+    </section>
+
+    <section id="mcp">
+      <div class="sec-head"><span class="sec-num">08</span><h2>The MCP server</h2></div>
+      <p class="lede">This is the concrete ask: a subscriber connects a "Performance Intelligence Coach" MCP server to their own Claude and asks it directly — modelled tool-for-tool on AquaBrain's own surface.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Tool</th><th>What it does</th><th>AquaBrain precedent</th></tr></thead>
+          <tbody>
+            <tr><td class="fieldname">ask_coach</td><td>Question in, synthesized &amp; cited answer out (section 06's flow)</td><td>New — combines search + grounded reasoning</td></tr>
+            <tr><td class="fieldname">search_wisdom</td><td>Raw ranked Fragment list — for a subscriber who wants the receipts, not a paragraph</td><td class="fieldname">search_thoughts</td></tr>
+            <tr><td class="fieldname">list_lenses</td><td>The Coaching Lens taxonomy</td><td class="fieldname">list_lenses</td></tr>
+            <tr><td class="fieldname">list_skills / get_skill</td><td>Fetch a structured Coaching Skill playbook</td><td class="fieldname">get_skills / get_skill</td></tr>
+            <tr><td class="fieldname">save_reflection</td><td>Save the subscriber's own takeaway privately — <i>their</i> space, not the shared corpus</td><td class="fieldname">capture_thought</td></tr>
+            <tr><td class="fieldname">wisdom_stats</td><td>Corpus transparency — "grounded in N hours across M experts"</td><td class="fieldname">thought_stats</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Access is gated by subscription tier at connection time (an API key or OAuth token tied to the subscriber's account), reusing the <span class="fieldname">level_text</span> access-tier field already in Phase 1's data model rather than building a second entitlement system.</p>
+    </section>
+
+    <section id="surfaces">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Two delivery surfaces</h2></div>
+      <div class="card-grid">
+        <div>
+          <h3>In-app Ask</h3>
+          <p>A chat entry point inside the app itself, same retrieval engine as the MCP server, for subscribers who aren't already working in Claude.</p>
+        </div>
+        <div>
+          <h3>MCP, in the subscriber's own Claude</h3>
+          <p>The headline differentiator: bring Jez's Brain into whatever the subscriber is already doing — drafting a succession plan in Claude and asking PI Coach mid-task, without switching apps.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="subscription">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Subscription model</h2></div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Tier</th><th>Includes</th></tr></thead>
+          <tbody>
+            <tr><td><b>Free / Public</b></td><td>Browse + watch — Phase 1</td></tr>
+            <tr><td><b>Registered</b></td><td>+ personal library, My Notes — Phase 1</td></tr>
+            <tr><td><b>Coach</b> <span style="color:var(--ink-soft);font-weight:400;">(new)</span></td><td>+ unlimited Ask, in-app and via MCP; Coaching Skills</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="tag">On pricing</span>
+        The base spec noted Audvisor's $120/year as a loose benchmark for a micro-content subscription. This product isn't equivalent — a synthesized, multi-expert, cited answer is a different value proposition from one 3-minute episode — so it shouldn't be priced off that comp directly. Real pricing needs willingness-to-pay research against this specific offer, not a borrowed number.
+      </div>
+    </section>
+
+    <section id="rights">
+      <div class="sec-head"><span class="sec-num">11</span><h2>Rights &amp; consent</h2></div>
+      <p class="lede">This is the single biggest difference from Phase 1, and the biggest risk in this document.</p>
+      <p>Phase 1 only ever embeds or links to a YouTube video — no re-hosting, safely inside YouTube's Terms of Service. The Wisdom Layer is materially different: it extracts, stores, and resells the <i>substance</i> of what people say, as a queryable subscription product. That most likely needs:</p>
+      <ul>
+        <li><b>Explicit clearance from Jez Cartwright</b> to use transcript content this way — separate from, and beyond, YouTube's embed terms.</li>
+        <li><b>A separate consent step for guest SMEs.</b> Being interviewed for a free YouTube video is not the same as having your specific words extracted, attributed, and resold as structured advice inside a paid product. Recommend extending Phase 1's SME-approval screen with an explicit "wisdom extraction" consent flag, off by default.</li>
+        <li><b>Attribution as a requirement, not just good practice.</b> Every fragment must carry a real "said by X in Y" citation — never presented as the product's own generic wisdom.</li>
+      </ul>
+      <div class="callout warn">
+        <span class="tag">Blocking, not just a footnote</span>
+        This needs real legal review before build starts, not after. Nothing else in this document should proceed past the ingestion-and-review stage (section 03) until it has one.
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="sec-head"><span class="sec-num">12</span><h2>Where this sits</h2></div>
+      <p>The base spec's Phase 3 already gestured at "an AI Q&amp;A layer over Insight transcripts" — this document is that gesture, worked through in full. Suggest running it as its own phase, sequenced after Phase 1's content and curation pipeline has proven itself with a real corpus — not before.</p>
+      <div class="pipeline">
+        <div class="pstep"><span class="pn">3a</span><div class="pt">Ingest &amp; review</div><div class="pd">Extraction + Admin review running, no live Q&amp;A yet</div></div>
+        <div class="pstep"><span class="pn">3b</span><div class="pt">In-app Ask</div><div class="pd">One surface, validate answer quality with real subscribers</div></div>
+        <div class="pstep"><span class="pn">3c</span><div class="pt">MCP + subscription gate</div><div class="pd">External distribution, once quality is proven</div></div>
+      </div>
+    </section>
+
+    <section id="open">
+      <div class="sec-head"><span class="sec-num">13</span><h2>Open questions</h2></div>
+      <ul>
+        <li><b>Rights clearance</b> (section 11) — blocking; needs resolving before build, not before launch.</li>
+        <li><b>Minimum corpus size.</b> What counts as "enough" transcripts before "collective wisdom" is credible rather than collective-of-ten?</li>
+        <li><b>Human sign-off on synthesized answers</b> — does Jez (or a coach on his behalf) review the Ask experience before it's trusted at scale, the way Insights are approved today?</li>
+        <li><b>Coach-tier pricing</b> — needs real research, not a borrowed number.</li>
+        <li><b>Tone of disagreement</b> — how does surfacing two conflicting experts stay confident and useful rather than reading as hedging?</li>
+        <li><b>MCP infrastructure ownership</b> — who hosts and operates the server, and at what cost per subscriber?</li>
+      </ul>
+    </section>
+
+    <section id="critique">
+      <div class="sec-head"><span class="sec-num">14</span><h2>Self-critique</h2></div>
+      <div class="callout">
+        <span class="tag">Solid</span>
+        The AquaBrain mapping in section 02 isn't a loose analogy — this session has live visibility into AquaBrain's actual tool set and Lens/Thought model, so Fragment↔Thought, Coaching Lens↔Lens, CONTESTED, and get_skill↔Coaching Skills are all borrowed from a real, working system, not invented from scratch.
+      </div>
+      <div class="callout warn">
+        <span class="tag">Weaker</span>
+        Everything past ingestion is unbuilt and untested. Auto-captions have real error rates, and an extraction pass can produce a fragment that sounds plausible but wasn't quite what the SME said — the human-review gate in section 03 is a mitigation, not a guarantee, and answer quality needs real validation before this earns subscriber trust.
+      </div>
+      <div class="callout warn">
+        <span class="tag">Weaker</span>
+        The rights question in section 11 is flagged clearly, not glossed over — but I'm not a lawyer, and nothing here substitutes for real legal review of what extracting and reselling transcript substance actually requires.
+      </div>
+      <div class="callout">
+        <span class="tag">Held the line</span>
+        I didn't invent a Coach-tier price. Audvisor's number doesn't transfer to a different value proposition, and saying that plainly beats dressing up a guess as a benchmark.
+      </div>
+    </section>
+
+  </main>
+
+  <div class="footer">The Wisdom Layer — Extended Specification, Phase 2/3 · 10 September 2026</div>
+</div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    try { var saved = localStorage.getItem('pi-wisdom-theme'); if (saved) root.setAttribute('data-theme', saved); } catch(e){}
+    btn.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : (current === 'light' ? null : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark'));
+      if (next) { root.setAttribute('data-theme', next); } else { root.removeAttribute('data-theme'); }
+      try { localStorage.setItem('pi-wisdom-theme', next || ''); } catch(e){}
+    });
+  })();
+</script>
+
+</body>
+</html>
