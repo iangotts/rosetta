@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cal Testing — Business Intent | Cal Testing</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Blues — anchored on #106EBE */
+  --blue:        #106EBE;
+  --blue-deep:   #0B3F73;
+  --blue-bright: #1A82D6;
+  --blue-light:  #DDEEFB;
+  --blue-pale:   #EEF6FD;
+
+  /* Mints — anchored on #0FFCBE */
+  --mint:        #087F60;   /* mint for text and labels on light backgrounds */
+  --mint-bright: #0FFCBE;   /* the brand mint: fills, rules, text on blue only */
+  --mint-pale:   #E8FFF8;
+  --mint-border: rgba(8,127,96,.22);
+
+  /* Neutrals */
+  --text:        #0F1E2E;
+  --muted:       #53627A;
+  --light-muted: #8793A6;
+  --bg:          #F5F9FC;
+  --surface:     #ffffff;
+  --border:      #DCE6F0;
+
+  /* Accent dots */
+  --dot-sky:   #3BA7F0;
+  --dot-amber: #F2B134;
+
+  /* ── PHASE / SWIMLANE TOKENS ──────────────────────────────
+     Derived from the Cal Testing blue + mint pair.
+     Five semantic roles, each with: bg · border · text
+     -------------------------------------------------------- */
+
+  /* Prepare / foundation — pale blue */
+  --phase-prepare-bg:     #E6F1FB;
+  --phase-prepare-border: #9CC6EC;
+  --phase-prepare-text:   #0B3F73;
+
+  /* Implement / group wrapper — mint (matches brand mint) */
+  --phase-implement-bg:     var(--mint-pale);
+  --phase-implement-border: var(--mint-bright);
+  --phase-implement-text:   #06604A;
+
+  /* Define / Design / build — teal, between the blue and the mint */
+  --phase-build-bg:     #E0F5F9;
+  --phase-build-border: #4FBFD6;
+  --phase-build-text:   #135E6B;
+
+  /* Deploy / Run — coral, the warm complement */
+  --phase-deploy-bg:     #FDECE8;
+  --phase-deploy-border: #F08A75;
+  --phase-deploy-text:   #8A2E1C;
+
+  /* Operate / steady-state — neutral cool grey */
+  --phase-operate-bg:     #EDF1F5;
+  --phase-operate-border: #B3C0CF;
+  --phase-operate-text:   var(--muted);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(11,63,115,.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+}
+.logo-icon { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
+.logo-wordmark { line-height: 1.1; }
+.logo-wordmark strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  letter-spacing: .02em;
+}
+.logo-wordmark span {
+  font-size: .65rem;
+  color: var(--light-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.nav-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: .72rem;
+  color: var(--light-muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.nav-badge {
+  background: var(--mint-pale);
+  border: 1px solid var(--mint-border);
+  color: var(--mint);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .28rem .75rem;
+  border-radius: 4px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* ── HERO ────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue) 60%, #1478CC 100%);
+  padding: 5rem 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(15,252,190,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mint-bright);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--mint-bright);
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #ffffff;
+  margin-bottom: .4rem;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 2.5rem;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.4);
+}
+.meta-item strong {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: .25rem;
+}
+
+/* ── PAGE BODY ───────────────────────────────────── */
+.page { max-width: 1000px; margin: 0 auto; }
+
+section {
+  padding: 3rem 3rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+section:nth-child(even) { background: var(--bg); }
+section:last-child { border-bottom: none; }
+
+.sec-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin-bottom: .7rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--mint-border);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--mint-border);
+}
+
+.section-headline {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--blue-deep);
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: .95rem;
+  line-height: 1.8;
+  color: var(--muted);
+  font-weight: 300;
+}
+p + p { margin-top: .8rem; }
+
+.horizon {
+  height: 1px;
+  background: linear-gradient(90deg, var(--mint-bright) 0%, var(--blue-bright) 50%, transparent 100%);
+  margin: 2rem 0;
+  opacity: .3;
+}
+
+/* ── IMPERATIVE ──────────────────────────────────── */
+.imperative {
+  background: var(--mint-pale);
+  border-left: 3px solid var(--mint-bright);
+  border-radius: 0 8px 8px 0;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.imperative p {
+  font-size: .95rem;
+  font-style: italic;
+  color: #06604A;
+  font-weight: 400;
+}
+
+/* ── KPI CARDS ───────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.kpi {
+  background: var(--blue-pale);
+  border: 1px solid #C4DDF3;
+  border-radius: 10px;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  border-top: 3px solid var(--blue-bright);
+}
+.kpi-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.4rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.kpi-label {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ── USE CASES ───────────────────────────────────── */
+.use-cases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.uc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-top: 3px solid var(--mint-bright);
+  transition: box-shadow .2s, border-color .2s;
+}
+.uc:hover {
+  box-shadow: 0 4px 20px rgba(11,63,115,.08);
+  border-color: var(--mint);
+}
+.uc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin-bottom: .6rem;
+}
+.uc-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: .55rem;
+  line-height: 1.3;
+}
+.uc-desc {
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--muted);
+  font-weight: 300;
+}
+.uc-pill {
+  display: inline-block;
+  margin-top: .8rem;
+  background: var(--blue-pale);
+  color: var(--blue-bright);
+  font-size: .63rem;
+  font-weight: 700;
+  padding: .22rem .65rem;
+  border-radius: 4px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid #C4DDF3;
+}
+
+/* ── TECH GRID ───────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+.tech-item {
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .9rem 1rem;
+}
+.tech-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: .38rem;
+}
+.dot-mint  { background: var(--mint-bright); }
+.dot-sky   { background: #00a1e0; }
+.dot-amber { background: #e8a000; }
+.dot-light { background: #B3C0CF; }
+.tech-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--blue-deep);
+  line-height: 1.15;
+}
+.tech-role {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: .2rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── PROOF CARDS ─────────────────────────────────── */
+.proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.proof-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  border-left: 4px solid var(--blue-bright);
+}
+.proof-logo {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--light-muted);
+  margin-bottom: .6rem;
+}
+.proof-stat {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.2rem;
+  color: var(--blue-deep);
+  line-height: 1;
+}
+.proof-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: .5rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── INVESTMENT BLOCK ────────────────────────────── */
+.invest-box {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue) 100%);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem;
+  margin-top: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+.invest-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.invest-box .sec-label {
+  color: rgba(15,252,190,.8);
+  border-color: rgba(15,252,190,.2);
+}
+.invest-box .sec-label::after { background: rgba(15,252,190,.15); }
+.invest-box .section-headline { color: #ffffff; }
+.invest-box p { color: rgba(255,255,255,.7); }
+
+.ask-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+.ask-item {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  border-top: 2px solid var(--mint-bright);
+}
+.ask-item-phase {
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  color: rgba(15,252,190,.75);
+  margin-bottom: .4rem;
+}
+.ask-item-val {
+  font-size: .85rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+/* ── FOOTER ──────────────────────────────────────── */
+.doc-footer {
+  background: var(--blue-deep);
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.doc-footer span {
+  font-size: .7rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 720px) {
+  .nav { padding: 1rem 1.2rem; }
+  section { padding: 2.2rem 1.2rem; }
+  .hero { padding: 3rem 1.2rem; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .use-cases { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .proof { grid-template-columns: 1fr; }
+  .ask-row { grid-template-columns: 1fr; }
+  .hero-meta { gap: 1.2rem; }
+  .doc-footer { flex-direction: column; gap: .5rem; text-align: center; }
+  .nav-meta { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="logo">
+    <img class="logo-icon" src="data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 44 44%22%3E%3Crect width=%2244%22 height=%2244%22 rx=%228%22 fill=%22%23106EBE%22/%3E%3Cpath d=%22M29.5 14.2a11 11 0 1 0 0 15.6%22 fill=%22none%22 stroke=%22%230FFCBE%22 stroke-width=%224.2%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M17.5 22.2l3.4 3.4 6.6-7%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E" alt="Cal Testing logo">
+    <div class="logo-wordmark">
+      <strong>Cal Testing</strong>
+      <span>Clinical Trials</span>
+    </div>
+  </a>
+  <div class="nav-meta">
+    <span>Cal Testing</span>
+    <span>COO Office · 2026</span>
+    <div class="nav-badge">Confidential</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Business Intent — Agentforce Transformation Initiative</div>
+    <div class="hero-title">Cal Testing</div>
+    <div class="hero-subtitle">Agent-Assisted Clinical Trials: <span style="color:var(--mint-bright);font-weight:500;">From Study Award to the Next Phase</span></div>
+    <div class="hero-meta">
+      <div class="meta-item">Submitted by <strong>Chief Operating Officer</strong></div>
+      <div class="meta-item">Headquarters <strong>San Francisco, CA</strong></div>
+      <div class="meta-item">Operations <strong>Trial Sites Across the US</strong></div>
+      <div class="meta-item">Category <strong>Clinical Trials Services</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="page">
+
+  <!-- 1. Executive Summary -->
+  <section>
+    <div class="sec-label">Executive Summary</div>
+    <div class="section-headline">Fill every study on time, keep every sponsor informed, and earn the next phase — with a process we can defend.</div>
+    <p>Cal Testing runs clinical trials on behalf of tier 1 pharmaceutical sponsors. We win that work study by study, and we keep it by enrolling the right participants on time and reporting honestly on progress. Today the commercial side of the business runs on Salesforce, but the trial itself runs on a few simple custom objects, site spreadsheets, a Mailchimp audience and the telephone.</p>
+    <p>This initiative funds a rebuild of the clinical trials process on Salesforce Life Sciences Cloud, with agents supporting each stage: winning the study, finding and contacting potential participants, enrolling and retaining them, returning results to the sponsor, and winning the next phase. Qualified people continue to make every clinical and eligibility decision.</p>
+    <div class="imperative">
+      <p>"Sponsors do not award Phase 2 to the organisation with the best proposal. They award it to the one that enrolled Phase 1 on time and told them the truth along the way."</p>
+    </div>
+  </section>
+
+  <!-- 2. The Problem -->
+  <section>
+    <div class="sec-label">The Problem We Are Solving</div>
+    <div class="section-headline">Our sales process is in Salesforce. Our trials are in spreadsheets.</div>
+    <p>A person who signed up on our website for a diabetes study two years ago, was called by a recruiter, screen-failed at one of our sites, and later unsubscribed from our emails exists in four places — as a Salesforce lead among our pharmaceutical prospects, as a trial participant record, as a line in a site spreadsheet, and as a Mailchimp subscriber — with no single identity and no dated record of what they agreed to. We cannot see them as one person, so we cannot be sure we are entitled to contact them, or whether they are a good match for the next study.</p>
+    <p>The result: recruiters call widely and screen-fail often, enrollment forecasts given to sponsors are estimates, status reports are assembled by hand, and business development learns about a sponsor's next phase late. Because the data is personal and much of it is health information, every one of these gaps is also a compliance exposure under HIPAA and California privacy law.</p>
+    <div class="horizon"></div>
+  </section>
+
+  <!-- 3. Business Outcomes -->
+  <section>
+    <div class="sec-label">Target Business Outcomes</div>
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num">↓ 30%</div>
+        <div class="kpi-label">Time from site activation<br>to enrollment target</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">↓ 25%</div>
+        <div class="kpi-label">Screen-failure rate<br>at the screening visit</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-num">↑ 20%</div>
+        <div class="kpi-label">Phase 1 studies followed by<br>a Phase 2 award (Yr 2)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Use Cases -->
+  <section>
+    <div class="sec-label">Core Use Cases</div>
+    <div class="section-headline">Six agents. One trial process, from award to the next award.</div>
+    <div class="use-cases">
+      <div class="uc">
+        <div class="uc-num">UC — 01</div>
+        <div class="uc-title">Study Feasibility &amp; Bid</div>
+        <div class="uc-desc">Assemble enrollment history, site capacity and reachable population for a new study request and draft the feasibility response and bid for business development to review.</div>
+        <div class="uc-pill">Win the Study</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">UC — 02</div>
+        <div class="uc-title">Participant Matching</div>
+        <div class="uc-desc">Compare registry participants with the structured inclusion and exclusion criteria of a study and propose a shortlist with reasons and data age. Suggests; never decides eligibility.</div>
+        <div class="uc-pill">Find Participants</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">UC — 03</div>
+        <div class="uc-title">Outreach &amp; Pre-Screening</div>
+        <div class="uc-desc">Contact candidates who hold evidenced consent, using wording approved by the review board, run the approved pre-screening questions and book the screening visit. Hands over to a coordinator on any clinical question.</div>
+        <div class="uc-pill">Reach &amp; Verify</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">UC — 04</div>
+        <div class="uc-title">Enrollment &amp; Retention</div>
+        <div class="uc-desc">Send visit reminders and preparation steps, flag missed visits and dropout risk to the site coordinator, and trigger re-consent after a protocol amendment.</div>
+        <div class="uc-pill">Enroll &amp; Retain</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">UC — 05</div>
+        <div class="uc-title">Results &amp; Sponsor Reporting</div>
+        <div class="uc-desc">File incoming laboratory results to the right study, prepare status updates and result notifications for the sponsor, and release them after human review.</div>
+        <div class="uc-pill">Inform the Sponsor</div>
+      </div>
+      <div class="uc">
+        <div class="uc-num">UC — 06</div>
+        <div class="uc-title">Sponsor Growth</div>
+        <div class="uc-desc">Watch study phase, read-out dates and delivery performance, and open the follow-on opportunity with the evidence attached before the next phase is tendered.</div>
+        <div class="uc-pill">Win the Next Phase</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Technology -->
+  <section>
+    <div class="sec-label">Technology Foundation</div>
+    <div class="section-headline">We keep the commercial core. We replace what the trial runs on.</div>
+    <p>Cal Testing's sales process on Salesforce works and stays. The custom trial objects, the spreadsheets and the unlogged outreach are replaced by a standard clinical data model. The sponsor's data capture system remains the clinical system of record. Our IT team configures Salesforce but does not develop; delivery will be led by a systems integrator.</p>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-dot dot-mint"></div>
+        <div>
+          <div class="tech-name">Agentforce Sales (Sales Cloud) — in place</div>
+          <div class="tech-role">Sponsor leads, contacts, accounts and opportunities</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-mint"></div>
+        <div>
+          <div class="tech-name">Life Sciences Cloud — new</div>
+          <div class="tech-role">Studies, sites, participants, candidate matching, enrollment and visits; replaces the custom trial objects</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-mint"></div>
+        <div>
+          <div class="tech-name">Data 360 &amp; Agentforce — new</div>
+          <div class="tech-role">One governed participant profile with consent status, and the six agents that act on it</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-sky"></div>
+        <div>
+          <div class="tech-name">Participant &amp; Sponsor Portals — new</div>
+          <div class="tech-role">Sign-up, pre-screening, electronic consent and visit schedule for participants; status and released results for sponsors</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-amber"></div>
+        <div>
+          <div class="tech-name">Mailchimp — under review</div>
+          <div class="tech-role">Not suitable for participant health information; to be replaced for participant messaging, decision open for the sponsor newsletter</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-dot dot-light"></div>
+        <div>
+          <div class="tech-name">Sponsor EDC &amp; Central Laboratory — external</div>
+          <div class="tech-role">Clinical data and test results, connected through MuleSoft; not replaced</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Industry Proof -->
+  <section>
+    <div class="sec-label">Industry Validation</div>
+    <div class="section-headline">Clinical research organisations are already moving this way.</div>
+    <div class="proof">
+      <div class="proof-card">
+        <div class="proof-logo">Centricity Research</div>
+        <div class="proof-stat">Recruit &amp; Enroll</div>
+        <div class="proof-desc">A clinical research organisation that has said publicly it is using Life Sciences Cloud to simplify participant recruitment and enrollment and to streamline study start-up, integrated with its trial management system. Source: Salesforce news, "Industry leaders choose Life Sciences Cloud".</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-logo">Vendor-reported benchmark</div>
+        <div class="proof-stat">↓ 28%</div>
+        <div class="proof-desc">Reduction in time spent on manual tasks reported by Salesforce for its pharma customers (Life Sciences Cloud pharma datasheet, FY26). A vendor figure, not a Cal Testing forecast; to be tested against our own baseline in Phase 1.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Investment -->
+  <section>
+    <div class="sec-label">Investment Request</div>
+    <div class="invest-box">
+      <div class="sec-label">Fund the foundation. Earn the next phase.</div>
+      <div class="section-headline">This is a phased program anchored on trusted participant data and compliance in Phase 1, followed by agent-assisted recruitment and enrollment in Phase 2, with sponsor reporting and growth in Phase 3.</div>
+      <div class="ask-row">
+        <div class="ask-item">
+          <div class="ask-item-phase">Phase 1 — Trusted Foundation</div>
+          <div class="ask-item-val">Data forensics, evidenced consent, Mailchimp remediation &amp; clinical data model</div>
+        </div>
+        <div class="ask-item">
+          <div class="ask-item-phase">Phase 2 — Recruit &amp; Enroll</div>
+          <div class="ask-item-val">Matching, outreach &amp; retention agents; participant portal &amp; electronic consent</div>
+        </div>
+        <div class="ask-item">
+          <div class="ask-item-phase">Phase 3 — Report &amp; Grow</div>
+          <div class="ask-item-val">Laboratory integration, sponsor portal, feasibility &amp; sponsor growth agents</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="doc-footer">
+  <span>Cal Testing · Confidential · COO Office · 2026</span>
+  <span>San Francisco · Powered by Salesforce Agentforce</span>
+</footer>
+
+</body>
+</html>
